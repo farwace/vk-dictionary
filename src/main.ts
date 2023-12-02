@@ -2,6 +2,7 @@ import type {IUserActionsInterface} from "@/classes/UserActions/Interfaces/IUser
 import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import App from './App.vue'
 import {Container} from "inversify";
+import "reflect-metadata";
 import {UserActions} from "@/classes/UserActions/UserActions";
 import bridge from "@vkontakte/vk-bridge";
 import quasarUserOptions from './quasar-user-options'
