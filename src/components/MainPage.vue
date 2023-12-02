@@ -14,11 +14,24 @@
 </style>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+import {ref, inject} from "vue";
+import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 
 const addStatus = ref<string>('');
+const UI = inject<IUIActions>('UI')
 const tryAdd = () => {
+  const addToHomeScreen = UI?.addToFavorites;
+  if(addToHomeScreen){
 
+    addToHomeScreen().then((res) => {
+      if(res){
+        addStatus.value = 'Успешно добавлено';
+      }
+      else{
+        addStatus.value = 'Не удалось добавить';
+      }
+    });
+  }
 }
 
 </script>

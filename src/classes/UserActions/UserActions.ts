@@ -28,4 +28,19 @@ export class UserActions implements IUserActionsInterface{
         }
         return res;
     }
+
+    async AddToFavorites(): Promise<boolean> {
+
+        try {
+            const addResult = await bridge.send('VKWebAppAddToFavorites');
+            if(addResult.result){
+                return true;
+            }
+        }
+        catch (e){
+
+        }
+
+        return false;
+    }
 }

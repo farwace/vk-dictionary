@@ -16,7 +16,11 @@ var container = new Container();
 container.bind<IUserActionsInterface>('UserActions').to(UserActions);
 container.bind<IUIActions>('UI').to(UIActions);
 
+const app = createApp(App);
+app.use(Quasar, quasarUserOptions);
+const UILayer:IUIActions = container.get('UI');
+UILayer.install(app);
+app.mount('#app');
 
-createApp(App).use(Quasar, quasarUserOptions).mount('#app');
 
 bridge.send('VKWebAppInit');
