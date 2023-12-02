@@ -7,8 +7,6 @@
 <style>
 </style>
 
-<script>
-export default {
-  name: 'HelloWorld'
-}
+<script lang="ts" setup>
+
 </script>
