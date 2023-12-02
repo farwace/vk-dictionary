@@ -3,9 +3,12 @@ import type {TAddToHomeScreenResultStatuses} from "@/classes/UI/Interfaces/IUIAc
 import type {App} from "@vue/runtime-core";
 import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import {inject, injectable} from "inversify";
+import bridge, {GetLaunchParamsResponse} from "@vkontakte/vk-bridge";
 
 @injectable()
 export class UIActions implements IUIActions{
+
+    private LaunchParams: GetLaunchParamsResponse | undefined;
 
     constructor(
         @inject('UserActions')
@@ -15,6 +18,22 @@ export class UIActions implements IUIActions{
 
     install(app: App) {
         app.provide('UI', this);
+    }
+
+    async queryLaunchParams(){
+        try {
+            const launchParams = await bridge.send('VKWebAppGetLaunchParams');
+            if(launchParams.vk_app_id){
+                this.LaunchParams = launchParams;
+            }
+        }
+        catch (e){
+
+        }
+    }
+
+    getLaunchParams():GetLaunchParamsResponse|undefined{
+        return this.LaunchParams;
     }
 
     CanIAddToHomeScreen = async () => {

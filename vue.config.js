@@ -7,7 +7,8 @@ module.exports = defineConfig({
   devServer: {
     host: '0.0.0.0',
     port: '10888',
-    https: true
+    https: true,
+    webSocketServer: false,
   },
 
   pluginOptions: {

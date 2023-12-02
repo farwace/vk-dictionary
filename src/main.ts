@@ -10,17 +10,24 @@ import { createApp } from 'vue'
 import { Quasar } from 'quasar'
 import {UIActions} from "@/classes/UI/UIActions";
 
-var container = new Container();
+const container = new Container();
 
 
 container.bind<IUserActionsInterface>('UserActions').to(UserActions);
-container.bind<IUIActions>('UI').to(UIActions);
+container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
+
+const UILayer:IUIActions = container.get('UI');
 
 const app = createApp(App);
 app.use(Quasar, quasarUserOptions);
-const UILayer:IUIActions = container.get('UI');
 UILayer.install(app);
 app.mount('#app');
-
-
 bridge.send('VKWebAppInit');
+
+
+/*TODO:
+    - Окно загрузки приложения пока получаются Launch Params, информация о пользователе из базы данных и т.д.
+    - При первом запуске отображать слайдер с инструкцией https://dev.vk.com/ru/mini-apps/development/information-screens
+    - При запуске делать запрос на бэк с ID юзера, получать список доступных словарей, уровень, опыт,
+    -
+*/
