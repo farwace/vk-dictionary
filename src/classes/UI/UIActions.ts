@@ -1,64 +1,76 @@
 import type {IUserActionsInterface} from "@/classes/UserActions/Interfaces/IUserActionsInterface";
-import type {TAddToHomeScreenResultStatuses} from "@/classes/UI/Interfaces/IUIActions";
+import type {TAddToHomeScreenResultStatuses} from "@/classes/UI/Interfaces/TAddToHomeScreenResultStatuses";
 import type {App} from "@vue/runtime-core";
 import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import {inject, injectable} from "inversify";
-import bridge, {GetLaunchParamsResponse} from "@vkontakte/vk-bridge";
-import {LaunchParams} from "@/classes/Pinia/LaunchParams/LaunchParams";
+import bridge from "@vkontakte/vk-bridge";
+import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
+import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 
 @injectable()
 export class UIActions implements IUIActions{
-    private LaunchParamsStore;
+    private UIStore;
     constructor(
         @inject('UserActions')
-        private userActions: IUserActionsInterface
+        private userActions: IUserActionsInterface,
+
+        @inject('API')
+        private API:ISystemActions
     ) {
-        this.LaunchParamsStore = LaunchParams();
+        this.UIStore = UIStore();
     }
 
-    install(app: App) {
+
+
+    install(app: App, successfulInitialize:boolean) {
         app.provide('UI', this);
-        this.queryLaunchParams().then();
+        if(successfulInitialize){
+            this.queryLaunchParams().then(() => {
+                const launchParams = this.UIStore.$state.launchParams;
+                if(launchParams){
+                    this.API.getUserInfo(launchParams).then((res) => {
+                        if(res){
+                            this.UIStore.$patch({
+                                user: res,
+                                isReady: true,
+                            })
+                        }
+                        else{
+                            this.UIStore.$patch({userQueryError: true});
+                        }
+                    }).catch(() => {
+                        this.UIStore.$patch({userQueryError: true});
+                    })
+                }
+
+            }).catch(() => {
+
+            });
+        }
+        else{
+            this.setInitializeError();
+        }
+    }
+
+    setInitializeError(){
+        this.UIStore.$patch({
+            launchError: true
+        });
     }
 
     async queryLaunchParams(){
         try {
-            console.log('TRY');
             const launchParams = await bridge.send('VKWebAppGetLaunchParams');
-            console.log('AFTER SEND...')
             if(launchParams.vk_app_id){
-                console.log('IF');
-                this.LaunchParamsStore.$patch({
-                    isReady: true,
-                    vk_app_id: launchParams.vk_app_id,
-                    sign: launchParams.sign,
-                    vk_access_token_settings: launchParams.vk_access_token_settings,
-                    vk_are_notifications_enabled: launchParams.vk_are_notifications_enabled,
-                    vk_group_id: launchParams.vk_group_id,
-                    vk_is_app_user: launchParams.vk_is_app_user,
-                    vk_is_favorite: launchParams.vk_is_favorite,
-                    vk_language: launchParams.vk_language,
-                    vk_platform: launchParams.vk_platform,
-                    vk_ref: launchParams.vk_ref,
-                    vk_ts: launchParams.vk_ts,
-                    vk_user_id: launchParams.vk_user_id,
-                    vk_viewer_group_role: launchParams.vk_viewer_group_role
+                this.UIStore.$patch({
+                    launchParams: launchParams
                 })
-            }
-            else{
-                console.log('ELSE');
-                this.LaunchParamsStore.$patch({isReady:true});
             }
         }
         catch (e){
-            console.log('CATCH');
-            this.LaunchParamsStore.$patch({isReady:true});
+
         }
     }
-
-    // getLaunchParams():GetLaunchParamsResponse|undefined{
-    //     return this.LaunchParams;
-    // }
 
     CanIAddToHomeScreen = async () => {
         try {

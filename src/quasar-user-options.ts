@@ -4,7 +4,7 @@ import './styles/quasar.scss'
 import lang from 'quasar/lang/ru.js'
 import '@quasar/extras/roboto-font/roboto-font.css'
 import '@quasar/extras/material-icons/material-icons.css'
-import {Loading, Dark} from 'quasar'
+import {Loading, Dark, Dialog} from 'quasar'
 
 // To be used on app.use(Quasar, { ... })
 export default <QuasarPluginOptions>{
@@ -13,7 +13,8 @@ export default <QuasarPluginOptions>{
   },
   plugins: {
     Dark,
-    Loading
+    Loading,
+    Dialog
   },
   lang: lang
 }

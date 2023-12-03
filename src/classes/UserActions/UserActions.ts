@@ -1,5 +1,6 @@
 import {injectable} from "inversify";
-import type {IUserActionsInterface, TICanAddToHomeScreen} from "@/classes/UserActions/Interfaces/IUserActionsInterface";
+import type {IUserActionsInterface} from "@/classes/UserActions/Interfaces/IUserActionsInterface";
+import type {TICanAddToHomeScreen} from "@/classes/UserActions/Interfaces/TICanAddToHomeScreen"
 import bridge from "@vkontakte/vk-bridge";
 
 @injectable()
@@ -17,7 +18,7 @@ export class UserActions implements IUserActionsInterface{
         return false;
     }
     async CheckAddHomeScreen(): Promise<TICanAddToHomeScreen> {
-        let res:TICanAddToHomeScreen = {canAdd: false, isAdded:false};
+        const res:TICanAddToHomeScreen = {canAdd: false, isAdded:false};
         try {
             const IsInHomeScreenOb = await bridge.send('VKWebAppAddToHomeScreenInfo');
             res.isAdded = IsInHomeScreenOb.is_added_to_home_screen;
