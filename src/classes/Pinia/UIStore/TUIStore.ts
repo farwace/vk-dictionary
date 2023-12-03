@@ -5,6 +5,6 @@ export type TUIStore = {
     isReady: boolean,
     launchError: boolean,
     launchParams?:GetLaunchParamsResponse,
-    user?: TUser,
+    user: TUser,
     userQueryError: boolean,
 }

@@ -12,7 +12,7 @@ import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
 export class doInstall{
-    public static run(app: App){
+    public static run = async (app: App)=> {
         app.use(Quasar, quasarUserOptions);
         app.use(createPinia());
 
@@ -23,9 +23,12 @@ export class doInstall{
         const UILayer:IUIActions = container.get('UI');
         const API:ISystemActions = container.get('API');
 
+        try {
+            const checkLaunchStatus = await API.checkLaunchParams();
+            UILayer.install(app, checkLaunchStatus);
+        }
+        catch (e){
 
-        API.checkLaunchParams().then((res) => {
-            UILayer.install(app, res);
-        });
+        }
     }
 }

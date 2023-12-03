@@ -7,7 +7,7 @@ export const UIStore = defineStore('UIStore', {
             isReady: false,
             launchError: false,
             launchParams: undefined,
-            user: undefined,
+            user: {},
             userQueryError: false,
         }
     }

@@ -6,6 +6,7 @@ import {inject, injectable} from "inversify";
 import bridge, {EGetLaunchParamsResponseLanguages} from "@vkontakte/vk-bridge";
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
+import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
 
 @injectable()
 export class UIActions implements IUIActions{
@@ -122,5 +123,10 @@ export class UIActions implements IUIActions{
         catch (e){
             return false;
         }
+    }
+
+    showWelcomeSlides(slides: ShowSlidesSheetRequest){
+        console.log('sendShowSLides')
+        bridge.send('VKWebAppShowSlidesSheet', slides).then().catch();
     }
 }
