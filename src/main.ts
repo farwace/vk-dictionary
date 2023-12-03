@@ -1,33 +1,15 @@
-import type {IUserActionsInterface} from "@/classes/UserActions/Interfaces/IUserActionsInterface";
-import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import App from './App.vue'
-import {Container} from "inversify";
 import "reflect-metadata";
-import {UserActions} from "@/classes/UserActions/UserActions";
 import bridge from "@vkontakte/vk-bridge";
-import quasarUserOptions from './quasar-user-options'
 import { createApp } from 'vue'
-import { Quasar } from 'quasar'
-import {UIActions} from "@/classes/UI/UIActions";
-import { createPinia } from 'pinia'
-import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
-import {TestSystemActions} from "@/classes/System/TestSystemActions";
+import {doInstall} from "@/classes/install/doInstall";
+import i18n from "@/classes/install/i18n";
+
 
 const app = createApp(App);
-app.use(Quasar, quasarUserOptions);
-app.use(createPinia());
 
-const container = new Container();
-container.bind<IUserActionsInterface>('UserActions').to(UserActions);
-container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
-container.bind<ISystemActions>('API').to(TestSystemActions).inSingletonScope();
-const UILayer:IUIActions = container.get('UI');
-const API:ISystemActions = container.get('API');
-
-API.checkLaunchParams().then((res) => {
-    UILayer.install(app, res);
-});
-
+app.use(i18n);
+doInstall.run(app);
 
 app.mount('#app');
 bridge.send('VKWebAppInit');

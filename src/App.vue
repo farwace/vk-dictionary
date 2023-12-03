@@ -15,11 +15,16 @@ import {computed, inject, onMounted, watch} from "vue";
 import {storeToRefs} from "pinia";
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import FLoadingScreen from "@/components/common/FLoadingScreen.vue";
+//import type {TranslateFunction} from "@/lang/TranslateFunction";
+import {useI18n} from "vue-i18n";
 
 const $q = useQuasar();
 $q.dark.set('auto');
 
 const UI = inject<IUIActions>('UI');
+
+//const t =	inject<TranslateFunction>('t');
+const {t} = useI18n();
 
 const {
     isReady,
@@ -34,8 +39,8 @@ const AppIsLoading = computed(() => {
 watch((launchError), (neoVal) => {
   if(neoVal){
     $q.dialog({
-      title: 'Ошибка запуска',
-      message: 'Не удалось инициализироваь приложение. Перезапустите приложение или попробуйте позже',
+      title: t('Launch.error'),
+      message: t('Launch.errorLaunch'),
       html: true,
       persistent: true,
       ok: false
@@ -45,8 +50,8 @@ watch((launchError), (neoVal) => {
 watch((userQueryError), (neoVal) => {
   if(neoVal){
     $q.dialog({
-      title: 'Ошибка запуска',
-      message: 'Не удалось получить информацию о пользователе. Перезапустите приложение или попробуйте позже',
+      title: t!('Launch.error'),
+      message: t!('Launch.errorGetUser'),
       html: true,
       persistent: true,
       ok: false

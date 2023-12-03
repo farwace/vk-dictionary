@@ -3,13 +3,15 @@ import type {TAddToHomeScreenResultStatuses} from "@/classes/UI/Interfaces/TAddT
 import type {App} from "@vue/runtime-core";
 import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import {inject, injectable} from "inversify";
-import bridge from "@vkontakte/vk-bridge";
+import bridge, {EGetLaunchParamsResponseLanguages} from "@vkontakte/vk-bridge";
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 
 @injectable()
 export class UIActions implements IUIActions{
     private UIStore;
+    private language:EGetLaunchParamsResponseLanguages = EGetLaunchParamsResponseLanguages.RU;
+
     constructor(
         @inject('UserActions')
         private userActions: IUserActionsInterface,
@@ -20,8 +22,9 @@ export class UIActions implements IUIActions{
         this.UIStore = UIStore();
     }
 
-
-
+    getLanguage(){
+        return this.language;
+    }
     install(app: App, successfulInitialize:boolean) {
         app.provide('UI', this);
         if(successfulInitialize){
@@ -64,7 +67,10 @@ export class UIActions implements IUIActions{
             if(launchParams.vk_app_id){
                 this.UIStore.$patch({
                     launchParams: launchParams
-                })
+                });
+                if(launchParams.vk_language in ['ru', 'en']){
+                    this.language = launchParams.vk_language;
+                }
             }
         }
         catch (e){

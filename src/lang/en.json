@@ -1,0 +1,7 @@
+{
+  "Launch":{
+    "error": "Application launch error",
+    "errorLaunch": "The application could not be initialized. Restart the app or try again later",
+    "errorGetUser": "User information could not be retrieved. Restart the app or try again later"
+  }
+}

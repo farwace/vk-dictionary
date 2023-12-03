@@ -22,7 +22,6 @@ export class TestSystemActions implements ISystemActions{
         try {
             const userInfo = await bridge.send('VKWebAppGetUserInfo', {user_id: launchParams.vk_user_id})
             await this.timer(2000);
-
             return {
                 userId: userInfo.id,
                 first_name: userInfo.first_name,
