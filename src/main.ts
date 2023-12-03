@@ -9,17 +9,17 @@ import quasarUserOptions from './quasar-user-options'
 import { createApp } from 'vue'
 import { Quasar } from 'quasar'
 import {UIActions} from "@/classes/UI/UIActions";
-
-const container = new Container();
-
-
-container.bind<IUserActionsInterface>('UserActions').to(UserActions);
-container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
-
-const UILayer:IUIActions = container.get('UI');
+import { createPinia } from 'pinia'
 
 const app = createApp(App);
 app.use(Quasar, quasarUserOptions);
+app.use(createPinia());
+
+const container = new Container();
+container.bind<IUserActionsInterface>('UserActions').to(UserActions);
+container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
+const UILayer:IUIActions = container.get('UI');
+
 UILayer.install(app);
 app.mount('#app');
 bridge.send('VKWebAppInit');
