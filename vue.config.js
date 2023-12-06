@@ -6,7 +6,7 @@ module.exports = defineConfig({
 
   devServer: {
     host: '0.0.0.0',
-    port: '10888',
+    port: process.env.PORT,
     https: true,
     webSocketServer: false,
   },
