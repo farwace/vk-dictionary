@@ -8,7 +8,8 @@ import {UserActions} from "@/classes/UserActions/UserActions";
 import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import {UIActions} from "@/classes/UI/UIActions";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
-import {TestSystemActions} from "@/classes/System/TestSystemActions";
+import {SystemActions} from "@/classes/System/SystemActions";
+//import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
 export class doInstall{
@@ -19,7 +20,7 @@ export class doInstall{
         const container = new Container();
         container.bind<IUserActionsInterface>('UserActions').to(UserActions);
         container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
-        container.bind<ISystemActions>('API').to(TestSystemActions).inSingletonScope();
+        container.bind<ISystemActions>('API').to(SystemActions).inSingletonScope();
         const UILayer:IUIActions = container.get('UI');
         const API:ISystemActions = container.get('API');
 

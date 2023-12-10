@@ -96,7 +96,24 @@ watch(isReady, (neoVal) => {
 })
 
 onMounted(() => {
-
+    if(launchError.value){
+      $q.dialog({
+        title: t('Launch.error'),
+        message: t('Launch.errorLaunch'),
+        html: true,
+        persistent: true,
+        ok: false
+      });
+    }
+    if(userQueryError.value){
+      $q.dialog({
+        title: t('Launch.error'),
+        message: t('Launch.errorGetUser'),
+        html: true,
+        persistent: true,
+        ok: false
+      });
+    }
 });
 
 </script>
