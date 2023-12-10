@@ -18,4 +18,5 @@ export interface ISystemActions{
     addNeoWord(collectionId: number, neoWord: TWord):Promise<any>;
     updateWord(neoWord: TWord):Promise<any>;
     updateWordExperience(wordsExperience: { wordId: number; experience: number }[]):Promise<any>;
+    getLanguages():Promise<any>;
 }

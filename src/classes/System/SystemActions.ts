@@ -152,6 +152,15 @@ export class SystemActions implements ISystemActions{
         }
     }
 
+    getLanguages = async (): Promise<any> => {
+        try {
+            const fetchResult = await this.sendQuery('getLanguages', {});
+            return await fetchResult.json();
+        }
+        catch (e){
+            return [];
+        }
+    }
 
     sendQuery = async (path: string, body: any, method:string|undefined = 'POST') => {
         let response;
