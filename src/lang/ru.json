@@ -17,5 +17,14 @@
         "subtitle": "Описание слайд3"
       }
     }
+  },
+  "ChooseLanguageDialog": {
+    "Title": "Ваш родной язык",
+    "WantLearn": "Язык для изучения"
+  },
+  "ProfileSettingsDialog": {
+    "Title": "Настройки",
+    "WriteDeveloper": "Написать разработчику",
+    "UseTranscription": "Использовать транскрипцию в словаре"
   }
 }

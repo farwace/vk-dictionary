@@ -1,14 +1,15 @@
 import type {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
-import type {GetLaunchParamsResponse} from "@vkontakte/vk-bridge";
-import type {TUser} from "@/classes/Pinia/UIStore/TUser";
+import type {GetLaunchParamsResponse, UserInfo} from "@vkontakte/vk-bridge";
+import type {TGetUserInfo, TUser} from "@/classes/Pinia/UIStore/TUser";
 import {injectable} from "inversify";
+import type {TWord} from "@/classes/Pinia/UIStore/TWord";
 import bridge from "@vkontakte/vk-bridge";
-import {TWord} from "@/classes/Pinia/UIStore/TWord";
+import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 
 @injectable()
 export class SystemActions implements ISystemActions{
-    //private API_URL:string = 'https://api.dictionary.total-black.ru/';
-    private API_URL:string = 'http://127.0.0.1:4001/api/';
+    private API_URL:string = 'https://api.dictionary.total-black.ru/';
+    //private API_URL:string = 'http://127.0.0.1:4001/api/';
 
     checkLaunchParams = async () => {
         const fetchResult = await this.sendQuery('launchParams', {}, 'POST');
@@ -17,12 +18,30 @@ export class SystemActions implements ISystemActions{
 
     getUserInfo = async (launchParams: GetLaunchParamsResponse): Promise<TUser | undefined> => {
         try {
-            const userInfo = await bridge.send('VKWebAppGetUserInfo', {user_id: launchParams.vk_user_id});
+            const userInfo = await bridge.send('VKWebAppGetUserInfo', {user_id: launchParams.vk_user_id}); //todo: вернуть!!!
+            //todo: убрать для теста
+            // const userInfo:UserInfo = {
+            //     first_name: 'Виталий',
+            //     last_name: 'Панфилов',
+            //     photo_100: 'https://sun150-2.userapi.com/s/v1/ig2/XWo-x21PL_JxvDM09fwi0HFV_SyYD3GCLDPHrfE5XFw-3Nvln9gQ7u3DQt4DH0YrerdYS2mOZsrC6Ftn1JD_lVuM.jpg?size=50x50&quality=95&crop=225,243,427,427&ava=1',
+            //     id: 73736329,
+            //     city: {
+            //         id: 1,
+            //         title: 'empty'
+            //     },
+            //     sex: 0,
+            //     country: {
+            //         id: 0,
+            //         title: 'RUssia'
+            //     },
+            //     photo_200: 'https://sun150-2.userapi.com/s/v1/ig2/XWo-x21PL_JxvDM09fwi0HFV_SyYD3GCLDPHrfE5XFw-3Nvln9gQ7u3DQt4DH0YrerdYS2mOZsrC6Ftn1JD_lVuM.jpg?size=50x50&quality=95&crop=225,243,427,427&ava=1',
+            // } //todo: убрать!!!
+
             const fetchResult = await this.sendQuery('getUserInfo', {
                 firstName: userInfo.first_name,
                 lastName: userInfo.last_name,
             }, 'POST');
-            const bUser = await fetchResult.json() as TUser;
+            const bUser = await fetchResult.json() as TGetUserInfo;
 
             return {
                 userId: userInfo.id,
@@ -33,6 +52,10 @@ export class SystemActions implements ISystemActions{
                 id: bUser.id,
                 experience: bUser.experience,
                 isNew: bUser.isNew,
+                lives: bUser.lives,
+                userLangId: bUser.userLangId,
+                displayTranscription: bUser.displayTranscription,
+                userLearnLangId: bUser.userLearnLangId,
             }
         }
         catch (e){
@@ -42,10 +65,11 @@ export class SystemActions implements ISystemActions{
 
     }
 
-    getWordsForTraining = async (langId: number, arCollections?: number[]) => {
+    getWordsForTraining = async (langId: number, originalLangId: number, arCollections?: number[]) => {
         try {
             const fetchResult = await this.sendQuery('training', {
                 langId: langId,
+                originalLangId: originalLangId,
                 arCollections: arCollections || [],
             });
             return await fetchResult.json();
@@ -55,10 +79,11 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    getCollections = async (langId: number) => {
+    getCollections = async (langId: number, originalLangId: number) => {
         try {
             const fetchResult = await this.sendQuery('collections', {
                 langId: langId,
+                originalLangId: originalLangId,
             });
             return await fetchResult.json();
         }
@@ -67,10 +92,11 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    createCollection = async (name: string, langId: number): Promise<any> => {
+    createCollection = async (name: string, langId: number, originalLangId: number): Promise<any> => {
         try {
             const fetchResult = await this.sendQuery('neoCollection', {
                 langId: langId,
+                originalLangId: originalLangId,
                 name: name,
             });
             return await fetchResult.json();
@@ -79,10 +105,11 @@ export class SystemActions implements ISystemActions{
             return [];
         }
     }
-    cloneCollection = async (collectionId: number): Promise<any> => {
+    cloneCollection = async (collectionId: number, originalLangId: number): Promise<any> => {
         try {
             const fetchResult = await this.sendQuery('cloneCollection', {
                 collectionId: collectionId,
+                originalLangId: originalLangId,
             });
             return await fetchResult.json();
         }
@@ -116,10 +143,11 @@ export class SystemActions implements ISystemActions{
     }
 
 
-    getSystemCollections = async (langId: number) => {
+    getSystemCollections = async (langId: number, originalLangId: number) => {
         try {
             const fetchResult = await this.sendQuery('systemCollections', {
                 langId: langId,
+                originalLangId: originalLangId,
             });
             return await fetchResult.json();
         }
@@ -152,13 +180,47 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    getLanguages = async (): Promise<any> => {
+    getLanguages = async (): Promise<TGetLang> => {
         try {
             const fetchResult = await this.sendQuery('getLanguages', {});
             return await fetchResult.json();
         }
         catch (e){
             return [];
+        }
+    }
+    setLanguage = async (langId: number, learnLangId: number):Promise<{result: 'ok' | 'error'}> => {
+        try {
+            try {
+                const fetchResult = await this.sendQuery('setLanguage', {
+                    langId: langId,
+                    learnLangId: learnLangId
+                });
+                return await fetchResult.json();
+            }
+            catch (e){
+                return {result: 'error'};
+            }
+        }
+        catch (e){
+            return {result: 'error'}
+        }
+    }
+
+    toggleTranscription = async (isEnabled: boolean): Promise<any> => {
+        try {
+            try {
+                const fetchResult = await this.sendQuery('toggleTranscription', {
+                    isEnabled: isEnabled
+                });
+                return await fetchResult.json();
+            }
+            catch (e){
+                return [];
+            }
+        }
+        catch (e){
+            return {}
         }
     }
 
@@ -182,5 +244,9 @@ export class SystemActions implements ISystemActions{
             'Content-Type': 'application/json',
             Authorization: `Bearer ${window.location.search.slice(1)}`
         }
+    }
+
+    timeout = async (ms:number) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

@@ -1,6 +1,7 @@
 import type {TUser} from "@/classes/Pinia/UIStore/TUser";
 import type {GetLaunchParamsResponse} from "@vkontakte/vk-bridge";
 import type {TWord} from "@/classes/Pinia/UIStore/TWord";
+import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 
 export interface ISystemActions{
     /** Проверяет параметры запуска, делает запрос на бэк чтобы пройти валидацию параметров */
@@ -8,15 +9,17 @@ export interface ISystemActions{
     /** получает инфу с вк о пользователе и делает запрос на бэк для обновления и получения доп инфы о пользователе */
     getUserInfo(launchParams: GetLaunchParamsResponse):Promise<TUser|undefined>,
     /** возвращает список слов для тренировки */
-    getWordsForTraining(langId: number, arCollectionIds: number[]):Promise<any[]>;
+    getWordsForTraining(langId: number, originalLangId: number, arCollectionIds: number[]):Promise<any[]>;
 
-    getCollections(langId: number):Promise<any>;
-    getSystemCollections(langId: number):Promise<any>;
-    createCollection(name: string, langId: number):Promise<any>;
-    cloneCollection(collectionId: number):Promise<any>;
+    getCollections(langId: number, originalLangId: number):Promise<any>;
+    getSystemCollections(langId: number, originalLangId: number):Promise<any>;
+    createCollection(name: string, langId: number, originalLangId: number):Promise<any>;
+    cloneCollection(collectionId: number, originalLangId: number):Promise<any>;
     getCollectionWords(collectionId: number):Promise<any>;
     addNeoWord(collectionId: number, neoWord: TWord):Promise<any>;
     updateWord(neoWord: TWord):Promise<any>;
     updateWordExperience(wordsExperience: { wordId: number; experience: number }[]):Promise<any>;
-    getLanguages():Promise<any>;
+    getLanguages():Promise<TGetLang>;
+    setLanguage(langId: number, learnLangId: number):Promise<{result: 'ok' | 'error'}>;
+    toggleTranscription(isEnabled: boolean):Promise<any>;
 }

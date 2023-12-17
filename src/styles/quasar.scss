@@ -1,3 +1,26 @@
 @import './quasar.variables.scss';
 @import '~quasar-styl';
 // @import '~quasar-addon-styl';
+
+
+.body--dark{
+  .header{
+    background-color: $dark;
+  }
+  a.link{
+    color: $white;
+  }
+
+  --swiper-scrollbar-drag-bg-color: rgb(105, 105, 105);
+}
+.body--light{
+  .header{
+    background-color: $light;
+  }
+  a.link{
+    color: $primary;
+  }
+  .q-card{
+    background-color: $light;
+  }
+}

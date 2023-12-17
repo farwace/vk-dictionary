@@ -2,14 +2,13 @@
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <FLoadingScreen v-if="AppIsLoading"/>
-      <MainPage v-else />
+      <AppPage v-else />
     </q-page-container>
   </q-layout>
 </template>
 
 <script lang="ts" setup>
 import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
-import MainPage from './components/MainPage.vue'
 import {useQuasar} from "quasar";
 import {computed, inject, onMounted, watch} from "vue";
 import {storeToRefs} from "pinia";
@@ -17,6 +16,7 @@ import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import FLoadingScreen from "@/components/common/FLoadingScreen.vue";
 import type {TranslateFunction} from "@/lang/TranslateFunction";
 import {useI18n} from "vue-i18n";
+import AppPage from "@/components/AppPage.vue";
 
 const $q = useQuasar();
 $q.dark.set('auto');
@@ -29,11 +29,23 @@ const {
     isReady,
     launchError,
     userQueryError,
-    user
+    user,
+    isLoading,
 } = storeToRefs(UIStore())
 
 const AppIsLoading = computed(() => {
   return !isReady.value;
+});
+
+watch(isLoading, (neoVal) => {
+  if(neoVal){
+    $q.loading.show({
+      delay: 1000
+    });
+  }
+  else{
+    $q.loading.hide();
+  }
 });
 
 watch((launchError), (neoVal) => {
@@ -93,7 +105,7 @@ watch(isReady, (neoVal) => {
       })
     }
   }
-})
+});
 
 onMounted(() => {
     if(launchError.value){

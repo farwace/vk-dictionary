@@ -9,6 +9,8 @@ export const UIStore = defineStore('UIStore', {
             launchParams: undefined,
             user: {},
             userQueryError: false,
+            availableLanguages: [],
+            isLoading: false,
         }
     }
 });
