@@ -8,7 +8,7 @@ import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 
 @injectable()
 export class SystemActions implements ISystemActions{
-    private API_URL:string = 'https://api.dictionary.total-black.ru/';
+    private API_URL:string = 'https://api.dictionary.total-black.ru/api/';
     //private API_URL:string = 'http://127.0.0.1:4001/api/';
 
     checkLaunchParams = async () => {
