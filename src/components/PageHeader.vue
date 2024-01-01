@@ -7,13 +7,13 @@
       </div>
     </div>
     <div class="user-lives" v-if="user.lives > 0">
-      <img src="@/assets/icons/icon-heart.webp">
+      <img src="/assets/img/icons/icon-heart.webp">
       <div class="user-lives__num">
         {{ user.lives }}
       </div>
     </div>
     <div class="user-lives no-lives" v-if="user.lives < 1">
-      <img src="@/assets/icons/icon-heart-broke.webp">
+      <img src="/assets/img/icons/icon-heart-broke.webp">
       <div class="user-lives__num">
         {{ livesTimer }}
       </div>

@@ -11,7 +11,7 @@
               {{ user.first_name }}
             </div>
             <div class="user-language" @click="callChangeLang" v-if="userLang.nameCode">
-              <img :src="require(`@/assets/languages/${userLang.nameCode}.webp`)">
+              <img :src="`/assets/img/languages/${userLang.nameCode}.webp`">
             </div>
           </div>
 

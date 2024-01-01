@@ -73,21 +73,21 @@ export class UIActions implements IUIActions{
 
     async queryLaunchParams(){
         try {
-            const launchParams = await bridge.send('VKWebAppGetLaunchParams');
+            //const launchParams = await bridge.send('VKWebAppGetLaunchParams');
             //todo: убрать для теста
-            // const launchParams: GetLaunchParamsResponse = {
-            //     vk_app_id: 51805937,
-            //     sign: '',
-            //     vk_language: EGetLaunchParamsResponseLanguages.RU,
-            //     vk_access_token_settings: '',
-            //     vk_are_notifications_enabled: 0,
-            //     vk_ts: 1,
-            //     vk_is_app_user: 1,
-            //     vk_ref: '',
-            //     vk_is_favorite: 1,
-            //     vk_user_id: 73736329,
-            //     vk_platform: EGetLaunchParamsResponsePlatforms.DESKTOP_WEB
-            // } //todo: убратЬ!!!!
+            const launchParams: GetLaunchParamsResponse = {
+                vk_app_id: 51805937,
+                sign: '',
+                vk_language: EGetLaunchParamsResponseLanguages.RU,
+                vk_access_token_settings: '',
+                vk_are_notifications_enabled: 0,
+                vk_ts: 1,
+                vk_is_app_user: 1,
+                vk_ref: '',
+                vk_is_favorite: 1,
+                vk_user_id: 73736329,
+                vk_platform: EGetLaunchParamsResponsePlatforms.DESKTOP_WEB
+            } //todo: убратЬ!!!!
             if(launchParams.vk_app_id){
                 this.UIStore.$patch({
                     launchParams: launchParams

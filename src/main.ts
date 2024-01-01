@@ -12,7 +12,7 @@ app.use(i18n);
 await doInstall.run(app);
 
 app.mount('#app');
-bridge.send('VKWebAppInit'); //todo: убрать для теста
+//bridge.send('VKWebAppInit'); //todo: убрать для теста
 
 
 /*TODO:

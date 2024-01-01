@@ -8,8 +8,9 @@ import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 
 @injectable()
 export class SystemActions implements ISystemActions{
-    private API_URL:string = 'https://api.dictionary.total-black.ru/api/';
+    //private API_URL:string = 'https://api.dictionary.total-black.ru/api/';
     //private API_URL:string = 'http://127.0.0.1:4001/api/';
+    private API_URL:string = 'http://192.168.0.155:4001/api/';//todo: вернуть
 
     checkLaunchParams = async () => {
         const fetchResult = await this.sendQuery('launchParams', {}, 'POST');
@@ -18,24 +19,24 @@ export class SystemActions implements ISystemActions{
 
     getUserInfo = async (launchParams: GetLaunchParamsResponse): Promise<TUser | undefined> => {
         try {
-            const userInfo = await bridge.send('VKWebAppGetUserInfo', {user_id: launchParams.vk_user_id}); //todo: вернуть!!!
+            //const userInfo = await bridge.send('VKWebAppGetUserInfo', {user_id: launchParams.vk_user_id}); //todo: вернуть!!!
             //todo: убрать для теста
-            // const userInfo:UserInfo = {
-            //     first_name: 'Виталий',
-            //     last_name: 'Панфилов',
-            //     photo_100: 'https://sun150-2.userapi.com/s/v1/ig2/XWo-x21PL_JxvDM09fwi0HFV_SyYD3GCLDPHrfE5XFw-3Nvln9gQ7u3DQt4DH0YrerdYS2mOZsrC6Ftn1JD_lVuM.jpg?size=50x50&quality=95&crop=225,243,427,427&ava=1',
-            //     id: 73736329,
-            //     city: {
-            //         id: 1,
-            //         title: 'empty'
-            //     },
-            //     sex: 0,
-            //     country: {
-            //         id: 0,
-            //         title: 'RUssia'
-            //     },
-            //     photo_200: 'https://sun150-2.userapi.com/s/v1/ig2/XWo-x21PL_JxvDM09fwi0HFV_SyYD3GCLDPHrfE5XFw-3Nvln9gQ7u3DQt4DH0YrerdYS2mOZsrC6Ftn1JD_lVuM.jpg?size=50x50&quality=95&crop=225,243,427,427&ava=1',
-            // } //todo: убрать!!!
+            const userInfo:UserInfo = {
+                first_name: 'Виталий',
+                last_name: 'Панфилов',
+                photo_100: 'https://sun150-2.userapi.com/s/v1/ig2/XWo-x21PL_JxvDM09fwi0HFV_SyYD3GCLDPHrfE5XFw-3Nvln9gQ7u3DQt4DH0YrerdYS2mOZsrC6Ftn1JD_lVuM.jpg?size=50x50&quality=95&crop=225,243,427,427&ava=1',
+                id: 73736329,
+                city: {
+                    id: 1,
+                    title: 'empty'
+                },
+                sex: 0,
+                country: {
+                    id: 0,
+                    title: 'RUssia'
+                },
+                photo_200: 'https://sun150-2.userapi.com/s/v1/ig2/XWo-x21PL_JxvDM09fwi0HFV_SyYD3GCLDPHrfE5XFw-3Nvln9gQ7u3DQt4DH0YrerdYS2mOZsrC6Ftn1JD_lVuM.jpg?size=50x50&quality=95&crop=225,243,427,427&ava=1',
+            } //todo: убрать!!!
 
             const fetchResult = await this.sendQuery('getUserInfo', {
                 firstName: userInfo.first_name,

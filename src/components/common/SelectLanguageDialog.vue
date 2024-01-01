@@ -14,7 +14,7 @@
           >
             <swiper-slide v-for="lang in availableLanguagesSorted">
               <div class="item-inner" @click="selectedLang=lang.id" :class="{selected:selectedLang==lang.id}">
-                <img :src="require(`@/assets/languages/${lang.nameCode}.webp`)" :alt="lang.nameCode">
+                <img :src="`/assets/img/languages/${lang.nameCode}.webp`" :alt="lang.nameCode">
               </div>
             </swiper-slide>
           </swiper>
@@ -31,7 +31,7 @@
           >
             <swiper-slide v-for="lang in availableLanguagesSorted">
               <div class="item-inner" @click="selectedLearnLang=lang.id" :class="{selected:selectedLearnLang==lang.id}">
-                <img :src="require(`@/assets/languages/${lang.nameCode}.webp`)" :alt="lang.nameCode">
+                <img :src="`/assets/img/languages/${lang.nameCode}.webp`" :alt="lang.nameCode">
               </div>
             </swiper-slide>
           </swiper>
