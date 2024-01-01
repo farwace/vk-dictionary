@@ -1,7 +1,10 @@
 <template>
   <div class="header__wrapper">
     <div class="user-info" @click="$emit('openUserSettings')">
-      <img :src="user.photo_100">
+      <div class="user-photo">
+        <img class="photo" :src="user.photo_100">
+        <img class="lang" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
+      </div>
       <div class="user-name">
         {{ user.first_name }}
       </div>
@@ -25,13 +28,20 @@
 
   import {storeToRefs} from "pinia";
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
-  import {ref} from "vue";
+  import {computed, ref} from "vue";
 
   const emits = defineEmits(['openUserSettings'])
 
-  const {user} = storeToRefs(UIStore());
+  const {user, availableLanguages} = storeToRefs(UIStore());
 
-  const livesTimer = ref<string>('24:07')
+  const livesTimer = ref<string>('24:07')//todo: таймер на сокетах???
+
+  const userLearnLang = computed(() => {
+    const userLang = availableLanguages.value.filter((lang) => {
+      return lang.id === user.value.userLearnLangId
+    })
+    return userLang[0] || {}
+  });
 
 </script>
 <style lang="scss" scoped>
@@ -51,16 +61,27 @@
         align-items: center;
         flex-basis: calc(100% - 118px);
         max-width: calc(100% - 118px);
-
-        img{
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          overflow: hidden;
-          object-fit: contain;
+        .user-photo{
           margin-right: 20px;
-          box-shadow: 0 0 5px rgba(0,0,0,.3);
+          position: relative;
+          img.photo{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            object-fit: contain;
+            box-shadow: 0 0 5px rgba(0,0,0,.3);
+          }
+          img.lang{
+            position: absolute;
+            right: -10px;
+            bottom: 5px;
+            width: 20px;
+            height: 15px;
+            object-fit: contain;
+          }
         }
+
       }
 
       .user-lives{

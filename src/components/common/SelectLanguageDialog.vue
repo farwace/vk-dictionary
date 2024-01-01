@@ -1,40 +1,44 @@
 <template>
-  <q-dialog ref="dialogRef" :no-backdrop-dismiss="true" :no-esc-dismiss="true">
+  <q-dialog ref="dialogRef">
     <q-card class="q-dialog-plugin">
       <div class="select-language">
-        <div class="select-language__title">
-          {{ t!('ChooseLanguageDialog.Title') }}
-        </div>
-        <div class="select-language__items">
-          <swiper style="--swiper-scrollbar-bottom: 0"
-            :scrollbar="{hide: true, draggable: true}"
-            space-between="20"
-            :modules="swiperModules"
-            slides-per-view="auto"
-          >
-            <swiper-slide v-for="lang in availableLanguagesSorted">
-              <div class="item-inner" @click="selectedLang=lang.id" :class="{selected:selectedLang==lang.id}">
-                <img :src="`/assets/img/languages/${lang.nameCode}.webp`" :alt="lang.nameCode">
-              </div>
-            </swiper-slide>
-          </swiper>
-        </div>
-        <div class="select-language__title">
-          {{ t!('ChooseLanguageDialog.WantLearn') }}
-        </div>
-        <div class="select-language__items no-margin">
-          <swiper style="--swiper-scrollbar-bottom: 0"
-                  :scrollbar="{hide: true, draggable: true}"
-                  space-between="20"
-                  :modules="swiperModules"
-                  slides-per-view="auto"
-          >
-            <swiper-slide v-for="lang in availableLanguagesSorted">
-              <div class="item-inner" @click="selectedLearnLang=lang.id" :class="{selected:selectedLearnLang==lang.id}">
-                <img :src="`/assets/img/languages/${lang.nameCode}.webp`" :alt="lang.nameCode">
-              </div>
-            </swiper-slide>
-          </swiper>
+        <div class="position-relative">
+          <q-icon class="close-icon" @click.prevent="onDialogCancel" name="mdi-window-close"/>
+
+          <div class="select-language__title">
+            {{ t!('ChooseLanguageDialog.Title') }}
+          </div>
+          <div class="select-language__items">
+            <swiper style="--swiper-scrollbar-bottom: 0"
+              :scrollbar="{hide: true, draggable: true}"
+              space-between="20"
+              :modules="swiperModules"
+              slides-per-view="auto"
+            >
+              <swiper-slide v-for="lang in availableLanguagesSorted">
+                <div class="item-inner" @click="selectedLang=lang.id" :class="{selected:selectedLang==lang.id}">
+                  <img :src="`/assets/img/languages/${lang.nameCode}.webp`" :alt="lang.nameCode">
+                </div>
+              </swiper-slide>
+            </swiper>
+          </div>
+          <div class="select-language__title">
+            {{ t!('ChooseLanguageDialog.WantLearn') }}
+          </div>
+          <div class="select-language__items no-margin">
+            <swiper style="--swiper-scrollbar-bottom: 0"
+                    :scrollbar="{hide: true, draggable: true}"
+                    space-between="20"
+                    :modules="swiperModules"
+                    slides-per-view="auto"
+            >
+              <swiper-slide v-for="lang in availableLanguagesSorted">
+                <div class="item-inner" @click="selectedLearnLang=lang.id" :class="{selected:selectedLearnLang==lang.id}">
+                  <img :src="`/assets/img/languages/${lang.nameCode}.webp`" :alt="lang.nameCode">
+                </div>
+              </swiper-slide>
+            </swiper>
+          </div>
         </div>
       </div>
       <q-card-actions align="right">
@@ -61,7 +65,7 @@
     ...useDialogPluginComponent.emits
   ]);
   const {t} = useI18n() as {t:TranslateFunction};
-  const { dialogRef, onDialogOK } = useDialogPluginComponent();
+  const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 
   const onOKClick = () => {
     // on OK, it is REQUIRED to
@@ -132,9 +136,6 @@
           border: 3px solid rgba(0,0,0,0);
           border-radius: 4px;
           cursor: pointer;
-          &.selected{
-            border-color: #efefef;
-          }
 
           img{
             object-fit: contain;

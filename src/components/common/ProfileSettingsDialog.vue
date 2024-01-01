@@ -2,33 +2,38 @@
   <q-dialog ref="dialogRef">
     <q-card class="q-dialog-plugin">
       <div class="profile-settings" :class="{loading: isLoading}">
-        <div class="profile-settings__title">
-          {{ t!('ProfileSettingsDialog.Title') }}
-        </div>
-        <div class="profile-settings__body">
-          <div class="user-info">
-            <div class="user-name">
-              {{ user.first_name }}
+        <div class="position-relative">
+          <q-icon class="close-icon" @click.prevent="onDialogCancel" name="mdi-window-close"/>
+          <div class="profile-settings__title">
+            {{ t!('ProfileSettingsDialog.Title') }}
+          </div>
+          <div class="profile-settings__body">
+            <div class="user-info">
+              <div class="user-name">
+                {{ user.first_name }}
+              </div>
+              <div class="user-language" @click="callChangeLang" v-if="userLang.nameCode">
+                <img :src="`/assets/img/languages/${userLang.nameCode}.webp`">
+                <q-icon name="mdi-arrow-right-thin"/>
+                <img :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
+              </div>
             </div>
-            <div class="user-language" @click="callChangeLang" v-if="userLang.nameCode">
-              <img :src="`/assets/img/languages/${userLang.nameCode}.webp`">
+
+            <div class="user-settings">
+              <q-toggle
+                  v-model="transcription"
+                  :label="t!('ProfileSettingsDialog.UseTranscription')"
+                  :disable="isLoading"
+              />
             </div>
-          </div>
 
-          <div class="user-settings">
-            <q-toggle
-                v-model="transcription"
-                :label="t!('ProfileSettingsDialog.UseTranscription')"
-                :disable="isLoading"
-            />
-          </div>
+            <div class="write-to-developer">
+              <a class="link" target="_blank" href="https://vk.com/write-79625925">
+                {{ t!('ProfileSettingsDialog.WriteDeveloper') }}
+              </a>
+            </div>
 
-          <div class="write-to-developer">
-            <a class="link" target="_blank" href="https://vk.com/write-79625925">
-              {{ t!('ProfileSettingsDialog.WriteDeveloper') }}
-            </a>
           </div>
-
         </div>
       </div>
     </q-card>
@@ -50,7 +55,7 @@
   ]);
 
   const {t} = useI18n() as {t:TranslateFunction};
-  const { dialogRef, onDialogOK } = useDialogPluginComponent();
+  const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 
   const {
     user,
@@ -79,6 +84,14 @@
     })
     return userLang[0] || {}
   });
+
+  const userLearnLang = computed(() => {
+    const userLang = availableLanguages.value.filter((lang) => {
+      return lang.id === user.value.userLearnLangId
+    })
+    return userLang[0] || {}
+  });
+
 
   watch(transcription, (neoVal) => {
     UI?.setTranscription(neoVal).then();

@@ -53,7 +53,7 @@
 
   const onAppIsReady = (data: TGetLang) => {
     if(user.value.isNew && Array.isArray(data) && data.length > 0){
-      toggleSelectLanguageDialog(data, true);
+      toggleSelectLanguageDialog(data);
     }
     else{
       loadCollections();

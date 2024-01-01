@@ -11,8 +11,21 @@
     color: $white;
   }
 
+  .select-language{
+    &__items{
+      .swiper-slide{
+        .item-inner{
+          &.selected{
+            border-color: #efefef;
+          }
+        }
+      }
+    }
+  }
+
   --swiper-scrollbar-drag-bg-color: rgb(105, 105, 105);
 }
+
 .body--light{
   .header{
     background-color: $light;
@@ -23,4 +36,28 @@
   .q-card{
     background-color: $light;
   }
+  .select-language{
+    &__items{
+      .swiper-slide{
+        .item-inner{
+          &.selected{
+            border-color: #b9b9b9;
+          }
+        }
+      }
+    }
+  }
+}
+
+.close-icon{
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  font-size: 1.2rem;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.position-relative{
+  position: relative;
 }
