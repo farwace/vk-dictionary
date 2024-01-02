@@ -3,6 +3,8 @@ import type {TAddToHomeScreenResultStatuses} from "@/classes/UI/Interfaces/TAddT
 import type {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
 import {EGetLaunchParamsResponseLanguages} from "@vkontakte/vk-bridge";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
+import {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
+import {TWords} from "@/classes/Pinia/UIStore/TWord";
 
 export interface IUIActions {
     install(app:App, successfulInitialize: boolean):void;
@@ -11,8 +13,13 @@ export interface IUIActions {
     getLanguage():EGetLaunchParamsResponseLanguages;
     showWelcomeSlides(slides:ShowSlidesSheetRequest):void;
 
+    setContentHeight(val:string):void;
     getApi():ISystemActions;
     setLanguage(languageId: number, learnLanguageId: number):Promise<void>;
     setTranscription(isEnabled:boolean):Promise<void>;
     loadCollections():Promise<any>;
+    createCollection(name: string, description: string):Promise<TCollection>
+    updateSystemCollections():Promise<TCollections>;
+    updateUserCollections():Promise<TCollections>;
+    getCollectionWords(collectionId:number):Promise<TWords>
 }

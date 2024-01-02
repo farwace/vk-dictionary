@@ -5,6 +5,7 @@ import {injectable} from "inversify";
 import type {TWord} from "@/classes/Pinia/UIStore/TWord";
 import bridge from "@vkontakte/vk-bridge";
 import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
+import {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
 
 @injectable()
 export class SystemActions implements ISystemActions{
@@ -80,7 +81,7 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    getCollections = async (langId: number, originalLangId: number) => {
+    getCollections = async (langId: number, originalLangId: number):Promise<TCollections> => {
         try {
             const fetchResult = await this.sendQuery('collections', {
                 langId: langId,
@@ -93,20 +94,21 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    createCollection = async (name: string, langId: number, originalLangId: number): Promise<any> => {
+    createCollection = async (name: string, langId: number, originalLangId: number, description = ''): Promise<TCollection> => {
         try {
             const fetchResult = await this.sendQuery('neoCollection', {
                 langId: langId,
                 originalLangId: originalLangId,
                 name: name,
+                description: description
             });
             return await fetchResult.json();
         }
         catch (e){
-            return [];
+            return {};
         }
     }
-    cloneCollection = async (collectionId: number, originalLangId: number): Promise<any> => {
+    cloneCollection = async (collectionId: number, originalLangId: number): Promise<TCollection> => {
         try {
             const fetchResult = await this.sendQuery('cloneCollection', {
                 collectionId: collectionId,
@@ -115,7 +117,7 @@ export class SystemActions implements ISystemActions{
             return await fetchResult.json();
         }
         catch (e){
-            return [];
+            return {};
         }
     }
     getCollectionWords = async (collectionId: number): Promise<any> => {
@@ -144,7 +146,7 @@ export class SystemActions implements ISystemActions{
     }
 
 
-    getSystemCollections = async (langId: number, originalLangId: number) => {
+    getSystemCollections = async (langId: number, originalLangId: number):Promise<TCollections> => {
         try {
             const fetchResult = await this.sendQuery('systemCollections', {
                 langId: langId,

@@ -13,24 +13,30 @@
                 {{ user.first_name }}
               </div>
               <div class="user-language" @click="callChangeLang" v-if="userLang.nameCode">
-                <img :src="`/assets/img/languages/${userLang.nameCode}.webp`">
+                <img v-if="userLang.nameCode" :src="`/assets/img/languages/${userLang.nameCode}.webp`">
                 <q-icon name="mdi-arrow-right-thin"/>
-                <img :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
+                <img v-if="userLearnLang.nameCode" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
               </div>
             </div>
 
             <div class="user-settings">
               <q-toggle
                   v-model="transcription"
-                  :label="t!('ProfileSettingsDialog.UseTranscription')"
+                  :label="t('ProfileSettingsDialog.UseTranscription')"
                   :disable="isLoading"
               />
+              <div class="q-mt-sm">
+                <a href="#" class="link" @click.prevent="" ><!-- todo: показывать слайды с инструкцией! -->
+                  {{ t!('ProfileSettingsDialog.ShowTutorial') }}
+                </a>
+              </div>
             </div>
-
             <div class="write-to-developer">
-              <a class="link" target="_blank" href="https://vk.com/write-79625925">
-                {{ t!('ProfileSettingsDialog.WriteDeveloper') }}
-              </a>
+              <div>
+                <a class="link" target="_blank" href="https://vk.com/write-79625925">
+                  {{ t!('ProfileSettingsDialog.WriteDeveloper') }}
+                </a>
+              </div>
             </div>
 
           </div>

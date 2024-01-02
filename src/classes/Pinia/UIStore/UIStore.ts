@@ -11,6 +11,10 @@ export const UIStore = defineStore('UIStore', {
             userQueryError: false,
             availableLanguages: [],
             isLoading: false,
+            collections: [],
+            systemCollections: [],
+            currentCollectionWords: [],
+            contentHeight: '',
         }
     }
 });

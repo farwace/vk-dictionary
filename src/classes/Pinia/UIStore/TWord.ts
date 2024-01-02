@@ -5,3 +5,4 @@ export type TWord = {
     collectionId: number;
     fileId?: number;
 };
+export type TWords = TWord[];

@@ -25,6 +25,31 @@
   "ProfileSettingsDialog": {
     "Title": "Настройки",
     "WriteDeveloper": "Написать разработчику",
+    "ShowTutorial": "Просмотреть инструкцию",
     "UseTranscription": "Использовать транскрипцию в словаре"
+  },
+  "HomePage": {
+    "NoHaveCollections": "Ваш словарик пока пуст.",
+    "UCanAddNewCollection": "Вы можете добавить свой набор слов",
+    "UCanAddFromSystemCollections": "или добавьте один из предложенных наборов",
+    "AddCollection":"Добавить набор слов",
+    "MyCollections": "Мои наборы слов"
+  },
+  "AddCollection": {
+    "Title": "Новый набор",
+    "LabelName": "Название",
+    "HintName": "Название набора слов",
+    "EmptyName": "Обязательно к заполнению",
+    "LabelDesc": "Описание",
+    "HintDesc": "Описание набора слов",
+    "LongDesc": "Слишком длинное описание (макс. 255 символов)",
+    "LongName": "Слишком длинное название (макс. 255 символов)",
+    "Save": "Сохранить",
+    "EmptyNameError": "Поле \"Название\" обязательно для заполнения"
+  },
+  "Common":{
+    "Errors": {
+      "UnknownError": "Произошла неизвестная ошибка. Попробуйте еще раз"
+    }
   }
 }

@@ -11,6 +11,7 @@ import bridge, {
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
+import {TWords} from "@/classes/Pinia/UIStore/TWord";
 
 @injectable()
 export class UIActions implements IUIActions{
@@ -40,8 +41,13 @@ export class UIActions implements IUIActions{
                         if(res){
                             this.UIStore.$patch({
                                 user: res,
-                                isReady: true,
-                            })
+                            });
+                            this.updateSystemCollections().then();
+                            this.updateUserCollections().then(() => {
+                                this.UIStore.$patch({
+                                    isReady: true,
+                                })
+                            });
                         }
                         else{
                             this.UIStore.$patch({userQueryError: true});
@@ -154,7 +160,23 @@ export class UIActions implements IUIActions{
         bridge.send('VKWebAppShowSlidesSheet', slides).then().catch(); //todo: вернуть
     }
 
+
+    setContentHeight(val: string) {
+        this.UIStore.$patch({
+            contentHeight: val
+        })
+    }
+
     async setLanguage(languageId: number, learnLanguageId: number) {
+
+        const oldUserLangId = this.UIStore?.user?.userLangId;
+        const oldUserLearnLangId = this.UIStore?.user?.userLearnLangId;
+
+        //ничего не меняли, ничего и не отправляем...
+        if(languageId == oldUserLangId && learnLanguageId == oldUserLearnLangId){
+            return;
+        }
+
         this.UIStore.$patch({
             isLoading: true,
         });
@@ -167,9 +189,86 @@ export class UIActions implements IUIActions{
                 user: user,
                 isLoading: false,
             });
+            this.updateSystemCollections().then();
+            this.updateUserCollections().then();
         }
         else{
             //todo: почему может не выставиться язык? что делать?
+        }
+    }
+
+    updateSystemCollections = async () => {
+        const userLang = this.UIStore.$state?.user?.userLangId;
+        const learnLang = this.UIStore.$state?.user?.userLearnLangId;
+        if(userLang && learnLang){
+            const systemCollections = await this.API.getSystemCollections(learnLang, userLang);
+            if(!!systemCollections.length){
+                console.log('>>> SYSTEM COLLECTIONS >>> ', systemCollections);
+
+                this.UIStore.$patch({
+                    systemCollections: systemCollections
+                });
+                return systemCollections;
+            }
+            else{
+                this.UIStore.$patch({
+                    systemCollections: []
+                });
+                return [];
+            }
+        }
+        else{
+            this.UIStore.$patch({
+                systemCollections: []
+            });
+            return [];
+        }
+    }
+
+    updateUserCollections = async () => {
+        const userLang = this.UIStore.$state?.user?.userLangId;
+        const learnLang = this.UIStore.$state?.user?.userLearnLangId;
+        if(userLang && learnLang){
+            const collections = await this.API.getCollections(learnLang, userLang);
+            if(!!collections.length){
+                console.log('>>> collections >>> ', collections);
+
+                this.UIStore.$patch({
+                    collections: collections
+                });
+                return collections;
+            }
+            else{
+                this.UIStore.$patch({
+                    collections: []
+                });
+                return [];
+            }
+        }
+        else{
+            this.UIStore.$patch({
+                collections: []
+            });
+            return [];
+        }
+
+    }
+
+    createCollection = async (name: string, description: string) => {
+        const userLang = this.UIStore.$state?.user?.userLangId;
+        const learnLang = this.UIStore.$state?.user?.userLearnLangId;
+        if(userLang && learnLang){
+            const neoCollection = await this.API.createCollection(name, learnLang, userLang, description);
+            if(neoCollection.id){
+                this.UIStore.$patch((state) => {
+                    state.collections.push(neoCollection);
+                });
+                return neoCollection;
+            }
+            return {};
+        }
+        else{
+            return {};
         }
     }
 
@@ -189,6 +288,18 @@ export class UIActions implements IUIActions{
         else{
             //todo: почему может не выставиться праметр?
         }
+    }
+
+    getCollectionWords = async (collectionId:number):Promise<TWords> => {
+        this.UIStore.$patch({
+            currentCollectionWords: [],
+        })
+        const collectionWords = await this.API.getCollectionWords(collectionId) || [];
+        console.log('>>> COLLECTION WORDS', collectionWords);
+        this.UIStore.$patch({
+            currentCollectionWords: collectionWords
+        })
+        return collectionWords;
     }
 
     loadCollections = async () => {

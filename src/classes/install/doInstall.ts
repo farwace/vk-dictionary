@@ -9,6 +9,11 @@ import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import {UIActions} from "@/classes/UI/UIActions";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {SystemActions} from "@/classes/System/SystemActions";
+import {createRouter, createWebHistory} from "vue-router";
+
+import HomePage from "@/components/Pages/HomePage.vue";
+import CollectionDetail from "@/components/Pages/CollectionDetail.vue";
+import WordTranslation from "@/components/Pages/Trainings/WordTranslation.vue";
 //import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
@@ -16,7 +21,7 @@ export class doInstall{
     public static run = async (app: App)=> {
         app.use(Quasar, quasarUserOptions);
         app.use(createPinia());
-
+        doInstall.addRoutes(app);
         const container = new Container();
         container.bind<IUserActionsInterface>('UserActions').to(UserActions);
         container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
@@ -31,5 +36,20 @@ export class doInstall{
         catch (e){
 
         }
+    }
+
+    private static addRoutes = (app: App) => {
+        const routes = [
+            {name: 'home', path: '/', component: HomePage},
+            {name: 'collection', path: '/collection/:id', component: CollectionDetail},
+            {name: 'trainingWordTranslation', path: '/training/word-translation', component: WordTranslation},
+        ];
+
+        const router = createRouter({
+            history: createWebHistory(),
+            routes,
+        });
+
+        app.use(router);
     }
 }

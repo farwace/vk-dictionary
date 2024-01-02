@@ -5,19 +5,25 @@
         <div class="header">
           <page-header @open-user-settings="openUserSettings"></page-header>
         </div>
-        <div class="content">
-          <MainPage></MainPage>
-        </div>
-      </div>
-      <div class="footer">
-        <page-footer></page-footer>
+
+          <div class="content" ref="content">
+            <router-view v-slot="{Component}">
+              <transition
+                  appear
+                  enter-active-class="animated fadeInLeft"
+                  leave-active-class="animated fadeOutLeft"
+              >
+                <component :is="Component"></component>
+              </transition>
+            </router-view>
+
+          </div>
       </div>
     </div>
   </q-page>
 </template>
 
 <script lang="ts" setup>
-  import MainPage from "@/components/MainPage.vue";
   import {inject, onMounted, ref, watch} from "vue";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {storeToRefs} from "pinia";
@@ -27,7 +33,6 @@
   import type {TranslateFunction} from "@/lang/TranslateFunction";
   import SelectLanguageDialog from "@/components/common/SelectLanguageDialog.vue";
   import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
-  import PageFooter from "@/components/PageFooter.vue";
   import PageHeader from "@/components/PageHeader.vue";
   import ProfileSettingsDialog from "@/components/common/ProfileSettingsDialog.vue";
 
@@ -39,13 +44,35 @@
 
   const { user, availableLanguages } = storeToRefs(UIStore())
 
+  const content = ref<HTMLDivElement>();
+
+  const resizeTimeout = ref<number>();
+
   onMounted(() => {
+
+    writeContentHeight();
+    window.addEventListener("resize", () => {
+      if(resizeTimeout.value){
+        clearTimeout(resizeTimeout.value);
+      }
+      resizeTimeout.value = setTimeout(() => {
+        writeContentHeight();
+      }, 200)
+    });
+
     // API.getLanguages().then((res) => {
     //   console.log('>>> LANGUAGES', res);
     // });
     //
 
   });
+
+  const writeContentHeight = () => {
+    const rect = content.value?.getBoundingClientRect();
+    if(rect){
+      UI?.setContentHeight('max-height: ' + rect.height + 'px; max-width: '+rect.width+'px;');
+    }
+  }
 
   watch(availableLanguages, (neoVal) => {
     onAppIsReady(neoVal);
@@ -109,14 +136,20 @@
     .header{
       position: sticky;
       top: 0;
-      height: 60px;
+      height: 65px;
       padding: 10px 20px;
+      flex-shrink: 0;
+      z-index: 20;
     }
     .wrapper{
       flex-grow: 1;
-
+      display: flex;
+      flex-direction: column;
       .content{
-        padding-top: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
       }
     }
     .footer{

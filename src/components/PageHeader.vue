@@ -3,19 +3,19 @@
     <div class="user-info" @click="$emit('openUserSettings')">
       <div class="user-photo">
         <img class="photo" :src="user.photo_100">
-        <img class="lang" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
+        <img v-if="userLearnLang.nameCode" class="lang" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
       </div>
       <div class="user-name">
         {{ user.first_name }}
       </div>
     </div>
-    <div class="user-lives" v-if="user.lives > 0">
+    <div class="user-lives" v-if="(user.lives || 0) > 0">
       <img src="/assets/img/icons/icon-heart.webp">
       <div class="user-lives__num">
         {{ user.lives }}
       </div>
     </div>
-    <div class="user-lives no-lives" v-if="user.lives < 1">
+    <div class="user-lives no-lives" v-if="(user.lives || 0) < 1">
       <img src="/assets/img/icons/icon-heart-broke.webp">
       <div class="user-lives__num">
         {{ livesTimer }}
