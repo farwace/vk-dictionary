@@ -11,7 +11,7 @@ import bridge, {
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
-import {TWords} from "@/classes/Pinia/UIStore/TWord";
+import {TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
 
 @injectable()
 export class UIActions implements IUIActions{
@@ -300,6 +300,66 @@ export class UIActions implements IUIActions{
             currentCollectionWords: collectionWords
         })
         return collectionWords;
+    }
+
+    addWordToCollection = async (neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord> => {
+        const neoWordRes = await this.API.addNeoWord({
+            word: neoWord,
+            transcription: neoTranscription,
+            foreignWord: neoForeignWord,
+            collectionId: collectionId
+        });
+        const addedWord:TWord = {
+            id: neoWordRes.id,
+            collectionId: neoWordRes.collectionId,
+            word: neoWordRes.word,
+            foreignWord: neoWordRes.foreignWord,
+            transcription: neoWordRes.transcription,
+        }
+        this.UIStore.$patch((state) => {
+            if(!state.currentCollectionWords){
+                state.currentCollectionWords = [];
+            }
+            state.currentCollectionWords.splice(0,0,addedWord);
+        })
+        return neoWordRes;
+    }
+
+    removeWord = async (wordId: number) => {
+        const removeWordResult = await this.API.removeWord(wordId);
+        const isOk = removeWordResult == 'OK';
+        if(isOk){
+            this.UIStore.$patch((state) => {
+                if(state.currentCollectionWords){
+                    state.currentCollectionWords = state.currentCollectionWords.filter((word) => {
+                        return word.id != wordId;
+                    })
+                }
+            })
+        }
+
+        return isOk;
+    }
+
+    updateWord = async(word: TWord) => {
+        const updateRes = await this.API.updateWord(word);
+        const isOk = updateRes === 'OK';
+        if(isOk){
+            this.UIStore.$patch((state) => {
+                if(state.currentCollectionWords){
+                    state.currentCollectionWords = state.currentCollectionWords.map((stateWord) => {
+                        if(word.id && word.id == stateWord.id){
+                            stateWord.word = word.word;
+                            stateWord.transcription = word.transcription;
+                            stateWord.foreignWord = word.foreignWord;
+                        }
+                        return stateWord;
+                    })
+                }
+            })
+
+        }
+        return isOk;
     }
 
     loadCollections = async () => {

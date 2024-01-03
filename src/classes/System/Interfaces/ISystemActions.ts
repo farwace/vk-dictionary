@@ -17,10 +17,11 @@ export interface ISystemActions{
     createCollection(name: string, langId: number, originalLangId: number, description:string):Promise<TCollection>;
     cloneCollection(collectionId: number, originalLangId: number):Promise<TCollection>;
     getCollectionWords(collectionId: number):Promise<any>;
-    addNeoWord(collectionId: number, neoWord: TWord):Promise<any>;
+    addNeoWord(neoWord: TWord):Promise<any>;
     updateWord(neoWord: TWord):Promise<any>;
     updateWordExperience(wordsExperience: { wordId: number; experience: number }[]):Promise<any>;
     getLanguages():Promise<TGetLang>;
     setLanguage(langId: number, learnLangId: number):Promise<{result: 'ok' | 'error'}>;
     toggleTranscription(isEnabled: boolean):Promise<any>;
+    removeWord(wordId:number):Promise<string>;
 }

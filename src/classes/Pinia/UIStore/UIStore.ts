@@ -13,7 +13,7 @@ export const UIStore = defineStore('UIStore', {
             isLoading: false,
             collections: [],
             systemCollections: [],
-            currentCollectionWords: [],
+            currentCollectionWords: undefined,
             contentHeight: '',
         }
     }

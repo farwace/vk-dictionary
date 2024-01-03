@@ -4,7 +4,7 @@ import type {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/t
 import {EGetLaunchParamsResponseLanguages} from "@vkontakte/vk-bridge";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
-import {TWords} from "@/classes/Pinia/UIStore/TWord";
+import {TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
 
 export interface IUIActions {
     install(app:App, successfulInitialize: boolean):void;
@@ -22,4 +22,7 @@ export interface IUIActions {
     updateSystemCollections():Promise<TCollections>;
     updateUserCollections():Promise<TCollections>;
     getCollectionWords(collectionId:number):Promise<TWords>
+    addWordToCollection(neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord>;
+    removeWord(wordId:number):Promise<boolean>;
+    updateWord(word: TWord):Promise<boolean>;
 }

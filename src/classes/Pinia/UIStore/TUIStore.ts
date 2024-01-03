@@ -2,7 +2,7 @@ import type {GetLaunchParamsResponse} from "@vkontakte/vk-bridge";
 import type {TUser} from "@/classes/Pinia/UIStore/TUser";
 import type {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 import type {TCollections} from "@/classes/Pinia/UIStore/TCollection";
-import type {TWords} from "@/classes/Pinia/UIStore/TWord";
+import type {TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
 
 export type TUIStore = {
     isReady: boolean,
@@ -14,6 +14,6 @@ export type TUIStore = {
     isLoading: boolean,
     collections: TCollections,
     systemCollections: TCollections,
-    currentCollectionWords:TWords[],
+    currentCollectionWords?:TWord[],
     contentHeight:string,
 }

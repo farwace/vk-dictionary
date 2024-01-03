@@ -4,5 +4,6 @@ export type TWord = {
     foreignWord: string;
     collectionId: number;
     fileId?: number;
+    transcription?:string;
 };
 export type TWords = TWord[];

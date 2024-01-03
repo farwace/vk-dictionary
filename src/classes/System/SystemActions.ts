@@ -132,11 +132,11 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    addNeoWord = async (collectionId: number, neoWord: TWord): Promise<any> => {
+    addNeoWord = async (neoWord: TWord): Promise<any> => {
         try {
             const fetchResult = await this.sendQuery('neoWord', {
-                collectionId: collectionId,
-                word: neoWord
+                collectionId: neoWord.collectionId,
+                neoWord: neoWord
             });
             return await fetchResult.json();
         }
@@ -164,7 +164,7 @@ export class SystemActions implements ISystemActions{
             const fetchResult = await this.sendQuery('updateWord', {
                 neoWord: word
             });
-            return await fetchResult.json();
+            return await fetchResult.text();
         }
         catch (e){
             return {};
@@ -212,18 +212,25 @@ export class SystemActions implements ISystemActions{
 
     toggleTranscription = async (isEnabled: boolean): Promise<any> => {
         try {
-            try {
-                const fetchResult = await this.sendQuery('toggleTranscription', {
-                    isEnabled: isEnabled
-                });
-                return await fetchResult.json();
-            }
-            catch (e){
-                return [];
-            }
+            const fetchResult = await this.sendQuery('toggleTranscription', {
+                isEnabled: isEnabled
+            });
+            return await fetchResult.json();
         }
         catch (e){
-            return {}
+            return [];
+        }
+    }
+
+    removeWord = async (wordId: number):Promise<string> => {
+        try {
+            const fetchResult = await this.sendQuery('removeWord', {
+                id:wordId
+            });
+            return await fetchResult.text();
+        }
+        catch (e){
+            return '';
         }
     }
 
