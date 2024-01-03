@@ -12,6 +12,7 @@ import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
 import {TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
+import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
 
 @injectable()
 export class UIActions implements IUIActions{
@@ -231,7 +232,6 @@ export class UIActions implements IUIActions{
         if(userLang && learnLang){
             const collections = await this.API.getCollections(learnLang, userLang);
             if(!!collections.length){
-                console.log('>>> collections >>> ', collections);
 
                 this.UIStore.$patch({
                     collections: collections
@@ -272,6 +272,38 @@ export class UIActions implements IUIActions{
         }
     }
 
+    updateCollection = async (collection:TCollection):Promise<boolean> => {
+        const updateCollectionRes = await this.API.updateCollection(collection);
+        const isOk = updateCollectionRes == 'OK';
+        if(isOk){
+            this.UIStore.$patch(state => {
+                state.collections.map((stateCollection) => {
+                    if(collection.id && stateCollection.id == collection.id){
+                        stateCollection.name = collection.name;
+                        stateCollection.description = collection.description;
+                    }
+                    return stateCollection;
+                })
+            })
+        }
+        return isOk;
+    }
+
+    removeCollection = async (collectionId:number):Promise<boolean> => {
+        const removeCollectionRes = await this.API.removeCollection(collectionId);
+        const isOk = removeCollectionRes == 'OK';
+        if(isOk){
+            this.UIStore.$patch(state => {
+                state.collections = state.collections.filter((stateCollection) => {
+                    return stateCollection.id != collectionId;
+                })
+            })
+        }
+        return isOk;
+    }
+
+
+
     async setTranscription(neoVal: boolean) {
         this.UIStore.$patch({
             isLoading: true,
@@ -295,7 +327,7 @@ export class UIActions implements IUIActions{
             currentCollectionWords: [],
         })
         const collectionWords = await this.API.getCollectionWords(collectionId) || [];
-        console.log('>>> COLLECTION WORDS', collectionWords);
+
         this.UIStore.$patch({
             currentCollectionWords: collectionWords
         })

@@ -167,7 +167,7 @@ export class SystemActions implements ISystemActions{
             return await fetchResult.text();
         }
         catch (e){
-            return {};
+            return '';
         }
     }
 
@@ -226,6 +226,34 @@ export class SystemActions implements ISystemActions{
         try {
             const fetchResult = await this.sendQuery('removeWord', {
                 id:wordId
+            });
+            return await fetchResult.text();
+        }
+        catch (e){
+            return '';
+        }
+    }
+
+    updateCollection = async(collection:TCollection):Promise<string> => {
+        try {
+            const fetchResult = await this.sendQuery('updateCollection', {
+                neoCollection: {
+                    name: collection.name,
+                    id: collection.id,
+                    description: collection.description
+                }
+            });
+            return await fetchResult.text();
+        }
+        catch (e){
+            return '';
+        }
+    }
+
+    removeCollection = async(collectionId:number):Promise<string> => {
+        try {
+            const fetchResult = await this.sendQuery('removeCollection', {
+                id: collectionId
             });
             return await fetchResult.text();
         }

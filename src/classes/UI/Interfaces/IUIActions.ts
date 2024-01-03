@@ -25,4 +25,6 @@ export interface IUIActions {
     addWordToCollection(neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord>;
     removeWord(wordId:number):Promise<boolean>;
     updateWord(word: TWord):Promise<boolean>;
+    updateCollection(collection:TCollection):Promise<boolean>;
+    removeCollection(collectionId:number):Promise<boolean>;
 }
