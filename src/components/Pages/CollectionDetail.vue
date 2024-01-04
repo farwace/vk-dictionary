@@ -209,6 +209,7 @@
     currentCollectionWords,
     user,
     collections,
+    appliedCollection
   } = storeToRefs(UIStore());
 
   const sadAnimal = ref<string>('');
@@ -338,6 +339,15 @@
     }
 
     sadAnimal.value = getRandomSadPicture();
+
+    if(appliedCollection.value > 0 && currentCollection.value?.id == appliedCollection.value){
+      $q.dialog({
+        title: t('Collection.SomeOneShareCollection'),
+        message: t('Collection.CollectionHasBeenAdded'),
+        cancel: false
+      });
+      UI?.clearSharedId();
+    }
   })
 
 

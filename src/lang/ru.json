@@ -72,6 +72,8 @@
     "Remove": "Удалить",
     "ConfirmRemove": "Вы действительно хотите удалить набор слов?",
     "ConfirmRemoveText": "Набор слов удалится и восстановить его будет нельзя",
-    "AddToMyCollections": "Добавить в мои наборы"
+    "AddToMyCollections": "Добавить в мои наборы",
+    "SomeOneShareCollection": "С Вами поделились набором слов",
+    "CollectionHasBeenAdded": "Этот набор добавлен в список Ваших наборов"
   }
 }

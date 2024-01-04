@@ -45,9 +45,45 @@ export class UIActions implements IUIActions{
                             });
                             this.updateSystemCollections().then();
                             this.updateUserCollections().then(() => {
-                                this.UIStore.$patch({
-                                    isReady: true,
-                                })
+
+                                const currentHash = window.location.hash;
+                                const cloneCollectionRegex = /collection-\d+/;
+                                const match = currentHash.match(cloneCollectionRegex);
+
+                                if(match){
+                                    const tryingCloneId = match[0].replace('collection-', '');
+                                    const arAddedCollections = this.UIStore.$state.collections.filter((collection) => {
+                                        return collection.originalId == parseInt(tryingCloneId) || collection.id == parseInt(tryingCloneId);
+                                    });
+
+                                    if(arAddedCollections.length < 1){
+                                        this.cloneCollection(parseInt(tryingCloneId)).then((res) => {
+                                            if(res.id){
+                                                this.UIStore.$patch((state) => {
+                                                    state.collections.unshift(res);
+                                                    state.isReady = true;
+                                                    state.appliedCollection = res.id as number;
+                                                });
+
+                                            }
+                                        }).catch((e) => {
+                                            this.UIStore.$patch({
+                                                isReady: true,
+                                            });
+                                        })
+                                    }
+                                    else{
+                                        this.UIStore.$patch({
+                                            isReady: true,
+                                        });
+                                    }
+                                }
+                                else{
+                                    this.UIStore.$patch({
+                                        isReady: true,
+                                    })
+                                }
+
                             });
                         }
                         else{
@@ -71,7 +107,11 @@ export class UIActions implements IUIActions{
             this.setInitializeError();
         }
     }
-
+    clearSharedId(){
+        this.UIStore.$patch({
+            appliedCollection: 0
+        });
+    }
     setInitializeError(){
         this.UIStore.$patch({
             launchError: true

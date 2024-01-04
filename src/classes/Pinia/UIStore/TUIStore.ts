@@ -17,4 +17,5 @@ export type TUIStore = {
     currentCollectionWords?:TWord[],
     contentHeight:string,
     Authorization: string,
+    appliedCollection:number,
 }

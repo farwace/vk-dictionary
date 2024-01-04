@@ -16,6 +16,7 @@ export const UIStore = defineStore('UIStore', {
             currentCollectionWords: undefined,
             contentHeight: '',
             Authorization: '',
+            appliedCollection: 0,
         }
     }
 });

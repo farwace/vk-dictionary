@@ -35,6 +35,7 @@
   import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
   import PageHeader from "@/components/PageHeader.vue";
   import ProfileSettingsDialog from "@/components/common/ProfileSettingsDialog.vue";
+  import {useRouter} from "vue-router";
 
   const UI = inject<IUIActions>('UI');
   const API = UI!.getApi()!;
@@ -42,11 +43,13 @@
   const $q = useQuasar();
   const {t} = useI18n() as {t:TranslateFunction};
 
-  const { user, availableLanguages } = storeToRefs(UIStore())
+  const { user, availableLanguages, appliedCollection } = storeToRefs(UIStore())
 
   const content = ref<HTMLDivElement>();
 
   const resizeTimeout = ref<number>();
+
+  const router = useRouter();
 
   onMounted(() => {
 
@@ -59,6 +62,7 @@
         writeContentHeight();
       }, 200)
     });
+    tryOpenAppliedCollection(appliedCollection.value)
 
     // API.getLanguages().then((res) => {
     //   console.log('>>> LANGUAGES', res);
@@ -66,6 +70,25 @@
     //
 
   });
+
+
+  watch(appliedCollection, (neoVal) => {
+    if(neoVal > 0){
+      tryOpenAppliedCollection(neoVal);
+    }
+  })
+
+  const tryOpenAppliedCollection = (collectionId: number) => {
+    if(collectionId < 1){
+      return;
+    }
+    router.push({
+      name: 'collection',
+      params: {
+        id: collectionId
+      }
+    })
+  }
 
   const writeContentHeight = () => {
     const rect = content.value?.getBoundingClientRect();

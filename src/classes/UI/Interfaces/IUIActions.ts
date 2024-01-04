@@ -30,4 +30,5 @@ export interface IUIActions {
     updateCollection(collection:TCollection):Promise<boolean>;
     removeCollection(collectionId:number):Promise<boolean>;
     share(hash?: string):Promise<boolean>;
+    clearSharedId():void;
 }
