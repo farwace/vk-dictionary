@@ -334,6 +334,14 @@ export class UIActions implements IUIActions{
         return collectionWords;
     }
 
+    getSystemCollectionWords = async(collectionId: number):Promise<TWords> => {
+        return await this.API.getCollectionWords(collectionId) || [];
+    }
+
+    cloneCollection = async (collectionId: number):Promise<TCollection> => {
+        return await this.API.cloneCollection(collectionId);
+    }
+
     addWordToCollection = async (neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord> => {
         const neoWordRes = await this.API.addNeoWord({
             word: neoWord,

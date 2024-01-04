@@ -9,9 +9,6 @@
           </div>
           <div class="profile-settings__body">
             <div class="user-info">
-              <div class="user-name">
-                {{ user.first_name }}
-              </div>
               <div class="user-language" @click="callChangeLang" v-if="userLang.nameCode">
                 <img v-if="userLang.nameCode" :src="`/assets/img/languages/${userLang.nameCode}.webp`">
                 <q-icon name="mdi-arrow-right-thin"/>
@@ -26,7 +23,7 @@
                   :disable="isLoading"
               />
               <div class="q-mt-sm">
-                <a href="#" class="link" @click.prevent="" ><!-- todo: показывать слайды с инструкцией! -->
+                <a href="#" class="link" @click.prevent="router.push({name: 'faq'})" >
                   {{ t!('ProfileSettingsDialog.ShowTutorial') }}
                 </a>
               </div>
@@ -55,6 +52,7 @@
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
   import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  import {useRouter} from "vue-router";
 
   defineEmits([
     ...useDialogPluginComponent.emits,
@@ -62,7 +60,7 @@
 
   const {t} = useI18n() as {t:TranslateFunction};
   const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
-
+  const router = useRouter();
   const {
     user,
     availableLanguages,

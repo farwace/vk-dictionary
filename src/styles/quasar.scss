@@ -2,7 +2,9 @@
 @import '~quasar-styl';
 // @import '~quasar-addon-styl';
 
-
+.q-layout{
+  width: 100vw;
+}
 .body--dark{
   --q-negative: #ff6d7d;
 
@@ -47,8 +49,19 @@
     }
   }
 
+  .collections__slider{
+    .item{
+      box-shadow: 0 0 20px rgba(44, 44, 44, 0.2);
+    }
+  }
+  --swiper-pagination-color: rgb(255,255,255);
+  --swiper-pagination-bullet-inactive-color: rgb(133, 133, 133);
   --swiper-scrollbar-drag-bg-color: rgb(105, 105, 105);
+
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
 }
+
 
 .body--light{
   .header{
@@ -93,6 +106,14 @@
     }
   }
 
+  .collections__slider{
+    .item{
+      box-shadow: 0 0 20px rgba(211, 211, 211, 0.3);
+    }
+  }
+
+  --swiper-pagination-bullet-width: 10px;
+  --swiper-pagination-bullet-height: 10px;
 }
 
 .close-icon{
@@ -127,4 +148,11 @@
     object-fit: contain;
   }
 
+}
+
+.interface-btn{
+  font-size: 1.7rem;
+  display: inline-block;
+  padding: 0 6px;
+  cursor: pointer;
 }

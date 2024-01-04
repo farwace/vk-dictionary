@@ -15,7 +15,7 @@ export interface ISystemActions{
     getCollections(langId: number, originalLangId: number):Promise<TCollections>;
     getSystemCollections(langId: number, originalLangId: number):Promise<TCollections>;
     createCollection(name: string, langId: number, originalLangId: number, description:string):Promise<TCollection>;
-    cloneCollection(collectionId: number, originalLangId: number):Promise<TCollection>;
+    cloneCollection(collectionId: number):Promise<TCollection>;
     getCollectionWords(collectionId: number):Promise<any>;
     addNeoWord(neoWord: TWord):Promise<any>;
     updateWord(neoWord: TWord):Promise<string>;

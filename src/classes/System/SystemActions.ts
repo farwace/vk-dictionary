@@ -108,11 +108,10 @@ export class SystemActions implements ISystemActions{
             return {};
         }
     }
-    cloneCollection = async (collectionId: number, originalLangId: number): Promise<TCollection> => {
+    cloneCollection = async (collectionId: number): Promise<TCollection> => {
         try {
             const fetchResult = await this.sendQuery('cloneCollection', {
                 collectionId: collectionId,
-                originalLangId: originalLangId,
             });
             return await fetchResult.json();
         }

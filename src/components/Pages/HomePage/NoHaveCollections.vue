@@ -12,8 +12,8 @@
           <a href="#" @click.prevent="$emit('add-collection')">
             {{ t!('HomePage.UCanAddNewCollection') }}
           </a>
-        </span>
-      <span v-if="systemCollections.length > 0">
+        </span><br/>
+        <span v-if="systemCollections.length > 0">
           {{ t!('HomePage.UCanAddFromSystemCollections') }}
         </span>
     </div>

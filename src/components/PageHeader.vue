@@ -1,24 +1,42 @@
 <template>
   <div class="header__wrapper">
-    <div class="user-info" @click="$emit('openUserSettings')">
-      <div class="user-photo">
-        <img class="photo" :src="user.photo_100">
-        <img v-if="userLearnLang.nameCode" class="lang" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
-      </div>
-      <div class="user-name">
-        {{ user.first_name }}
+
+    <div class="left-side">
+      <div v-if="route.name != 'home'" class="q-mr-sm interface-btn" @click="router.push({name:'home'})">
+        <q-icon name="mdi-arrow-left"/>
       </div>
     </div>
-    <div class="user-lives" v-if="(user.lives || 0) > 0">
-      <img src="/assets/img/icons/icon-heart.webp">
-      <div class="user-lives__num">
-        {{ user.lives }}
+
+    <div class="middle-side">
+      <div class="user-info" @click="$emit('openUserSettings')">
+        <div class="user-photo">
+          <img class="photo" :src="user.photo_100">
+          <img v-if="userLearnLang.nameCode" class="lang" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
+        </div>
       </div>
     </div>
-    <div class="user-lives no-lives" v-if="(user.lives || 0) < 1">
-      <img src="/assets/img/icons/icon-heart-broke.webp">
-      <div class="user-lives__num">
-        {{ livesTimer }}
+
+    <div class="right-side">
+      <div v-if="route.name == 'home'">
+        <div class="user-lives" v-if="(user.lives || 0) > 0">
+          <img src="/assets/img/icons/icon-heart.webp">
+          <div class="user-lives__num">
+            {{ user.lives }}
+          </div>
+        </div>
+        <div class="user-lives no-lives" v-if="(user.lives || 0) < 1">
+          <img src="/assets/img/icons/icon-heart-broke.webp">
+          <div class="user-lives__num">
+            {{ livesTimer }}
+          </div>
+        </div>
+      </div>
+      <div v-if="route.name=='collection'">
+        <div class="share">
+          <div @click="doShareAction" class="interface-btn">
+            <q-icon name="mdi-share-variant-outline"></q-icon>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -29,8 +47,11 @@
   import {storeToRefs} from "pinia";
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
   import {computed, ref} from "vue";
+  import {useRoute, useRouter} from "vue-router";
 
   const emits = defineEmits(['openUserSettings'])
+  const route = useRoute();
+  const router = useRouter();
 
   const {user, availableLanguages} = storeToRefs(UIStore());
 
@@ -43,26 +64,41 @@
     return userLang[0] || {}
   });
 
+  const doShareAction = () => {
+    alert('coming soonn');
+    //todo: сделать поделиться ссылкой
+  }
+
+
 </script>
 <style lang="scss" scoped>
   .header{
     &__wrapper{
       font-size: 1.2rem;
 
-      display: flex;
-      flex-wrap: nowrap;
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr;
       gap: 20px;
-      justify-content: space-between;
 
+      .left-side{
+        display: flex;
+        align-items: center;
+      }
+
+      .middle-side{
+        text-align: center;
+      }
+
+      .right-side{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+      }
 
       .user-info{
         cursor: pointer;
-        display: flex;
-        align-items: center;
-        flex-basis: calc(100% - 118px);
-        max-width: calc(100% - 118px);
+
         .user-photo{
-          margin-right: 20px;
           position: relative;
           img.photo{
             width: 40px;
@@ -88,6 +124,7 @@
         display: flex;
         flex-wrap: nowrap;
         align-items: center;
+        justify-content: flex-end;
         img{
           width: 40px;
           height: 40px;

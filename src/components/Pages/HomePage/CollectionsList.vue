@@ -29,7 +29,7 @@
             <div class="item__title">
               {{ collection.name?.slice(0,30) }}
             </div>
-            <hr/>
+            <q-separator class="q-my-sm"/>
             <div class="item__desc">
               {{collection.description?.slice(0,60)}}
             </div>
@@ -157,6 +157,10 @@
         z-index: 2;
         border-radius: 4px;
         transition: box-shadow .3s ease-out;
+
+        .q-icon{
+          cursor:pointer;
+        }
       }
     }
 

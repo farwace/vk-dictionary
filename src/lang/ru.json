@@ -30,9 +30,9 @@
   },
   "HomePage": {
     "NoHaveCollections": "Ваш словарик пока пуст.",
-    "UCanAddNewCollection": "Вы можете добавить свой набор слов",
-    "UCanAddFromSystemCollections": "или добавьте один из предложенных наборов",
-    "AddCollection":"Добавить набор слов",
+    "UCanAddNewCollection": "Вы можете создать свой набор слов",
+    "UCanAddFromSystemCollections": "или добавьте один из предложенных наборов:",
+    "AddCollection":"Добавить Слово",
     "MyCollections": "Мои наборы слов"
   },
   "AddCollection": {
@@ -67,10 +67,11 @@
     "EditCollectionTitle": "Редактировать набор слов",
     "EmptyWord": "Обязательно для заполнения",
     "LongWord": "Слишком длинное значение (макс 255 символов)",
-    "Training": "Тренироваться",
+    "Training": "Тренировка",
     "Edit": "Изменить",
     "Remove": "Удалить",
     "ConfirmRemove": "Вы действительно хотите удалить набор слов?",
-    "ConfirmRemoveText": "Набор слов удалится и восстановить его будет нельзя"
+    "ConfirmRemoveText": "Набор слов удалится и восстановить его будет нельзя",
+    "AddToMyCollections": "Сохранить себе"
   }
 }

@@ -14,6 +14,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import HomePage from "@/components/Pages/HomePage.vue";
 import CollectionDetail from "@/components/Pages/CollectionDetail.vue";
 import WordTranslation from "@/components/Pages/Trainings/WordTranslation.vue";
+import FAQ from "@/components/Pages/FAQ.vue";
 //import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
@@ -42,6 +43,7 @@ export class doInstall{
         const routes = [
             {name: 'home', path: '/', component: HomePage},
             {name: 'collection', path: '/collection/:id', component: CollectionDetail},
+            {name: 'faq', path: '/faq', component: FAQ},
             {name: 'trainingWordTranslation', path: '/training/word-translation', component: WordTranslation},
         ];
 
