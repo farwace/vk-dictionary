@@ -4,6 +4,7 @@ import type {TGetUserInfo, TUser} from "@/classes/Pinia/UIStore/TUser";
 import {injectable} from "inversify";
 import type {TWord} from "@/classes/Pinia/UIStore/TWord";
 import bridge from "@vkontakte/vk-bridge";
+import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 import {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
 
@@ -13,7 +14,15 @@ export class SystemActions implements ISystemActions{
     //private API_URL:string = 'http://127.0.0.1:4001/api/';
     //private API_URL:string = 'http://192.168.0.155:4001/api/';//todo: dev вернуть
 
+    private UIStore;
+
+    constructor() {
+        this.UIStore = UIStore();
+    }
     checkLaunchParams = async () => {
+        this.UIStore.$patch({
+            Authorization: `Bearer ${window.location.search.slice(1)}`
+        });
         const fetchResult = await this.sendQuery('launchParams', {}, 'POST');
         return fetchResult.ok;
     }
@@ -279,7 +288,7 @@ export class SystemActions implements ISystemActions{
     getFetchHeaders = () => {
         return {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${window.location.search.slice(1)}`
+            Authorization: this.UIStore.$state.Authorization
         }
     }
 

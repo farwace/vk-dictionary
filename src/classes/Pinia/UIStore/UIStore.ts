@@ -15,6 +15,7 @@ export const UIStore = defineStore('UIStore', {
             systemCollections: [],
             currentCollectionWords: undefined,
             contentHeight: '',
+            Authorization: '',
         }
     }
 });
