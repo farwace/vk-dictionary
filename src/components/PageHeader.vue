@@ -17,6 +17,7 @@
     </div>
 
     <div class="right-side">
+      <!-- todo: перенести в другое место
       <div v-if="route.name == 'home'">
         <div class="user-lives" v-if="(user.lives || 0) > 0">
           <img src="/assets/img/icons/icon-heart.webp">
@@ -30,14 +31,7 @@
             {{ livesTimer }}
           </div>
         </div>
-      </div>
-      <div v-if="route.name=='collection'">
-        <div class="share">
-          <div @click="doShareAction" class="interface-btn">
-            <q-icon name="mdi-share-variant-outline"></q-icon>
-          </div>
-        </div>
-      </div>
+      </div> -->
     </div>
 
   </div>
@@ -63,11 +57,6 @@
     })
     return userLang[0] || {}
   });
-
-  const doShareAction = () => {
-    alert('coming soonn');
-    //todo: сделать поделиться ссылкой
-  }
 
 
 </script>

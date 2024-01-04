@@ -45,9 +45,14 @@
                   {{t!('Collection.Edit')}}
                 </q-btn>
               </div>
-              <div v-else>
+              <div v-else class="action-buttons">
                 <div class="interface-btn" v-if="rows.length > 0" @click="startTraining">
                   <q-icon name="mdi-play-circle-outline"></q-icon>
+                </div>
+                <div class="share">
+                  <div @click="doShareAction" class="interface-btn">
+                    <q-icon name="mdi-share-variant-outline"></q-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -371,6 +376,10 @@
     })
   }
 
+  const doShareAction = () => {
+    //todo: do share action...
+  }
+
   onUnmounted(() => {
 
   });
@@ -425,5 +434,11 @@
     :deep(th){
       white-space: nowrap
     }
+  }
+
+  .action-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
   }
 </style>
