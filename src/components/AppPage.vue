@@ -137,7 +137,7 @@
       position: sticky;
       top: 0;
       height: 65px;
-      padding: 10px 20px;
+      padding: env(safe-area-inset-top) 20px 10px;
       flex-shrink: 0;
       z-index: 20;
     }

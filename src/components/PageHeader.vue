@@ -74,6 +74,7 @@
 <style lang="scss" scoped>
   .header{
     &__wrapper{
+      padding-top: 10px;
       font-size: 1.2rem;
 
       display: grid;
