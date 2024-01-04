@@ -10,8 +10,8 @@
           </div>
 
           <div class="dialog-container__subtitle">
-            <q-btn @click="doSave">
-              <q-icon name="mdi-plus"/>
+            <q-btn outline @click="doSave">
+              <q-icon name="mdi-plus" class="q-mr-sm"/>
               {{t!('Collection.AddToMyCollections')}}
             </q-btn>
           </div>

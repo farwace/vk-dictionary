@@ -89,7 +89,8 @@
       position: relative;
       margin: 20px 0;
       :deep(.swiper){
-        max-width: calc(100vw - 40px);
+        width: calc(100vw - 40px);
+        max-width: 871px;
         min-width: 0;
         .swiper-slide{
           width: 200px;

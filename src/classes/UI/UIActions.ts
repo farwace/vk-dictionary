@@ -339,7 +339,28 @@ export class UIActions implements IUIActions{
     }
 
     cloneCollection = async (collectionId: number):Promise<TCollection> => {
-        return await this.API.cloneCollection(collectionId);
+        const cloneCollectionResult =  await this.API.cloneCollection(collectionId);
+
+        if(cloneCollectionResult.id){
+            await this.setLanguage(cloneCollectionResult.originalLangId!, cloneCollectionResult.languageId!);
+            this.UIStore.$patch((state) => {
+                state.collections.unshift({
+                    name: cloneCollectionResult.name,
+                    description: cloneCollectionResult.description,
+                    originalLangId: cloneCollectionResult.originalLangId,
+                    languageId: cloneCollectionResult.languageId,
+                    originalId: cloneCollectionResult.originalId,
+                    sort: cloneCollectionResult.sort,
+                    fileId: cloneCollectionResult.fileId,
+                    userId: cloneCollectionResult.userId,
+                    system: cloneCollectionResult.system,
+                    id: cloneCollectionResult.id,
+                });
+                state.currentCollectionWords = undefined;
+            });
+        }
+
+        return cloneCollectionResult;
     }
 
     addWordToCollection = async (neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord> => {
