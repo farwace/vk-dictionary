@@ -65,8 +65,6 @@
   const props = defineProps<{ words: TWords, collection: TCollection }>();
 
   const onOKClick = () => {
-    //todo: validate form
-    //onDialogOK({selectedLang: selectedLang.value, selectedLearnLang: selectedLearnLang.value})
 
   }
 

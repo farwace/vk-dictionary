@@ -80,9 +80,9 @@ export class UIActions implements IUIActions{
 
     async queryLaunchParams(){
         try {
-            //const launchParams = await bridge.send('VKWebAppGetLaunchParams');
-            //todo: убрать для теста
-            const launchParams: GetLaunchParamsResponse = {
+            const launchParams = await bridge.send('VKWebAppGetLaunchParams');
+            //todo: dev убрать для теста
+            /*const launchParams: GetLaunchParamsResponse = {
                 vk_app_id: 51805937,
                 sign: '',
                 vk_language: EGetLaunchParamsResponseLanguages.RU,
@@ -94,7 +94,7 @@ export class UIActions implements IUIActions{
                 vk_is_favorite: 1,
                 vk_user_id: 73736329,
                 vk_platform: EGetLaunchParamsResponsePlatforms.DESKTOP_WEB
-            } //todo: убратЬ!!!!
+            }*/ //todo: убратЬ!!!!
             if(launchParams.vk_app_id){
                 this.UIStore.$patch({
                     launchParams: launchParams
@@ -157,8 +157,8 @@ export class UIActions implements IUIActions{
 
     showWelcomeSlides(slides: ShowSlidesSheetRequest){
         console.log('sendShowSLides')
-        //todo: убрать для теста
-        bridge.send('VKWebAppShowSlidesSheet', slides).then().catch(); //todo: вернуть
+        //todo: dev убрать для теста
+        bridge.send('VKWebAppShowSlidesSheet', slides).then().catch();
     }
 
 

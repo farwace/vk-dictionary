@@ -84,8 +84,6 @@
   const errorText = ref<string>();
 
   const onOKClick = () => {
-    //todo: validate form
-    //onDialogOK({selectedLang: selectedLang.value, selectedLearnLang: selectedLearnLang.value})
 
   }
 
