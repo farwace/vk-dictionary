@@ -262,6 +262,7 @@ export class UIActions implements IUIActions{
             if(neoCollection.id){
                 this.UIStore.$patch((state) => {
                     state.collections.push(neoCollection);
+                    state.currentCollectionWords = undefined;
                 });
                 return neoCollection;
             }
