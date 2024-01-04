@@ -168,6 +168,26 @@ export class UIActions implements IUIActions{
         })
     }
 
+    share = async (hash:string = ''):Promise<boolean> => {
+        if(hash.length > 0){
+            hash = '#' + hash
+        }
+        try {
+            const shareRes = await bridge.send('VKWebAppShare', {
+                link: 'https://vk.com/app51805937' + hash
+            });
+            console.log('>>> shareRes >>> ', shareRes)
+            return true;
+
+        }
+        catch (e){
+            return false;
+        }
+
+
+    }
+
+
     async setLanguage(languageId: number, learnLanguageId: number) {
 
         const oldUserLangId = this.UIStore?.user?.userLangId;

@@ -377,7 +377,7 @@
   }
 
   const doShareAction = () => {
-    //todo: do share action...
+    UI?.share('collection-' + currentCollection.value?.id);
   }
 
   onUnmounted(() => {

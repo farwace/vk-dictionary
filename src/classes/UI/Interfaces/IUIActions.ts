@@ -29,4 +29,5 @@ export interface IUIActions {
     updateWord(word: TWord):Promise<boolean>;
     updateCollection(collection:TCollection):Promise<boolean>;
     removeCollection(collectionId:number):Promise<boolean>;
+    share(hash?: string):Promise<boolean>;
 }
