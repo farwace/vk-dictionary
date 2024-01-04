@@ -32,7 +32,7 @@
     "NoHaveCollections": "Ваш словарик пока пуст.",
     "UCanAddNewCollection": "Вы можете создать свой набор слов",
     "UCanAddFromSystemCollections": "или добавьте один из предложенных наборов:",
-    "AddCollection":"Добавить Слово",
+    "AddCollection":"Добавить словарь",
     "MyCollections": "Мои наборы слов"
   },
   "AddCollection": {
