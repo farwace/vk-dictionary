@@ -173,11 +173,11 @@ export class UIActions implements IUIActions{
             hash = '#' + hash
         }
         try {
-            const shareRes = await bridge.send('VKWebAppShare', {
+            const shareRes:any = await bridge.send('VKWebAppShare', {
                 link: 'https://vk.com/app51805937' + hash
             });
-            console.log('>>> shareRes >>> ', shareRes)
-            return true;
+
+            return !!shareRes.result; //может быть массив вида `type:"message"`, а что с ним делать - пока ничего)
 
         }
         catch (e){
