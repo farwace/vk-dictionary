@@ -76,7 +76,7 @@
                     outlined dense
                     :label="t('Collection.NeoWord')"
                     lazy-rules
-                    :rules="[val => val && val.length > 0 || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
               <td v-if="user.displayTranscription">
@@ -96,7 +96,7 @@
                     outlined dense
                     :label="t('Collection.Translation')"
                     lazy-rules
-                    :rules="[val => val && val.length > 0 || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
               <td style="width: 10px;">
@@ -118,7 +118,7 @@
                     v-model="neoWord"
                     :label="t('Collection.NeoWord')"
                     lazy-rules
-                    :rules="[val => val && val.length > 0 || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
               <td v-if="user.displayTranscription">
@@ -139,7 +139,7 @@
                     outlined dense
                     :label="t('Collection.Translation')"
                     lazy-rules
-                    :rules="[val => val && val.length > 0 || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
               <td style="width: 10px;" v-if="rows.length < 1 || isEditMode">
