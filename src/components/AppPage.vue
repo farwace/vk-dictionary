@@ -157,8 +157,10 @@
     margin-left: auto;
     margin-right: auto;
     .header{
-      position: sticky;
+      position: fixed;
       top: 0;
+      width: 100%;
+      max-width: 911px;
       //height: 65px;
       padding: env(safe-area-inset-top, 0) 20px 10px;
       flex-shrink: 0;
@@ -168,6 +170,8 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
+      padding-top: 65px;
+      margin-top: env(safe-area-inset-top, 0);
       .content{
         flex-grow: 1;
         display: flex;
