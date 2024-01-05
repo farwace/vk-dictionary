@@ -20,9 +20,9 @@
   import {useI18n} from "vue-i18n";
   import AppPage from "@/components/AppPage.vue";
   import {useRouter} from "vue-router";
-
   /* @ts-ignore */
   import Hammer from 'hammerjs';
+  import { interval, Subject, throttle} from "rxjs";
 
   const $q = useQuasar();
   $q.dark.set('auto');
@@ -135,32 +135,36 @@
         });
       }
 
-
+      const navigateSubject = new Subject();
+        navigateSubject.pipe(
+            throttle(() => interval(1000))
+        ).subscribe((value) => {
+          doNavigate(value as number);
+        });
       const body = document.querySelector('body');
-      const hammerTime = new Hammer(body, {
-        domEvents:true
-      });
-      hammerTime.on('swipe', (swipeEvent:any) => {
-        console.log({direction: swipeEvent.direction, distance: swipeEvent.distance});
+      const mc = new Hammer(body);
+      mc.get('pan').set({direction: Hammer.DIRECTION_HORIZONTAL});
+      mc.on('panleft panright', (swipeEvent:any) => {
         const target = swipeEvent.target;
         if(target && target.closest('.swiper')){
           return;
         }
-        if(swipeEvent.direction === 4 && swipeEvent.distance > 80){
-          emulateBack();
+        if(swipeEvent.distance > 80){
+          if(swipeEvent.additionalEvent == 'panleft'){
+            navigateSubject.next(1);
+          }
+          if(swipeEvent.additionalEvent == 'panright'){
+            navigateSubject.next(-1);
+          }
+
         }
-        if(swipeEvent.direction == 2 && swipeEvent.distance > 80){
-          emulateForward();
-        }
-      })
+
+      });
   });
 
-
-  const emulateBack = () => {
-    router.go(-1);
-  }
-  const emulateForward = () => {
-    router.go(1);
+  const doNavigate = (delta: number) => {
+    //console.log('>>> delta ', delta);
+    router.go(delta);
   }
 
 </script>

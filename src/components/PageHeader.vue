@@ -2,7 +2,7 @@
   <div class="header__wrapper">
 
     <div class="left-side">
-      <div v-if="route.name != 'home'" class="q-mr-sm interface-btn" @click="router.push({name:'home'})">
+      <div v-if="route.name != 'home'" class="q-mr-sm interface-btn" @click="router.go(-1)">
         <q-icon name="mdi-arrow-left"/>
       </div>
     </div>
