@@ -103,6 +103,7 @@
         cursor: pointer;
         border: 1px solid rgba(211, 211, 211, 0.4);
         border-radius: 4px;
+        font-size: 14px;
 
         &__title, &__desc{
           padding: 6px;

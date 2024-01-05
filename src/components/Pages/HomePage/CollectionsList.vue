@@ -29,8 +29,8 @@
             <div class="item__title">
               {{ collection.name?.slice(0,30) }}
             </div>
-            <q-separator class="q-my-sm"/>
-            <div class="item__desc">
+            <q-separator class="q-my-sm" v-if="collection.description && collection.description.length > 0"/>
+            <div class="item__desc" v-if="collection.description && collection.description.length > 0">
               {{collection.description?.slice(0,60)}}
             </div>
           </div>
@@ -182,6 +182,9 @@
         line-height: 120%;
         padding: 8px;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         &__desc{
           text-transform: none;
           font-size: .875rem;
