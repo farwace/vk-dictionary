@@ -264,7 +264,6 @@ export class UIActions implements IUIActions{
         if(userLang && learnLang){
             const systemCollections = await this.API.getSystemCollections(learnLang, userLang);
             if(!!systemCollections.length){
-                console.log('>>> SYSTEM COLLECTIONS >>> ', systemCollections);
 
                 this.UIStore.$patch({
                     systemCollections: systemCollections
