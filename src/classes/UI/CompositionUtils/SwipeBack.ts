@@ -39,7 +39,7 @@ export const SwipeBack = {
 			if(target.closest('.swiper')){
 				return;
 			}
-			console.log({direction: swipeEvent.direction, distance: swipeEvent.distance});
+
 			if(swipeEvent.direction === 4 && swipeEvent.distance > 80){
 				if(el.swipeBackEvent){
 					el.swipeBackEvent(swipeEvent);

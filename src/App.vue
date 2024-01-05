@@ -1,10 +1,6 @@
 <template>
   <q-layout
       view="lHh Lpr lFf"
-      v-swipe-back="{
-        onSwipeBack: emulateBack,
-        onSwipeForward: emulateForward
-      }"
   >
     <q-page-container>
       <FLoadingScreen v-if="AppIsLoading"/>
@@ -24,9 +20,9 @@
   import {useI18n} from "vue-i18n";
   import AppPage from "@/components/AppPage.vue";
   import {useRouter} from "vue-router";
-  import {SwipeBack} from "@/classes/UI/CompositionUtils/SwipeBack";
 
-  const vSwipeBack = SwipeBack;
+  /* @ts-ignore */
+  import Hammer from 'hammerjs';
 
   const $q = useQuasar();
   $q.dark.set('auto');
@@ -138,6 +134,25 @@
           ok: false
         });
       }
+
+
+      const body = document.querySelector('body');
+      const hammerTime = new Hammer(body, {
+        domEvents:true
+      });
+      hammerTime.on('swipe', (swipeEvent:any) => {
+        console.log({direction: swipeEvent.direction, distance: swipeEvent.distance});
+        const target = swipeEvent.target;
+        if(target && target.closest('.swiper')){
+          return;
+        }
+        if(swipeEvent.direction === 4 && swipeEvent.distance > 80){
+          emulateBack();
+        }
+        if(swipeEvent.direction == 2 && swipeEvent.distance > 80){
+          emulateForward();
+        }
+      })
   });
 
 
