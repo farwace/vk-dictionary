@@ -137,7 +137,7 @@
 
       const navigateSubject = new Subject();
         navigateSubject.pipe(
-            throttle(() => interval(1000))
+            throttle(() => interval(500))
         ).subscribe((value) => {
           doNavigate(value as number);
         });
@@ -145,6 +145,9 @@
       const mc = new Hammer(body);
       mc.get('pan').set({direction: Hammer.DIRECTION_HORIZONTAL});
       mc.on('panleft panright', (swipeEvent:any) => {
+        if(!swipeEvent.isFinal){
+          return;
+        }
         const target = swipeEvent.target;
         if(target && target.closest('.swiper')){
           return;
@@ -164,7 +167,9 @@
 
   const doNavigate = (delta: number) => {
     //console.log('>>> delta ', delta);
-    router.go(delta);
+    if(delta != 0){
+      router.go(delta);
+    }
   }
 
 </script>
