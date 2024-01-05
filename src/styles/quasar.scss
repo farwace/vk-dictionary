@@ -42,6 +42,10 @@
   }
 
   .words-table{
+    th{
+      background-color: #262626;
+      font-weight: bold;
+    }
     tbody{
       tr:nth-child(even){
         background-color: #262626;
@@ -99,6 +103,10 @@
   }
 
   .words-table{
+    th{
+      background-color: #e8e8e8;
+      font-weight: bold;
+    }
     tbody{
       tr:nth-child(even){
         background-color: #f7f7f7;
