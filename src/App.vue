@@ -152,7 +152,7 @@
         if(target && target.closest('.swiper')){
           return;
         }
-        if(swipeEvent.distance > 80){
+        if(swipeEvent.distance > 100){
           if(swipeEvent.additionalEvent == 'panleft'){
             navigateSubject.next(1);
           }
@@ -166,7 +166,6 @@
   });
 
   const doNavigate = (delta: number) => {
-    //console.log('>>> delta ', delta);
     if(delta != 0){
       router.go(delta);
     }
