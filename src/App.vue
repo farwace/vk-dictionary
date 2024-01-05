@@ -137,7 +137,7 @@
 
       const navigateSubject = new Subject();
         navigateSubject.pipe(
-            throttle(() => interval(500))
+            throttle(() => interval(300))
         ).subscribe((value) => {
           doNavigate(value as number);
         });
