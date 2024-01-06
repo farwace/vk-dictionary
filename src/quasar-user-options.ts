@@ -4,7 +4,7 @@ import './styles/quasar.scss'
 import lang from 'quasar/lang/ru.js'
 import '@quasar/extras/roboto-font/roboto-font.css'
 import '@quasar/extras/material-icons/material-icons.css'
-import {Loading, Dark, Dialog} from 'quasar'
+import {Loading, Dark, Dialog, Notify} from 'quasar'
 import iconSet from "quasar/icon-set/mdi-v7";
 import "@quasar/extras/mdi-v7/mdi-v7.css";
 import "@quasar/extras/animate/fadeInLeft.css"
@@ -20,7 +20,8 @@ export default <QuasarPluginOptions>{
   plugins: {
     Dark,
     Loading,
-    Dialog
+    Dialog,
+    Notify
   },
   lang: lang
 }

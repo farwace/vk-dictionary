@@ -190,6 +190,7 @@
   import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
   import EditWordDialog from "@/components/common/EditWordDialog.vue";
   import EditCollectionDialog from "@/components/common/EditCollectionDialog.vue";
+  import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
 
   const $q = useQuasar();
 
@@ -322,6 +323,11 @@
       }
 
       if(!isAllRight){
+        $q.notify({
+          type: 'negative',
+          message: t('Errors.CollectionDetailNotIsAllRight'),
+          position: "bottom"
+        });
         router.push({name: 'home'});
         return;
       }
@@ -330,10 +336,20 @@
         isLoading.value = false;
       }).catch((e) => {
         isLoading.value = false;
+        $q.notify({
+          type: 'negative',
+          message: t('Errors.CollectionDetailErrorGetWords'),
+          position: "bottom"
+        });
         router.push({name: 'home'});
       })
     }
     if(!isAllRight){
+      $q.notify({
+        type: 'negative',
+        message: t('Errors.CollectionDetailNotIsAllRight'),
+        position: "bottom"
+      });
       router.push({name: 'home'});
       return;
     }
@@ -368,13 +384,24 @@
           neoForeignWord.value = '';
           isLoading.value = false;
           neoWordInput.value?.$el.querySelector('input').focus();
+          $q.notify({
+            type: 'positive',
+            message: t('Messages.WordHasBeenAdded'),
+            position: "bottom"
+          })
+
         }).catch(() => {
           isLoading.value = false;
     });
   }
 
   const startTraining = () => {
-    alert('Coming soon...')
+    $q.dialog({
+      component: ChooseTrainingDialog,
+      componentProps: {
+        collectionId: currentCollection.value?.id
+      }
+    });
   }
 
   const editCollection = () => {

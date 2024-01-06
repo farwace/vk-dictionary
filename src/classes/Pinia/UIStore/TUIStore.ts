@@ -18,4 +18,6 @@ export type TUIStore = {
     contentHeight:string,
     Authorization: string,
     appliedCollection:number,
+    trainingWords?:TWord[],
+    trainingCollections: number[],
 }

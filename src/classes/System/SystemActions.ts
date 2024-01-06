@@ -86,7 +86,7 @@ export class SystemActions implements ISystemActions{
             return await fetchResult.json();
         }
         catch (e){
-            return {};
+            return [];
         }
     }
 

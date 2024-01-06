@@ -8,9 +8,16 @@
       <SystemCollectionsSlider v-if="systemCollections && systemCollections.length > 0"/>
 
       <div class="add-collections-btn text-center">
-        <q-btn outline rounded color="primary" @click.prevent="addCollectionLink" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive}">
-           <q-icon name="mdi-plus" class="q-mr-sm"/> {{t!('HomePage.AddCollection')}}
-        </q-btn>
+        <div>
+          <q-btn v-if="collections.length > 0" outline rounded color="primary" @click.prevent="trainingsDialog" class="q-mb-md" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive}">
+            <q-icon name="mdi-play-circle-outline" class="q-mr-sm"></q-icon> {{t!('Training.doTraining')}}
+          </q-btn>
+        </div>
+        <div>
+          <q-btn outline rounded color="primary" @click.prevent="addCollectionLink" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive}">
+             <q-icon name="mdi-plus" class="q-mr-sm"/> {{t!('HomePage.AddCollection')}}
+          </q-btn>
+        </div>
       </div>
     </div>
     </q-scroll-area>
@@ -26,6 +33,7 @@
   import CreateCollectionDialog from "@/components/common/CreateCollectionDialog.vue";
   import CollectionsList from "@/components/Pages/HomePage/CollectionsList.vue";
   import SystemCollectionsSlider from "@/components/Pages/HomePage/SystemCollectionsSlider.vue";
+  import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
 
@@ -40,6 +48,12 @@
   const addCollectionLink = () => {
     $q.dialog({
       component: CreateCollectionDialog
+    });
+  }
+
+  const trainingsDialog = () => {
+    $q.dialog({
+      component: ChooseTrainingDialog,
     });
   }
 

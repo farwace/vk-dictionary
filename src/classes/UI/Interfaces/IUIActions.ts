@@ -31,4 +31,5 @@ export interface IUIActions {
     removeCollection(collectionId:number):Promise<boolean>;
     share(hash?: string):Promise<boolean>;
     clearSharedId():void;
+    updateTrainingWords(arCollections: number[]):Promise<void>;
 }

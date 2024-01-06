@@ -1,8 +1,5 @@
 <template>
-  <div>
-    word - translation
-    <router-link to="/">Go to home</router-link>
-  </div>
+  <div>Слово - перевод</div>
 </template>
 <script lang="ts" setup>
 

@@ -2,7 +2,7 @@
   <div class="page" :style="contentHeight">
     <q-scroll-area style="height: 100%;">
       <div class="page-container">
-        Инструкция...
+        empty page...
       </div>
     </q-scroll-area>
   </div>

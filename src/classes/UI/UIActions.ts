@@ -285,6 +285,19 @@ export class UIActions implements IUIActions{
         }
     }
 
+    updateTrainingWords = async (arCollections: number[]):Promise<void> => {
+        const user = this.UIStore.$state.user;
+        if(user.userLearnLangId){
+            const trainingResult:TWord[] = await this.API.getWordsForTraining(user.userLearnLangId!, user.userLangId!, arCollections)
+            this.UIStore.$patch({
+                trainingWords: trainingResult,
+                trainingCollections: arCollections
+            });
+            return;
+        }
+        return;
+    }
+
     updateUserCollections = async () => {
         const userLang = this.UIStore.$state?.user?.userLangId;
         const learnLang = this.UIStore.$state?.user?.userLearnLangId;

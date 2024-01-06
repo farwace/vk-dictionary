@@ -125,6 +125,11 @@
           isLoading.value = false;
           $q.loading.hide();
           if(res){
+            $q.notify({
+              type: 'positive',
+              message: t('Messages.CollectionHasBennRemoved'),
+              position: "bottom"
+            });
             router.push({name: 'home'});
           }
           else{

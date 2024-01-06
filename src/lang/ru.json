@@ -16,7 +16,8 @@
         "title": "Слайд3",
         "subtitle": "Описание слайд3"
       }
-    }
+    },
+    "Loading": "Загрузка"
   },
   "ChooseLanguageDialog": {
     "Title": "Ваш родной язык",
@@ -75,5 +76,31 @@
     "AddToMyCollections": "Добавить в мои наборы",
     "SomeOneShareCollection": "С Вами поделились набором слов",
     "CollectionHasBeenAdded": "Этот набор добавлен в список Ваших наборов"
+  },
+  "Training": {
+    "doTraining": "Тренироваться",
+    "ChooseTitle": "Тренировка",
+    "Collection": "Набор слов",
+    "Collections": "Наборы слов",
+    "AllWords": "Все слова",
+    "WordToTranslate": "Слово - Перевод",
+    "TranslateToWord": "Перевод - Слово",
+    "MakeFromLetters": "Слово из Букв",
+    "WriteWord": "Напиши слово",
+    "MatchTheWords": "Сопоставь слова",
+    "LowWordsCount": "Не достаточно слов для тренировки. Добавьте больше слов или выберите другие наборы и попробуйте еще раз"
+  },
+  "Messages": {
+    "CollectionHasBennRemoved": "Набор слов был успешно удален",
+    "WordHasBeenAdded": "Новое слово успешно добавлено в словарь"
+  },
+  "Errors": {
+    "CollectionDetailNotIsAllRight": "Не удалось загрузить набор слов. Попробуйте еще раз.",
+    "CollectionDetailErrorGetWords": "Не удалось загрузить слова из набора. Попробуйте еще раз.",
+    "TrainingNoCollectionInQuery": "Не удалось получить наборы слов. Попробуйте еще раз",
+    "TrainingLowWords": "Недостаточно слов для начала тренировки.",
+    "GetTrainingWordsError": "Не удалось получить слова для тренировки. Попробуйте еще раз",
+    "TrainingTypeError": "Не удалось загрузить тренировку. Попробуйте еще раз"
+
   }
 }

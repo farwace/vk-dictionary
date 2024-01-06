@@ -10,7 +10,7 @@ export interface ISystemActions{
     /** получает инфу с вк о пользователе и делает запрос на бэк для обновления и получения доп инфы о пользователе */
     getUserInfo(launchParams: GetLaunchParamsResponse):Promise<TUser|undefined>,
     /** возвращает список слов для тренировки */
-    getWordsForTraining(langId: number, originalLangId: number, arCollectionIds: number[]):Promise<any[]>;
+    getWordsForTraining(langId: number, originalLangId: number, arCollectionIds: number[]):Promise<TWord[]>;
 
     getCollections(langId: number, originalLangId: number):Promise<TCollections>;
     getSystemCollections(langId: number, originalLangId: number):Promise<TCollections>;
