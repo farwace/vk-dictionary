@@ -26,7 +26,7 @@ export const SwipeBack = {
 		}
 
 		if(Hammer.defaults.cssProps.userSelect){
-			Hammer.defaults.cssProps.userSelect = '';
+			delete Hammer.defaults.cssProps.userSelect;
 		}
 
 		const hammerTime = new Hammer(el, {

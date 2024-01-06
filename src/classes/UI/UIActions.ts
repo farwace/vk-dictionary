@@ -11,7 +11,7 @@ import bridge, {
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
-import {TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
+import {TRawWord, TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
 import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
 
 @injectable()
@@ -288,9 +288,21 @@ export class UIActions implements IUIActions{
     updateTrainingWords = async (arCollections: number[]):Promise<void> => {
         const user = this.UIStore.$state.user;
         if(user.userLearnLangId){
-            const trainingResult:TWord[] = await this.API.getWordsForTraining(user.userLearnLangId!, user.userLangId!, arCollections)
+            const trainingResult:TRawWord[] = await this.API.getWordsForTraining(user.userLearnLangId!, user.userLangId!, arCollections)
+            const trainingWords:TWord[] = [];
+            trainingResult.forEach((rawWord: TRawWord) => {
+                trainingWords.push({
+                    word: rawWord.word,
+                    foreignWord: rawWord.foreign_word!,
+                    collectionId: rawWord.collection_id!,
+                    id: rawWord.id,
+                    fileId: rawWord.file_id!,
+                    transcription: rawWord.transcription
+                })
+            });
+
             this.UIStore.$patch({
-                trainingWords: trainingResult,
+                trainingWords: trainingWords,
                 trainingCollections: arCollections
             });
             return;
@@ -473,6 +485,15 @@ export class UIActions implements IUIActions{
         }
 
         return isOk;
+    }
+
+    addWordExperience = async (id: number, count: number) => {
+        await this.API.updateWordExperience([
+            {
+                wordId: id,
+                experience: count
+            }
+        ])
     }
 
     updateWord = async(word: TWord) => {

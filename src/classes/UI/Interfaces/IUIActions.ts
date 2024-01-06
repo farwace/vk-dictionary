@@ -32,4 +32,5 @@ export interface IUIActions {
     share(hash?: string):Promise<boolean>;
     clearSharedId():void;
     updateTrainingWords(arCollections: number[]):Promise<void>;
+    addWordExperience(wordId: number, count: number):Promise<void>;
 }

@@ -15,6 +15,8 @@ import HomePage from "@/components/Pages/HomePage.vue";
 import CollectionDetail from "@/components/Pages/CollectionDetail.vue";
 import FAQ from "@/components/Pages/FAQ.vue";
 import Training from "@/components/Pages/Trainings/Training.vue";
+import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
+import {SoundActions} from "@/classes/UI/SoundActions";
 //import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
@@ -27,12 +29,15 @@ export class doInstall{
         container.bind<IUserActionsInterface>('UserActions').to(UserActions);
         container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
         container.bind<ISystemActions>('API').to(SystemActions).inSingletonScope();
+        container.bind<ISoundActions>('SOUND').to(SoundActions).inSingletonScope();
         const UILayer:IUIActions = container.get('UI');
         const API:ISystemActions = container.get('API');
+        const SoundLayer:ISoundActions = container.get('SOUND');
 
         try {
             const checkLaunchStatus = await API.checkLaunchParams();
             UILayer.install(app, checkLaunchStatus);
+            SoundLayer.install(app);
         }
         catch (e){
 

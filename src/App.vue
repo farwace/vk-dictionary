@@ -142,10 +142,13 @@
           doNavigate(value as number);
         });
       const body = document.querySelector('body');
+      if(Hammer.defaults.cssProps.userSelect){
+        delete Hammer.defaults.cssProps.userSelect;
+      }
       const mc = new Hammer(body);
       mc.get('pan').set({direction: Hammer.DIRECTION_HORIZONTAL});
       mc.on('panleft panright', (swipeEvent:any) => {
-        if(!swipeEvent.isFinal){
+        if(!swipeEvent.isFinal || swipeEvent.pointerType == 'mouse'){
           return;
         }
         const target = swipeEvent.target;

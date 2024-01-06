@@ -18,7 +18,7 @@
                 </div>
               </div>
             </div>
-            <div class="dialog-container__body choose-training" v-if="trainingWords && trainingWords.length > 4">
+            <div class="dialog-container__body choose-training" v-if="trainingWords && trainingWords.length > 5">
               <q-btn :disable="isLoading" v-for="training in trainingList" outline rounded @click="doTraining(training.name)">
                 <div v-html="training.title"></div>
               </q-btn>

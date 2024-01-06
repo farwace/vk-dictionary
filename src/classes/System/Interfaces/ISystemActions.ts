@@ -1,6 +1,6 @@
 import type {TUser} from "@/classes/Pinia/UIStore/TUser";
 import type {GetLaunchParamsResponse} from "@vkontakte/vk-bridge";
-import type {TWord} from "@/classes/Pinia/UIStore/TWord";
+import type {TRawWord, TWord} from "@/classes/Pinia/UIStore/TWord";
 import type {TGetLang} from "@/classes/Pinia/UIStore/TLang";
 import type {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
 
@@ -10,7 +10,7 @@ export interface ISystemActions{
     /** получает инфу с вк о пользователе и делает запрос на бэк для обновления и получения доп инфы о пользователе */
     getUserInfo(launchParams: GetLaunchParamsResponse):Promise<TUser|undefined>,
     /** возвращает список слов для тренировки */
-    getWordsForTraining(langId: number, originalLangId: number, arCollectionIds: number[]):Promise<TWord[]>;
+    getWordsForTraining(langId: number, originalLangId: number, arCollectionIds: number[]):Promise<TRawWord[]>;
 
     getCollections(langId: number, originalLangId: number):Promise<TCollections>;
     getSystemCollections(langId: number, originalLangId: number):Promise<TCollections>;

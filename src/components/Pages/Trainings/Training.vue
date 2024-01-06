@@ -23,12 +23,14 @@
   import FLoadingScreen from "@/components/common/FLoadingScreen.vue";
   import AsyncComponent from "@/components/common/AsyncComponent.vue";
   import {useQuasar} from "quasar";
+  import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
 
   const $q = useQuasar();
 
   const route = useRoute();
   const router = useRouter();
   const UI = inject<IUIActions>('UI');
+  const SOUND = inject<ISoundActions>('SOUND');
   const {t} = useI18n() as {t:TranslateFunction};
 
   const isLoading = ref<boolean>(true);
@@ -44,6 +46,7 @@
   const trainingComponentPath = ref<string>();
 
   onMounted(() => {
+    SOUND?.loadForTraining();
     const query = route.query;
     let tmpQueryCollections = query.collectionIds as unknown as string[] | string | null;
     if(!tmpQueryCollections){
@@ -76,7 +79,7 @@
     if(!areEqual){
       UI?.updateTrainingWords(arCollectionIds).then(() => {
         isLoading.value = false;
-        if(5 > (trainingWords?.value?.length || 0)){
+        if(6 > (trainingWords?.value?.length || 0)){
           $q.notify({
             type: 'negative',
             message: t('Errors.TrainingLowWords'),
@@ -99,7 +102,7 @@
       });
     }
     else{
-      if(5 > (trainingWords?.value?.length || 0)){
+      if(6 > (trainingWords?.value?.length || 0)){
         $q.notify({
           type: 'negative',
           message: t('Errors.TrainingLowWords'),
@@ -135,5 +138,10 @@
 
 </script>
 <style lang="scss" scoped>
-
+  .training-page{
+    font-size: 1.5rem;
+    :deep(.q-btn){
+      font-size: 1.1rem;
+    }
+  }
 </style>
