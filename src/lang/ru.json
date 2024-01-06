@@ -92,7 +92,10 @@
   },
   "Messages": {
     "CollectionHasBennRemoved": "Набор слов был успешно удален",
-    "WordHasBeenAdded": "Новое слово успешно добавлено в словарь"
+    "WordHasBeenAdded": "Новое слово успешно добавлено в словарь",
+    "WordHasBeenRemoved": "Слово было успешно удалено",
+    "CollectionHasBeenUpdated": "Набор слов успешно изменён",
+    "WordHasBeenUpdated": "Слово успешно изменено"
   },
   "Errors": {
     "CollectionDetailNotIsAllRight": "Не удалось загрузить набор слов. Попробуйте еще раз.",
@@ -100,7 +103,9 @@
     "TrainingNoCollectionInQuery": "Не удалось получить наборы слов. Попробуйте еще раз",
     "TrainingLowWords": "Недостаточно слов для начала тренировки.",
     "GetTrainingWordsError": "Не удалось получить слова для тренировки. Попробуйте еще раз",
-    "TrainingTypeError": "Не удалось загрузить тренировку. Попробуйте еще раз"
+    "TrainingTypeError": "Не удалось загрузить тренировку. Попробуйте еще раз",
+    "WordCanNotBeEmpty": "Заполните слово",
+    "TranscriptionCanNotBeEmpty": "Заполните перевод"
 
   }
 }

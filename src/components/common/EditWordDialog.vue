@@ -103,9 +103,14 @@
       foreignWord: neoForeignWord.value,
       transcription: neoTranscription.value,
       collectionId: props.word.collectionId,
-      id: props.word.id
+      id: props.word.id,
     }).then(() => {
       $q.loading.hide();
+      $q.notify({
+        type: 'positive',
+        message: t('Messages.WordHasBeenUpdated'),
+        position: "bottom"
+      });
       onDialogOK();
     }).catch((e) => {
       $q.loading.hide();

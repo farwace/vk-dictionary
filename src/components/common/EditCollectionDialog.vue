@@ -101,6 +101,11 @@
       id: props.collection.id
     }).then(() => {
       $q.loading.hide();
+      $q.notify({
+        type: 'positive',
+        message: t('Messages.CollectionHasBeenUpdated'),
+        position: "bottom"
+      });
       isLoading.value = false;
       onDialogOK();
     }).catch((e) => {

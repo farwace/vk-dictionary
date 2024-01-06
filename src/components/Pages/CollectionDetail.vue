@@ -293,6 +293,11 @@
   const removeWord = (id:number) => {
     isLoading.value = true;
     UI?.removeWord(id).then(() => {
+      $q.notify({
+        type: 'positive',
+        message: t('Messages.WordHasBeenRemoved'),
+        position: "bottom"
+      });
       isLoading.value = false;
     }).catch((e) => {
       isLoading.value = false;
@@ -373,7 +378,20 @@
   }
 
   const addNeoWord = () => {
-    if(neoWord.value.length < 1 || neoForeignWord.value.length < 1){
+    if(neoWord.value.length < 1){
+      $q.notify({
+        type: 'negative',
+        message: t('Errors.WordCanNotBeEmpty'),
+        position: "bottom"
+      });
+      return;
+    }
+    if(neoForeignWord.value.length < 1){
+      $q.notify({
+        type: 'negative',
+        message: t('Errors.TranscriptionCanNotBeEmpty'),
+        position: "bottom"
+      });
       return;
     }
     isLoading.value = true;
