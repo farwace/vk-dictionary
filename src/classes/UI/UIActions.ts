@@ -4,6 +4,8 @@ import type {App} from "@vue/runtime-core";
 import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
 import {inject, injectable} from "inversify";
 import bridge, {
+    BannerAdLocation,
+    EAdsFormats,
     EGetLaunchParamsResponseLanguages,
     EGetLaunchParamsResponsePlatforms,
     GetLaunchParamsResponse
@@ -286,6 +288,7 @@ export class UIActions implements IUIActions{
     }
 
     updateTrainingWords = async (arCollections: number[]):Promise<void> => {
+        bridge.send('VKWebAppCheckNativeAds', { ad_format: EAdsFormats.INTERSTITIAL});
         const user = this.UIStore.$state.user;
         if(user.userLearnLangId){
             const trainingResult:TRawWord[] = await this.API.getWordsForTraining(user.userLearnLangId!, user.userLangId!, arCollections)
@@ -320,6 +323,7 @@ export class UIActions implements IUIActions{
                 this.UIStore.$patch({
                     collections: collections
                 });
+                this.showBannerAds();
                 return collections;
             }
             else{
@@ -415,7 +419,8 @@ export class UIActions implements IUIActions{
 
         this.UIStore.$patch({
             currentCollectionWords: collectionWords
-        })
+        });
+        this.showBannerAds();
         return collectionWords;
     }
 
@@ -529,8 +534,26 @@ export class UIActions implements IUIActions{
     }
 
     showBetweenScreenAd = async () => {
-        console.log('>>> Тут будет реклама')
-        //todo: показать рекламу
+        bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
+            .then((data) => {
+
+            })
+            .catch((error) => { console.log(error); /* Ошибка */ });
         return;
+    }
+    showBannerAds = () => {
+        bridge.send('VKWebAppShowBannerAd', {
+            banner_location: BannerAdLocation.BOTTOM,
+            can_close: true
+        })
+            .then((data) => {
+                if (data.result) {
+                    // Баннерная реклама отобразилась
+                }
+            })
+            .catch((error) => {
+                // Ошибка
+                console.log(error);
+            });
     }
 }
