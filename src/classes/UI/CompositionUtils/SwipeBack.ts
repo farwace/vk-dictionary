@@ -26,6 +26,7 @@ export const SwipeBack = {
 		}
 
 		if(Hammer.defaults.cssProps.userSelect){
+			/** @ts-ignore */
 			delete Hammer.defaults.cssProps.userSelect;
 		}
 

@@ -143,6 +143,7 @@
         });
       const body = document.querySelector('body');
       if(Hammer.defaults.cssProps.userSelect){
+        /** @ts-ignore */
         delete Hammer.defaults.cssProps.userSelect;
       }
       const mc = new Hammer(body);
