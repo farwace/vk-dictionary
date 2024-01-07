@@ -54,12 +54,22 @@ export class SystemActions implements ISystemActions{
             }, 'POST');
             const bUser = await fetchResult.json() as TGetUserInfo;
 
+            let subscriptionExpired = bUser.subscriptionExpired as unknown as string;
+            let subscriptionExpiredDate: Date | undefined = undefined;
+            const currentDate = new Date();
+            if(subscriptionExpired && subscriptionExpired.length > 0){
+                subscriptionExpiredDate = new Date(subscriptionExpired);
+                if(currentDate > subscriptionExpiredDate){
+                    subscriptionExpiredDate = undefined;
+                }
+            }
+
             return {
                 userId: userInfo.id,
                 first_name: userInfo.first_name,
                 last_name: userInfo.last_name,
                 photo_100: userInfo.photo_100,
-
+                subscriptionExpired: subscriptionExpiredDate,
                 id: bUser.id,
                 experience: bUser.experience,
                 isNew: bUser.isNew,

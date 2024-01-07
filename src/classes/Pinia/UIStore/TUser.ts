@@ -10,6 +10,7 @@ export type TUser ={
     userLangId?: number,
     displayTranscription?: boolean,
     userLearnLangId?:number,
+    subscriptionExpired?:Date,
 };
 
 export type TGetUserInfo = {
@@ -20,4 +21,5 @@ export type TGetUserInfo = {
     userLangId: number,
     userLearnLangId: number,
     displayTranscription: boolean,
+    subscriptionExpired?:Date,
 };

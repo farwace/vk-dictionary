@@ -533,7 +533,22 @@ export class UIActions implements IUIActions{
         return this.API;
     }
 
+    canShowAd = () => {
+        let canShow = true;
+        const user = this.UIStore.$state.user;
+        if(user.subscriptionExpired){
+            const date = new Date();
+            if(user.subscriptionExpired && user.subscriptionExpired > date){
+                canShow = false;
+            }
+        }
+        return canShow;
+    }
+
     showBetweenScreenAd = async () => {//todo: вернуть код рекламы. проверил - всё работает...
+        if(!this.canShowAd()){
+            return;
+        }
         /*bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
             .then((data) => {
 
@@ -542,6 +557,9 @@ export class UIActions implements IUIActions{
         return;*/
     }
     showBannerAds = () => {
+        if(!this.canShowAd()){
+            return;
+        }
         /*bridge.send('VKWebAppShowBannerAd', {
             banner_location: BannerAdLocation.BOTTOM,
             can_close: true
