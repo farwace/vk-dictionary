@@ -131,7 +131,14 @@
       }
       let neoLang: "ru" | "en" = 'ru';
       if(launchParams?.value?.vk_language){
-        if(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']){neoLang = 'en';}
+        if(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']){
+          neoLang = 'en';
+        }
+        else{
+          console.log(launchParams?.value?.vk_language);
+          console.log(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']);
+
+        }
       }
       if(i18n.global.locale.value && i18n.global.locale.value != neoLang){
         i18n.global.locale.value = neoLang;
