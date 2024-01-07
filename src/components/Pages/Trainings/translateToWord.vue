@@ -118,6 +118,7 @@
       else {
         SOUND?.plyFault();
         countFaultAnswers.value += 1;
+        rightAnswerId.value = stepWord.value!.id!;
         failAnswerId.value = answer.id;
         tmpCountRightInRowAnswers.value = 0;
       }
