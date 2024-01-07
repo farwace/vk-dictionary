@@ -102,7 +102,7 @@
     UI?.setTranscription(neoVal).then();
   });
 
-  doLogger = () => {
+  const doLogger = () => {
     //router.push({name: 'faq'})
     console.log(launchParams?.value);
   }
