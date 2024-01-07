@@ -24,6 +24,8 @@
   import Hammer from 'hammerjs';
   import { interval, Subject, throttle} from "rxjs";
   import i18n from "@/classes/install/i18n";
+  import enLang from 'quasar/lang/en-US.js';
+  import ruLang from 'quasar/lang/ru.js';
 
   const $q = useQuasar();
   $q.dark.set('auto');
@@ -132,7 +134,6 @@
       let neoLang: "ru" | "en" = 'ru';
       if(launchParams?.value?.vk_language){
         const launchLang = launchParams?.value?.vk_language;
-        console.log('>>> launchLang', launchLang);
         if(
             launchLang == 'en' ||
             launchLang == 'be' ||
@@ -141,18 +142,15 @@
         ){
           neoLang = 'en';
         }
-        else{
-          console.log(launchParams?.value?.vk_language);
-          console.log(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']);
-
-        }
       }
       if(i18n.global.locale.value && i18n.global.locale.value != neoLang){
-        console.log('I CHANGE LANGUAGE');
         i18n.global.locale.value = neoLang;
-      }
-      else{
-        console.log('I NO CHANGE LANGUAGE', neoLang);
+        if(neoLang == 'ru'){
+          $q.lang.set(ruLang);
+        }
+        if(neoLang == 'en'){
+          $q.lang.set(enLang);
+        }
       }
     }
   });
