@@ -23,6 +23,7 @@
   /* @ts-ignore */
   import Hammer from 'hammerjs';
   import { interval, Subject, throttle} from "rxjs";
+  import i18n from "@/classes/install/i18n";
 
   const $q = useQuasar();
   $q.dark.set('auto');
@@ -37,6 +38,7 @@
       userQueryError,
       user,
       isLoading,
+      launchParams
   } = storeToRefs(UIStore())
 
   const AppIsLoading = computed(() => {
@@ -190,6 +192,13 @@
         }
 
       });
+      let neoLang: "ru" | "en" = 'ru';
+      if(launchParams?.value?.vk_language){
+        if(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']){neoLang = 'en';}
+      }
+      if(i18n.global.locale.value && i18n.global.locale.value != neoLang){
+        i18n.global.locale.value = neoLang;
+      }
   });
 
   const doNavigate = (delta: number) => {
