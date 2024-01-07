@@ -96,8 +96,8 @@
     $q.loading.show({delay: 1000});
     isLoading.value = true;
     UI?.updateCollection({
-      name: neoName.value,
-      description: neoDescription.value,
+      name: neoName.value.trim(),
+      description: neoDescription.value.trim(),
       id: props.collection.id
     }).then(() => {
       $q.loading.hide();

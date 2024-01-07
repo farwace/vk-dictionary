@@ -346,7 +346,7 @@ export class UIActions implements IUIActions{
         const userLang = this.UIStore.$state?.user?.userLangId;
         const learnLang = this.UIStore.$state?.user?.userLearnLangId;
         if(userLang && learnLang){
-            const neoCollection = await this.API.createCollection(name, learnLang, userLang, description);
+            const neoCollection = await this.API.createCollection(name.trim(), learnLang, userLang, description.trim());
             if(neoCollection.id){
                 this.UIStore.$patch((state) => {
                     state.collections.push(neoCollection);
@@ -455,9 +455,9 @@ export class UIActions implements IUIActions{
 
     addWordToCollection = async (neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord> => {
         const neoWordRes = await this.API.addNeoWord({
-            word: neoWord,
-            transcription: neoTranscription,
-            foreignWord: neoForeignWord,
+            word: neoWord.trim(),
+            transcription: neoTranscription.trim(),
+            foreignWord: neoForeignWord.trim(),
             collectionId: collectionId
         });
         const addedWord:TWord = {
