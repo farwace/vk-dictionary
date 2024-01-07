@@ -30,7 +30,7 @@
             <q-btn
                 rounded
                 color="primary"
-                @click="isStart = true"
+                @click="$emit('started')"
             >
               <span v-html="t('Training.Start')"></span>
             </q-btn>
@@ -53,11 +53,12 @@
 
   const {t} = useI18n() as {t:TranslateFunction};
 
-  const isStart = ref<boolean>(false);
+  const emits = defineEmits(['started']);
 
   const props = defineProps<{
     trainingName: string,
     isAll: boolean,
+    isStart: boolean
   }>();
 
 

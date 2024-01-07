@@ -2,6 +2,8 @@
   <training-choose-translate-component
       :training-name="t('Training.WordToTranslate')"
       :is-all="isAll"
+      :is-start="isStart"
+      @started="isStart = true"
   >
     <template v-slot:top>
       <div>
@@ -9,7 +11,7 @@
           {{ stepWord.word }}
         </div>
         <div v-if="isAll">
-          <ResultStarsScreen :value="getResultPercent()!"/>
+          <ResultStarsScreen :value="getResultPercent() || 0"/>
         </div>
       </div>
     </template>
@@ -27,12 +29,14 @@
             {{getResultMessage()}}
           </div>
           <div v-if="showCountRightAnswers" class="animated fadeInLeft">
-            Правильных ответов: {{countRightAnswers}}<br/>
+            {{ parseInt((getResultPercent() || 0).toString()) }} % <span v-html="t('Training.Results.RightAnswers')"></span>
           </div>
           <div v-if="showCountRightInRowAnswers && countRightInRowAnswers > 1" class="animated fadeInLeft">
-            Из них подряд: {{countRightInRowAnswers}}<br/>
+            {{countRightInRowAnswers}} <span v-html="t('Training.Results.RightRowAnswers')"></span>
           </div>
-          <!-- TODO: АНИМИРОВАТЬ, ДОБАВИТЬ ИКОНКУ В ЗАВИСИМОСТИ ОТ РЕЗУЛЬТАТА, БРАТЬ ТЕКСТ ИЗ ЛАНГОВ, ДОБАВИТЬ КНОПКУ "ЕЩЕ РАЗ" -->
+          <div v-if="showRestartButton" class="animated fadeIn q-mt-sm">
+            <q-icon name="mdi-replay" class="replay" @click="doReplay"></q-icon>
+          </div>
         </div>
       </div>
     </template>
@@ -43,7 +47,7 @@
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {inject, onMounted, ref, watch} from "vue";
+  import {inject, onBeforeUnmount, onMounted, ref, watch} from "vue";
   import TrainingChooseTranslateComponent from "@/components/Pages/Trainings/TrainingChooseTranslateComponent.vue";
   import {TWord} from "@/classes/Pinia/UIStore/TWord";
   import {useQuasar} from "quasar";
@@ -58,6 +62,7 @@
 
   const {
     trainingWords,
+    trainingCollections,
   } = storeToRefs(UIStore());
 
   onMounted(() => {
@@ -76,6 +81,8 @@
   const canAnswer = ref<boolean>(true);
 
   const isAll = ref<boolean>(false);
+  const isStart = ref<boolean>(false);
+
   const countRightAnswers = ref<number>(0);
   const countFaultAnswers = ref<number>(0);
   const countRightInRowAnswers = ref<number>(0);
@@ -86,6 +93,8 @@
   const showCountRightAnswers = ref<boolean>(false);
   const showCountRightInRowAnswers = ref<boolean>(false);
   const showCountFaultAnswers = ref<boolean>(false);
+  const showRestartButton = ref<boolean>(false);
+
 
   const doChooseValue = (answer?:TWord) => {
     if(!canAnswer.value){
@@ -138,7 +147,6 @@
       }, delayTime);
     }
     else{
-      //todo: РЕКЛАМА!
 
       setTimeout(() => {
         failAnswerId.value = undefined;
@@ -160,6 +168,10 @@
       setTimeout(() => {
         showCountFaultAnswers.value = true;
       }, delayTime + 1500);
+      setTimeout(() => {
+        showRestartButton.value = true;
+      }, delayTime + 1500);
+
 
     }
 
@@ -253,6 +265,37 @@
     }
   });
 
+  const doReplay = () => {
+    UI?.showBetweenScreenAd();
+    $q.loading.show({
+      delay: 800
+    })
+    UI?.updateTrainingWords(trainingCollections.value).then(() => {
+      countRightAnswers.value = 0;
+      countFaultAnswers.value = 0;
+      countRightInRowAnswers.value = 0;
+      tmpCountRightInRowAnswers.value = 0;
+
+      showCountRightAnswers.value = false;
+      showCountRightInRowAnswers.value = false;
+      showCountFaultAnswers.value = false;
+      showRestartButton.value = false;
+      showResultTable.value = false;
+
+      isStart.value = false;
+      isAll.value = false;
+      fillWordsForRepeat();
+      doChooseValue();
+      $q.loading.hide();
+    }).catch(() => {
+      $q.loading.hide();
+    })
+
+  }
+
+  onBeforeUnmount(() => {
+    UI?.showBetweenScreenAd();
+  })
 
 
 </script>
@@ -285,5 +328,14 @@
     font-size: 1rem;
     min-height: 200px;
     text-align: center;
+  }
+  .replay{
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: transform .3s ease-out;
+    will-change: transform;
+    &:hover{
+      transform: scale3d(1.5, 1.5, 1.5);
+    }
   }
 </style>

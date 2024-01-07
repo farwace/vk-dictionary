@@ -120,6 +120,12 @@
     }
   }
 
+  .loading-screen{
+    .loading-text{
+      color: $white;
+    }
+  }
+
   --swiper-pagination-bullet-width: 10px;
   --swiper-pagination-bullet-height: 10px;
 }
@@ -163,4 +169,9 @@
   display: inline-block;
   padding: 0 6px;
   cursor: pointer;
+  transition: transform .3s ease-out;
+  will-change: transform;
+  &:hover{
+    transform: scale3d(1.2, 1.2, 1.2);
+  }
 }

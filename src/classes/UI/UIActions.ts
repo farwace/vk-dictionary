@@ -527,4 +527,10 @@ export class UIActions implements IUIActions{
     getApi(){
         return this.API;
     }
+
+    showBetweenScreenAd = async () => {
+        console.log('>>> Тут будет реклама')
+        //todo: показать рекламу
+        return;
+    }
 }
