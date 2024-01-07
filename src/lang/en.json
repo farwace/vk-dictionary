@@ -2,6 +2,168 @@
   "Launch":{
     "error": "Application launch error",
     "errorLaunch": "The application could not be initialized. Restart the app or try again later",
-    "errorGetUser": "User information could not be retrieved. Restart the app or try again later"
+    "errorGetUser": "User information could not be retrieved. Restart the app or try again later",
+    "welcomeSlides": {
+      "1": {
+        "title": "Add collections of words",
+        "subtitle": "Add words for learning and further training"
+      },
+      "2": {
+        "title": "Fill in your words",
+        "subtitle": "Group the words into sets for ease of use"
+      },
+      "3": {
+        "title": "Use transcription",
+        "subtitle": "Transcription is disabled by default, but you can enable it in the settings"
+      },
+      "4": {
+        "title": "Practice",
+        "subtitle": "Choose sets of words to practice and repeat while playing!"
+      },
+      "5": {
+        "title": "Share sets with your friends",
+        "subtitle": "It's easier to learn together!"
+      }
+    },
+    "Loading": "Loading"
+  },
+  "ChooseLanguageDialog": {
+    "Title": "Your native language",
+    "WantLearn": "The language to learn"
+  },
+  "ProfileSettingsDialog": {
+    "Title": "Settings",
+    "WriteDeveloper": "Write to the developer",
+    "ShowTutorial": "View the instructions",
+    "UseTranscription": "Use transcription in the dictionary"
+  },
+  "HomePage": {
+    "NoHaveCollections": "Your dictionary is still empty.",
+    "UCanAddNewCollection": "You can create your own set of words",
+    "UCanAddFromSystemCollections": "or add one of the suggested collections:",
+    "AddCollection":"Add a dictionary",
+    "MyCollections": "My Word collections"
+  },
+  "AddCollection": {
+    "Title": "A new collection",
+    "LabelName": "Title",
+    "HintName": "The name of the set of words",
+    "EmptyName": "Required to be filled in",
+    "LabelDesc": "Description",
+    "HintDesc": "Description of a set of words",
+    "LongDesc": "Description is too long (max. 255 characters)",
+    "LongName": "The title is too long (max. 255 characters)",
+    "Save": "Save",
+    "EmptyNameError": "The \"Title\" field is required"
+  },
+  "Common":{
+    "Errors": {
+      "UnknownError": "An unknown error has occurred. Try again"
+    }
+  },
+  "Collection": {
+    "Title": "",
+    "Search": "Search",
+    "Word": "Word",
+    "Translation": "Translation",
+    "Transcription": "Transcription",
+    "NoOneWord": "There is nothing yet.",
+    "AddWords": "Add new words to the dictionary",
+    "NotFoundWords": "Nothing was found",
+    "NeoWord": "A new word",
+    "EditMode": "Ed.",
+    "EditWordTitle": "Edit a word",
+    "EditCollectionTitle": "Edit a collection of words",
+    "EmptyWord": "Required to fill in",
+    "LongWord": "The value is too long (max 255 characters)",
+    "Training": "Workout",
+    "Edit": "Edit",
+    "Remove": "Remove",
+    "ConfirmRemove": "Do you really want to delete a collection of words?",
+    "ConfirmRemoveText": "The collection of words will be deleted and it will be impossible to restore it",
+    "AddToMyCollections": "Add to my collections",
+    "SomeOneShareCollection": "A collection of words has been shared with you",
+    "CollectionHasBeenAdded": "This collection has been added to the list of your sets"
+  },
+  "Training": {
+    "doTraining": "Train",
+    "ChooseTitle": "Workout",
+    "Collection": "Collection",
+    "Collections": "Collections",
+    "AllWords": "All words",
+    "WordToTranslate": "Word - Translation",
+    "TranslateToWord": "Translation - Word",
+    "MakeFromLetters": "A Word of Letters",
+    "WriteWord": "Write the word",
+    "MatchTheWords": "Match the words",
+    "LowWordsCount": "There are not enough words to practice. Add more words or select other sets and try again",
+    "Start": "Start",
+    "Results": {
+      "99": "Excellent! You did a great job. Keep up the good work!",
+      "90": "Great! You have demonstrated an excellent result!",
+      "80": "Wonderful! You're clearly making progress. Keep it up !",
+      "70": "Decent! There are some things that can be improved, but you're on the right track.",
+      "60": "Good result! Your efforts are visible, and they bear fruit. Keep up the good work!",
+      "50": "Not bad! You're making progress, but there's still room for improvement. Keep practicing!",
+      "49": "It can be even better. Don't stop, and you will achieve more.",
+      "RightAnswers": "Correct answers",
+      "RightRowAnswers": "Correct answers in a row!"
+
+    }
+  },
+  "Messages": {
+    "CollectionHasBennRemoved": "The collection of words was successfully deleted",
+    "WordHasBeenAdded": "A new word has been successfully added to the dictionary",
+    "WordHasBeenRemoved": "The word was successfully deleted",
+    "CollectionHasBeenUpdated": "The collection of words has been successfully changed",
+    "WordHasBeenUpdated": "The word has been successfully changed"
+  },
+  "Errors": {
+    "CollectionDetailNotIsAllRight": "The training set could not be loaded. Try again.",
+    "CollectionDetailErrorGetWords": "Failed to load training words from a set of words. Try again.",
+    "TrainingNoCollectionInQuery": "It was not possible to get sets of words for training. Try again",
+    "TrainingLowWords": "There are not enough words to start a workout.",
+    "GetTrainingWordsError": "I couldn't get the words to practice. Try again",
+    "TrainingTypeError": "The training session could not be uploaded. Try again",
+    "WordCanNotBeEmpty": "Fill in the word",
+    "TranscriptionCanNotBeEmpty": "Fill out the transfer"
+  },
+  "faq": {
+    "title": "Mini-tutorial",
+    "addWords": {
+      "title": "How do I add words?",
+      "step1": "You need to create a set of words",
+      "step2": "Fill in the word and press \"Enter\""
+    },
+    "removeWord": {
+      "title": "How do I delete a word?",
+      "step1": "On the typing page, turn on edit mode and click on the delete word icon"
+    },
+    "selectWordsForTraining": {
+      "title": "How do I choose sets of words for training?",
+      "step1": "Click \"train\" on the home screen or on the word set page",
+      "step2": "Click on the list of collections",
+      "step3": "Choose the right training collections"
+    },
+    "howToDeleteCollection": {
+      "title": "How do I delete a collection of words?",
+      "step1": "On the set page, turn on edit mode and click on the \"Edit\" button",
+      "step2": "Then click \"Delete\" and confirm the deletion"
+    },
+    "howToEnableTranscription": {
+      "title": "How do I enable transcription?",
+      "step1": "Click on your avatar",
+      "step2": "Click on the switch \"Use transcription\""
+    },
+    "howToChangeLanguage": {
+      "title": "How do I change the language?",
+      "step1": "Click on your avatar",
+      "step2": "Click on the language flag icon and select a different value"
+    },
+
+    "howToShare": {
+      "title": "How do I share a set of words?",
+      "step1": "Go to the word set page and click on the \"share\" icon"
+    }
   }
 }
