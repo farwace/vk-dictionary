@@ -8,10 +8,10 @@
           :duration="800"
       >
         <div>
-          <span v-if="!isStart || isAll">
+          <span v-if="!isStart">
             {{ props.trainingName }}
           </span>
-          <div v-if="isStart && !isAll">
+          <div v-if="isStart">
             <slot name="top"></slot>
           </div>
         </div>

@@ -19,6 +19,20 @@ export class SoundActions implements ISoundActions{
         app.provide('SOUND', this);
     }
 
+    stopAll(){
+        this.stepSound.currentTime = 0;
+        this.stepSound.pause();
+
+        if(this.successSound){
+            this.successSound.currentTime = 0;
+            this.successSound.pause();
+        }
+        if(this.faultSound){
+            this.faultSound.currentTime = 0;
+            this.faultSound.pause();
+        }
+    }
+
     loadForTraining() {
         this.successSound = new Audio('/assets/audio/success.mp3');
         this.faultSound = new Audio('/assets/audio/fault.mp3');
@@ -27,12 +41,15 @@ export class SoundActions implements ISoundActions{
         this.faultSound.load();
     }
     playStep() {
+        this.stopAll();
         this.stepSound?.play();
     }
     playSuccess() {
+        this.stopAll();
         this.successSound?.play();
     }
     plyFault() {
+        this.stopAll();
         this.faultSound?.play();
     }
 }

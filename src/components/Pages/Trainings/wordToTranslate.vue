@@ -5,8 +5,11 @@
   >
     <template v-slot:top>
       <div>
-        <div v-if="stepWord" class="original-word animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer}">
+        <div v-if="stepWord && !isAll" class="original-word animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer}">
           {{ stepWord.word }}
+        </div>
+        <div v-if="isAll">
+          <ResultStarsScreen :value="getResultPercent()!"/>
         </div>
       </div>
     </template>
@@ -20,10 +23,16 @@
           </div>
         </div>
         <div v-else class="result-table">
+          <div v-if="showResultTable" class="animated fadeInLeft q-mb-md">
+            {{getResultMessage()}}
+          </div>
+          <div v-if="showCountRightAnswers" class="animated fadeInLeft">
+            Правильных ответов: {{countRightAnswers}}<br/>
+          </div>
+          <div v-if="showCountRightInRowAnswers && countRightInRowAnswers > 1" class="animated fadeInLeft">
+            Из них подряд: {{countRightInRowAnswers}}<br/>
+          </div>
           <!-- TODO: АНИМИРОВАТЬ, ДОБАВИТЬ ИКОНКУ В ЗАВИСИМОСТИ ОТ РЕЗУЛЬТАТА, БРАТЬ ТЕКСТ ИЗ ЛАНГОВ, ДОБАВИТЬ КНОПКУ "ЕЩЕ РАЗ" -->
-          Правильных ответов: {{countRightAnswers}}<br/>
-          Из них подряд: {{countRightInRowAnswers}}<br/>
-          Неправильных ответов: {{countFaultAnswers}}<br/>
         </div>
       </div>
     </template>
@@ -40,6 +49,7 @@
   import {useQuasar} from "quasar";
   import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
 
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
@@ -55,6 +65,9 @@
     doChooseValue();
   });
 
+  const delayTime = 550;
+  const trainingCnt = 20;
+
   const stepWord = ref<TWord>();
   const stepVariants = ref<TWord[]>();
   const rightAnswerId = ref<number>();
@@ -69,6 +82,11 @@
   const tmpCountRightInRowAnswers = ref<number>(0);
 
 
+  const showResultTable = ref<boolean>(false);
+  const showCountRightAnswers = ref<boolean>(false);
+  const showCountRightInRowAnswers = ref<boolean>(false);
+  const showCountFaultAnswers = ref<boolean>(false);
+
   const doChooseValue = (answer?:TWord) => {
     if(!canAnswer.value){
       return;
@@ -77,7 +95,7 @@
     if(answer){
       setTimeout(() => {
         isStepAnswer.value = true;
-      }, 650);
+      }, delayTime - 150);
 
       if(((answer.id == stepWord.value?.id) || ( answer.word.toLowerCase() == stepWord.value?.word.toLowerCase() ))){
         UI?.addWordExperience(stepWord!.value!.id!, 3);
@@ -117,7 +135,7 @@
         stepVariants.value = shuffleArray(chooseArray);
 
         canAnswer.value = true;
-      }, 800);
+      }, delayTime);
     }
     else{
       //todo: РЕКЛАМА!
@@ -128,17 +146,65 @@
         isStepAnswer.value = false;
         canAnswer.value = true;
         isAll.value = true;
-      }, 800)
+      }, delayTime)
+
+      setTimeout(() => {
+        showResultTable.value = true;
+      }, 300)
+      setTimeout(() => {
+        showCountRightAnswers.value = true;
+      }, delayTime + 800);
+      setTimeout(() => {
+        showCountRightInRowAnswers.value = true;
+      }, delayTime + 1100);
+      setTimeout(() => {
+        showCountFaultAnswers.value = true;
+      }, delayTime + 1500);
 
     }
 
   }
 
 
+
+  const getResultPercent = () => {
+    if(!(countRightAnswers.value && trainingCnt)){
+      return undefined;
+    }
+    return countRightAnswers.value * 100 / trainingCnt;
+  }
+
+  const getResultMessage = () => {
+    const rightPercent = getResultPercent();
+    if(!rightPercent){
+      return '';
+    }
+
+    if(rightPercent >= 99){
+      return t('Training.Results.99')
+    }
+    if(rightPercent >= 90){
+      return t('Training.Results.90')
+    }
+    if(rightPercent >= 80){
+      return t('Training.Results.80')
+    }
+    if(rightPercent >= 70){
+      return t('Training.Results.70')
+    }
+    if(rightPercent >= 60){
+      return t('Training.Results.60')
+    }
+    if(rightPercent >= 50){
+      return t('Training.Results.50')
+    }
+    return t('Training.Results.49');
+  }
+
   const wordsForRepeat = ref<TWord[]>();
 
   const fillWordsForRepeat = () => {
-    wordsForRepeat.value = fillRepeatArray(trainingWords!.value!, 15);
+    wordsForRepeat.value = fillRepeatArray(trainingWords!.value!, trainingCnt);
   }
 
   const getRandomWordForTraining = () => {
@@ -163,9 +229,9 @@
 
 
   const fillRepeatArray = (arr:any[], count:number) => {
-    let result = arr.slice(0, 15);
+    let result = arr.slice(0, count);
     while (result.length < count) {
-      result = result.concat(arr.slice(0, 15 - result.length));
+      result = result.concat(arr.slice(0, count - result.length));
     }
     return result;
   }
@@ -216,6 +282,8 @@
     color: red!important;
   }
   .result-table{
-
+    font-size: 1rem;
+    min-height: 200px;
+    text-align: center;
   }
 </style>
