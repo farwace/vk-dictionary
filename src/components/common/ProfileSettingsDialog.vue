@@ -23,7 +23,7 @@
                   :disable="isLoading"
               />
               <div class="q-mt-md">
-                <a href="#" class="link" @click.prevent="doLogger" >
+                <a href="#" class="link" @click.prevent="router.push({name: 'faq'})" >
                   {{ t!('ProfileSettingsDialog.ShowTutorial') }}
                 </a>
               </div>
@@ -64,8 +64,7 @@
   const {
     user,
     availableLanguages,
-    isLoading,
-    launchParams
+    isLoading
   } = storeToRefs(UIStore());
 
   const UI = inject<IUIActions>('UI');
@@ -100,12 +99,7 @@
 
   watch(transcription, (neoVal) => {
     UI?.setTranscription(neoVal).then();
-  });
-
-  const doLogger = () => {
-    //router.push({name: 'faq'})
-    console.log(launchParams?.value);
-  }
+  })
 
 </script>
 
