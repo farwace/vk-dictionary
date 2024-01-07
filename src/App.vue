@@ -193,6 +193,7 @@
 
       });
       let neoLang: "ru" | "en" = 'ru';
+      console.log(launchParams?.value);
       if(launchParams?.value?.vk_language){
         if(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']){neoLang = 'en';}
       }
