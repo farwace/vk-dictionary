@@ -81,9 +81,6 @@
     if(neoVal){
       if(user.value.isNew){
         UI?.showWelcomeSlides({
-          /*TODO: СДЕЛАТЬ КРАСИВЫЕ СЛАЙДЫ И ОПИСАТЬ ЧТО ДЕЛАТЬ! https://dev.vk.com/ru/mini-apps/development/information-screens
-                  Вынести эти слайды в json файлы, подгружать ассинхронно и вынести в отдельную функцию что ли. В окне настроек дать возможность посмотреть инструкцию еще раз...
-          * */
           slides: [
             {
               media: {

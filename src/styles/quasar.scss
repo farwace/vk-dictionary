@@ -58,6 +58,11 @@
       box-shadow: 0 0 20px rgba(44, 44, 44, 0.2);
     }
   }
+
+  .faq-page .question{
+    background-color: rgb(26, 26, 26);
+  }
+
   --swiper-pagination-color: rgb(255,255,255);
   --swiper-pagination-bullet-inactive-color: rgb(133, 133, 133);
   --swiper-scrollbar-drag-bg-color: rgb(105, 105, 105);
@@ -128,6 +133,10 @@
 
   --swiper-pagination-bullet-width: 10px;
   --swiper-pagination-bullet-height: 10px;
+
+  .faq-page .question{
+    background-color: rgb(227, 227, 227);
+  }
 }
 
 .close-icon{
