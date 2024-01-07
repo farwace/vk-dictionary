@@ -22,8 +22,8 @@
                   :label="t('ProfileSettingsDialog.UseTranscription')"
                   :disable="isLoading"
               />
-              <div class="q-mt-sm">
-                <a href="#" class="link" @click.prevent="router.push({name: 'faq'})" >
+              <div class="q-mt-md">
+                <a href="#" class="link" @click.prevent="doLogger" >
                   {{ t!('ProfileSettingsDialog.ShowTutorial') }}
                 </a>
               </div>
@@ -64,7 +64,8 @@
   const {
     user,
     availableLanguages,
-    isLoading
+    isLoading,
+    launchParams
   } = storeToRefs(UIStore());
 
   const UI = inject<IUIActions>('UI');
@@ -99,7 +100,12 @@
 
   watch(transcription, (neoVal) => {
     UI?.setTranscription(neoVal).then();
-  })
+  });
+
+  doLogger = () => {
+    //router.push({name: 'faq'})
+    console.log(launchParams?.value);
+  }
 
 </script>
 
