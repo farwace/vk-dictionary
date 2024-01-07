@@ -141,7 +141,11 @@
         }
       }
       if(i18n.global.locale.value && i18n.global.locale.value != neoLang){
+        console.log('I CHANGE LANGUAGE');
         i18n.global.locale.value = neoLang;
+      }
+      else{
+        console.log('I NO CHANGE LANGUAGE', neoLang);
       }
     }
   });
