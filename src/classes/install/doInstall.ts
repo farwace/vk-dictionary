@@ -10,7 +10,7 @@ import {UIActions} from "@/classes/UI/UIActions";
 import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {SystemActions} from "@/classes/System/SystemActions";
 import {createRouter, createWebHistory} from "vue-router";
-
+import Vue3Lottie from 'vue3-lottie'
 import HomePage from "@/components/Pages/HomePage.vue";
 import CollectionDetail from "@/components/Pages/CollectionDetail.vue";
 import FAQ from "@/components/Pages/FAQ.vue";
@@ -24,6 +24,7 @@ export class doInstall{
     public static run = async (app: App)=> {
         app.use(Quasar, quasarUserOptions);
         app.use(createPinia());
+        app.use(Vue3Lottie);
         doInstall.addRoutes(app);
         const container = new Container();
         container.bind<IUserActionsInterface>('UserActions').to(UserActions);
