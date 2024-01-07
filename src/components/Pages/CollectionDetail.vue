@@ -75,15 +75,15 @@
             <tr class="add-word">
               <td>
                 <q-input
-                    ref="neoWordInput"
                     @keydown.enter.stop="addNeoWord"
-                    v-model="neoWord"
+                    v-model="neoForeignWord"
                     outlined dense
-                    :label="t('Collection.NeoWord')"
+                    :label="t('Collection.Translation')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
+
               <td v-if="user.displayTranscription">
                 <q-input
                     @keydown.enter.stop="addNeoWord"
@@ -94,16 +94,19 @@
                     :rules="[val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
+
               <td>
                 <q-input
+                    ref="neoWordInput"
                     @keydown.enter.stop="addNeoWord"
-                    v-model="neoForeignWord"
+                    v-model="neoWord"
                     outlined dense
-                    :label="t('Collection.Translation')"
+                    :label="t('Collection.NeoWord')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
+
               <td style="width: 10px;">
                 <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
                   <q-icon name="mdi-content-save" />
@@ -114,18 +117,18 @@
 
           <template v-slot:bottom-row>
             <tr class="add-word">
+
               <td>
                 <q-input
-                    ref="neoWordInput"
-                    outlined
-                    dense
                     @keydown.enter.stop="addNeoWord"
-                    v-model="neoWord"
-                    :label="t('Collection.NeoWord')"
+                    v-model="neoForeignWord"
+                    outlined dense
+                    :label="t('Collection.Translation')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
+
               <td v-if="user.displayTranscription">
                 <q-input
                     outlined
@@ -139,14 +142,17 @@
               </td>
               <td>
                 <q-input
+                    ref="neoWordInput"
+                    outlined
+                    dense
                     @keydown.enter.stop="addNeoWord"
-                    v-model="neoForeignWord"
-                    outlined dense
-                    :label="t('Collection.Translation')"
+                    v-model="neoWord"
+                    :label="t('Collection.NeoWord')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
+
               <td style="width: 10px;" v-if="rows.length < 1 || isEditMode">
                 <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
                   <q-icon name="mdi-content-save" />
@@ -256,7 +262,7 @@
       name: 'word',
       required: true,
       label: t('Collection.Word'),
-      align: 'left' as 'left',
+      align: 'right' as 'right',
       field: (row:TWord) => {return row.word},
       sortable: true
     };
@@ -269,7 +275,7 @@
     const translateCol = {
       name: 'translate',
       label: t('Collection.Translation'),
-      align: 'right' as "right",
+      align: 'left' as "left",
       field: (row:TWord) => {return row.foreignWord},
       sortable: true
     };
@@ -279,11 +285,12 @@
       label: '',
       field: '',
     }
-    const cols:QTableProps['columns'] = [nameCol];
+    const cols:QTableProps['columns'] = [];
+    cols.push(translateCol);
     if(user.value.displayTranscription){
       cols.push(transcriptionCol);
     }
-    cols.push(translateCol);
+    cols.push(nameCol);
     if(isEditMode.value || rows.value.length < 1){
       cols.push(settingsCol);
     }

@@ -73,7 +73,7 @@
       name: 'word',
       required: true,
       label: t('Collection.Word'),
-      align: 'left' as 'left',
+      align: 'right' as 'right',
       field: (row:TWord) => {return row.word},
       sortable: true
     };
@@ -86,16 +86,17 @@
     const translateCol = {
       name: 'translate',
       label: t('Collection.Translation'),
-      align: 'right' as "right",
+      align: 'left' as "left",
       field: (row:TWord) => {return row.foreignWord},
       sortable: true
     };
 
-    const cols:QTableProps['columns'] = [nameCol];
+    const cols:QTableProps['columns'] = [];
+    cols.push(translateCol);
     if(user.value.displayTranscription){
       cols.push(transcriptionCol);
     }
-    cols.push(translateCol);
+    cols.push(nameCol);
 
     return cols;
   });
@@ -149,6 +150,10 @@
     &__subtitle{
       margin-bottom: 20px;
     }
-
+    :deep(.q-table){
+      th{
+        white-space: nowrap;
+      }
+    }
   }
 </style>
