@@ -131,7 +131,14 @@
       }
       let neoLang: "ru" | "en" = 'ru';
       if(launchParams?.value?.vk_language){
-        if(launchParams?.value?.vk_language in ['en', 'be', 'pt', 'es']){
+        const launchLang = launchParams?.value?.vk_language;
+        console.log('>>> launchLang', launchLang);
+        if(
+            launchLang == 'en' ||
+            launchLang == 'be' ||
+            launchLang == 'pt' ||
+            launchLang == 'es'
+        ){
           neoLang = 'en';
         }
         else{
