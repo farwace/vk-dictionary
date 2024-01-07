@@ -178,5 +178,6 @@
 
 .q-dialog__inner--minimized{
   padding-top: 52px;
+  padding-top: (calc(env(safe-area-inset-top, 0) + 52px));
   padding-bottom: 52px;
 }
