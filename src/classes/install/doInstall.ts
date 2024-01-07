@@ -24,7 +24,7 @@ export class doInstall{
     public static run = async (app: App)=> {
         app.use(Quasar, quasarUserOptions);
         app.use(createPinia());
-        app.use(Vue3Lottie);
+        app.use(Vue3Lottie, {name: 'Vue3Lottie'});
         doInstall.addRoutes(app);
         const container = new Container();
         container.bind<IUserActionsInterface>('UserActions').to(UserActions);
