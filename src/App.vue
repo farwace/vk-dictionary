@@ -149,6 +149,11 @@
       const mc = new Hammer(body);
       mc.get('pan').set({direction: Hammer.DIRECTION_HORIZONTAL});
       mc.on('panleft panright', (swipeEvent:any) => {
+        const isEditModePage = document.querySelectorAll('.page.edit-mode');
+        if(isEditModePage.length > 0){
+          return;
+        }
+
         if(!swipeEvent.isFinal || swipeEvent.pointerType == 'mouse'){
           return;
         }
@@ -156,7 +161,10 @@
         if(target && target.closest('.swiper')){
           return;
         }
-        if(swipeEvent.distance > 100){
+        if(target && target.closest('.q-dialog')){
+          return;
+        }
+        if(swipeEvent.distance > 150){
           if(swipeEvent.additionalEvent == 'panleft'){
             navigateSubject.next(1);
           }

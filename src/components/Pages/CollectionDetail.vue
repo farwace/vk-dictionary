@@ -1,5 +1,5 @@
 <template>
-  <div class="page" :style="contentHeight">
+  <div class="page" :style="contentHeight" :class="{'edit-mode':isEditMode}">
     <q-scroll-area style="height: 100%">
       <div class="page-container">
 
