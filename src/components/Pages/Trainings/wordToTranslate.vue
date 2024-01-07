@@ -72,6 +72,7 @@
 
   const delayTime = 550;
   const trainingCnt = 20;
+  const addedExperience = 3;
 
   const stepWord = ref<TWord>();
   const stepVariants = ref<TWord[]>();
@@ -107,7 +108,7 @@
       }, delayTime - 150);
 
       if(((answer.id == stepWord.value?.id) || ( answer.word.toLowerCase() == stepWord.value?.word.toLowerCase() ))){
-        UI?.addWordExperience(stepWord!.value!.id!, 3);
+        UI?.addWordExperience(stepWord!.value!.id!, addedExperience);
         SOUND?.playSuccess();
         countRightAnswers.value += 1;
         rightAnswerId.value = answer.id;

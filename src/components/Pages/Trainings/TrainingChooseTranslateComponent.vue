@@ -25,8 +25,8 @@
           leave-active-class="animated fadeOut"
           :duration="800"
       >
-        <div>
-          <div v-if="!isStart && !isAll">
+        <div class="w-100">
+          <div v-if="!isStart && !isAll" class="w-100">
             <q-btn
                 rounded
                 color="primary"
@@ -81,6 +81,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
     }
     &__title{
       flex-basis: 40%;
@@ -89,6 +90,10 @@
     &__body{
       flex-basis: 60%;
       height: 60%;
+      width: 100%;
+    }
+    .w-100{
+      width: 100%;
     }
   }
 </style>
