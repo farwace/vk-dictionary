@@ -108,6 +108,9 @@
         &__title, &__desc{
           padding: 6px;
         }
+        &__desc{
+          min-height: 67px;
+        }
 
       }
 
