@@ -533,16 +533,16 @@ export class UIActions implements IUIActions{
         return this.API;
     }
 
-    showBetweenScreenAd = async () => {
-        bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
+    showBetweenScreenAd = async () => {//todo: вернуть код рекламы. проверил - всё работает...
+        /*bridge.send('VKWebAppShowNativeAds', { ad_format: EAdsFormats.INTERSTITIAL })
             .then((data) => {
 
             })
-            .catch((error) => { console.log(error); /* Ошибка */ });
-        return;
+            .catch((error) => { console.log(error); /!* Ошибка *!/ });
+        return;*/
     }
     showBannerAds = () => {
-        bridge.send('VKWebAppShowBannerAd', {
+        /*bridge.send('VKWebAppShowBannerAd', {
             banner_location: BannerAdLocation.BOTTOM,
             can_close: true
         })
@@ -554,6 +554,6 @@ export class UIActions implements IUIActions{
             .catch((error) => {
                 // Ошибка
                 console.log(error);
-            });
+            });*/
     }
 }
