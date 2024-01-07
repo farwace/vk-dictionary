@@ -77,18 +77,18 @@
       title: t('Training.TranslateToWord'),
       name: "translateToWord"
     },
-    {
-      title: t('Training.MatchTheWords'),
-      name: "matchTheWords"
-    },
-    {
-      title: t('Training.MakeFromLetters'),
-      name: "makeFromLetters"
-    },
-    {
-      title: t('Training.WriteWord'),
-      name: "writeWord"
-    },
+    // {
+    //   title: t('Training.MatchTheWords'),
+    //   name: "matchTheWords"
+    // },
+    // {
+    //   title: t('Training.MakeFromLetters'),
+    //   name: "makeFromLetters"
+    // },
+    // {
+    //   title: t('Training.WriteWord'),
+    //   name: "writeWord"
+    // },
   ];
 
   const collectionIds = ref<number[]>([]);

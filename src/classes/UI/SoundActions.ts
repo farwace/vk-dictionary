@@ -6,23 +6,17 @@ import {App} from "@vue/runtime-core";
 @injectable()
 export class SoundActions implements ISoundActions{
     private UIStore;
-    private stepSound: HTMLAudioElement;
     private successSound?: HTMLAudioElement;
     private faultSound?: HTMLAudioElement;
 
     constructor() {
         this.UIStore = UIStore();
-        this.stepSound = new Audio('/assets/audio/step.mp3');
-        this.stepSound.load();
     }
     install(app: App) {
         app.provide('SOUND', this);
     }
 
     stopAll(){
-        this.stepSound.currentTime = 0;
-        this.stepSound.pause();
-
         if(this.successSound){
             this.successSound.currentTime = 0;
             this.successSound.pause();
@@ -39,10 +33,6 @@ export class SoundActions implements ISoundActions{
 
         this.successSound.load();
         this.faultSound.load();
-    }
-    playStep() {
-        this.stopAll();
-        this.stepSound?.play();
     }
     playSuccess() {
         this.stopAll();
