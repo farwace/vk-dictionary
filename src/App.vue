@@ -181,7 +181,7 @@
         ).subscribe((value) => {
           doNavigate(value as number);
         });
-      const body = document.querySelector('body');
+      const body = document.querySelector('body')!;
       if(Hammer.defaults.cssProps.userSelect){
         /** @ts-ignore */
         delete Hammer.defaults.cssProps.userSelect;
@@ -204,7 +204,7 @@
         if(target && target.closest('.q-dialog')){
           return;
         }
-        if(swipeEvent.distance > 150){
+        if(swipeEvent.distance > 200){
           if(swipeEvent.additionalEvent == 'panleft'){
             navigateSubject.next(1);
           }
