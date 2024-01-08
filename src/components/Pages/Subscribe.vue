@@ -1,23 +1,23 @@
 <template>
   <div class="page" :style="contentHeight">
     <q-scroll-area style="height: 100%;">
-      <div class="page-container">
+      <div class="page-container subscription">
         <div v-if="!user.subscriptionExpired || new Date() > user.subscriptionExpired">
-          <div>Подписка скрывает всю рекламу в приложении.</div>
-          <div>
-            <div>
+          <div class="q-mb-sm" v-html="t('subscription.buyTitle')"></div>
+          <div v-if="launchParams?.vk_platform == 'mobile_iphone'" v-html="t('subscription.iosError')"></div>
+          <div v-if="launchParams?.vk_platform !== 'mobile_iphone'">
+            <div class="text-subtitle1" v-html="t('subscription.buySubtitle')"></div>
+            <div class="subscription__items">
               <q-btn @click="doSubscribe(7)">
-                Оформить на 7 дней
+                <q-icon color="pink-3" name="mdi-hand-heart-outline" class="q-mr-sm"/> {{t!('subscription.buy7')}}
               </q-btn>
-            </div>
-            <div>
+
               <q-btn @click="doSubscribe(30)">
-                Оформить на 30 дней
+                <q-icon color="pink-3" name="mdi-hand-heart-outline" class="q-mr-sm"/> {{t!('subscription.buy30')}}
               </q-btn>
-            </div>
-            <div>
+
               <q-btn @click="doSubscribe(90)">
-                Оформить на 90 дней
+                <q-icon color="pink-3" name="mdi-hand-heart-outline" class="q-mr-sm"/>  {{t!('subscription.buy90')}}
               </q-btn>
             </div>
           </div>
@@ -26,6 +26,9 @@
           <div v-if="user.subscriptionExpired">
             <div>{{t!('subscription.isActiveTo')}} {{getExpiredDate()}}</div>
           </div>
+        </div>
+        <div>
+          <Vue3Lottie animation-link="/assets/lottie/subscribe-page.json" style="width: 100%; max-width: 400px;"/>
         </div>
       </div>
     </q-scroll-area>
@@ -40,6 +43,7 @@
   import type {TranslateFunction} from "@/lang/TranslateFunction";
   import {inject} from "vue";
   import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  import {Vue3Lottie} from "vue3-lottie";
 
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
@@ -47,7 +51,8 @@
 
   const {
     contentHeight,
-    user
+    user,
+    launchParams
   } = storeToRefs(UIStore());
 
 
@@ -57,6 +62,7 @@
     });
     UI?.trySubscribe(days).then(() => {
       $q.loading.hide();
+      UI.updateUserInfo();
     }).catch(() => {
       $q.loading.hide();
     })
@@ -84,5 +90,14 @@
 
 </script>
 <style lang="scss" scoped>
-
+  .subscription{
+    text-align: center;
+  }
+  .subscription__items{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+  }
 </style>

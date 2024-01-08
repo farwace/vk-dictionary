@@ -172,7 +172,12 @@
   },
   "subscription": {
     "isActive": "Subscription is active",
-    "isActiveTo": "The subscription is active until"
-
+    "isActiveTo": "The subscription is active until",
+    "iosError": "Unfortunately, you can't make purchases on iOS devices in the VK app.<br/>\nA subscription purchased on PC or Android will be active on iOS, so you can purchase it through the Web version of the Vkontakte website!)",
+    "buySubtitle": "By purchasing a subscription, you help the development of the application :)",
+    "buyTitle": "The subscription hides all ads in the app.",
+    "buy7": "Subscribe for 7 days",
+    "buy30": "Subscribe for 30 days",
+    "buy90": "Subscribe for 90 days"
   }
 }

@@ -589,4 +589,16 @@ export class UIActions implements IUIActions{
             return false;
         }
     }
+
+    updateUserInfo = async () => {
+        const launchParams = this.UIStore.$state.launchParams;
+        if(launchParams){
+            const userRes = await this.API.getUserInfo(launchParams);
+            if(userRes?.id){
+                this.UIStore.$patch({
+                    user: userRes,
+                });
+            }
+        }
+    }
 }
