@@ -34,4 +34,5 @@ export interface IUIActions {
     updateTrainingWords(arCollections: number[]):Promise<void>;
     addWordExperience(wordId: number, count: number):Promise<void>;
     showBetweenScreenAd():Promise<void>;
+    trySubscribe(days:number):Promise<boolean>;
 }

@@ -29,7 +29,8 @@
               </div>
               <div class="q-mt-sm">
                 <a href="#" class="link" @click.prevent="router.push({name: 'subscribe'})" >
-                  {{ t!('ProfileSettingsDialog.HideAD') }}
+                  <span v-if="!user.subscriptionExpired || new Date() > user.subscriptionExpired " v-html="t('ProfileSettingsDialog.HideAD')"></span>
+                  <span v-else v-html="t('subscription.isActive')"></span>
                 </a>
               </div>
             </div>

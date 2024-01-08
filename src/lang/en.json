@@ -169,5 +169,10 @@
       "title": "How do I remove ads in the app?",
       "step1:": "For more information, see the \"Subscription\" section"
     }
+  },
+  "subscription": {
+    "isActive": "Subscription is active",
+    "isActiveTo": "The subscription is active until"
+
   }
 }

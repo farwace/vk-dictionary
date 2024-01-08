@@ -574,4 +574,19 @@ export class UIActions implements IUIActions{
                 console.log(error);
             });*/
     }
+
+    trySubscribe = async (days:number) => {
+        try {
+            const bridgeRes = await bridge.send('VKWebAppShowSubscriptionBox', {
+                action: 'create',
+                item: 'hideAD_'+days, // Идентификатор подписки в приложении
+            });
+            console.log('Покупка прошла успешно', bridgeRes);
+            return true;
+        }
+        catch (e){
+            console.log('Ошибка!', e);
+            return false;
+        }
+    }
 }
