@@ -17,6 +17,7 @@ import FAQ from "@/components/Pages/FAQ.vue";
 import Training from "@/components/Pages/Trainings/Training.vue";
 import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
 import {SoundActions} from "@/classes/UI/SoundActions";
+import Subscribe from "@/components/Pages/Subscribe.vue";
 //import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
@@ -51,6 +52,7 @@ export class doInstall{
             {name: 'collection', path: '/collection/:id', component: CollectionDetail},
             {name: 'faq', path: '/faq', component: FAQ},
             {name: 'training', path: '/training', component: Training},
+            {name: 'subscribe', path: '/subscribe', component: Subscribe},
         ];
 
         const router = createRouter({

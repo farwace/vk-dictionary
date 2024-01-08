@@ -27,6 +27,11 @@
                   {{ t!('ProfileSettingsDialog.ShowTutorial') }}
                 </a>
               </div>
+              <div class="q-mt-sm">
+                <a href="#" class="link" @click.prevent="router.push({name: 'subscribe'})" >
+                  {{ t!('ProfileSettingsDialog.HideAD') }}
+                </a>
+              </div>
             </div>
             <div class="write-to-developer">
               <div>

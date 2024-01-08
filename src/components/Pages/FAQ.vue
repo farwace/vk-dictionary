@@ -132,6 +132,19 @@
             </ul>
           </div>
         </div>
+        <div class="question">
+          <div class="question__title" @click="toggleQuestion" v-html="t('faq.howToRemoveAd.title')"></div>
+          <div class="question__body">
+            <ul>
+              <li>
+                <router-link to="subscribe">
+                  <div v-html="t('faq.howToRemoveAd.step1')"></div>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
       </div>
     </q-scroll-area>
   </div>

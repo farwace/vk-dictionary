@@ -35,6 +35,7 @@
     "Title": "Settings",
     "WriteDeveloper": "Write to the developer",
     "ShowTutorial": "View the instructions",
+    "HideAD": "Hide ads in the app",
     "UseTranscription": "Use transcription in the dictionary"
   },
   "HomePage": {
@@ -160,10 +161,13 @@
       "step1": "Click on your avatar",
       "step2": "Click on the language flag icon and select a different value"
     },
-
     "howToShare": {
       "title": "How do I share a set of words?",
       "step1": "Go to the word set page and click on the \"share\" icon"
+    },
+    "howToRemoveAd": {
+      "title": "How do I remove ads in the app?",
+      "step1:": "For more information, see the \"Subscription\" section"
     }
   }
 }
