@@ -62,11 +62,16 @@ export class UIActions implements IUIActions{
                                         this.cloneCollection(parseInt(tryingCloneId)).then((res) => {
                                             if(res.id){
                                                 this.UIStore.$patch((state) => {
-                                                    state.collections.unshift(res);
+                                                    //state.collections.unshift(res);
                                                     state.isReady = true;
                                                     state.appliedCollection = res.id as number;
                                                 });
 
+                                            }
+                                            else{
+                                                this.UIStore.$patch({
+                                                    isReady: true,
+                                                });
                                             }
                                         }).catch((e) => {
                                             this.UIStore.$patch({
@@ -198,7 +203,6 @@ export class UIActions implements IUIActions{
     }
 
     showWelcomeSlides(slides: ShowSlidesSheetRequest){
-        console.log('sendShowSLides')
         //todo: dev убрать для теста
         bridge.send('VKWebAppShowSlidesSheet', slides).then().catch();
     }
