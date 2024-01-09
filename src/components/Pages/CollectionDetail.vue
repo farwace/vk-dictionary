@@ -116,7 +116,7 @@
           </template>
 
           <template v-slot:bottom-row>
-            <tr class="add-word">
+            <tr class="add-word" v-if="isEditMode">
 
               <td>
                 <q-input
@@ -157,6 +157,51 @@
                 <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
                   <q-icon name="mdi-content-save" />
                 </q-btn>
+              </td>
+            </tr>
+            <tr v-else class="add-word">
+              <td :colspan="columns?.length">
+                <div class="bottom-row-items">
+                  <q-input
+                      class="item"
+                      @keydown.enter.stop="addNeoWord"
+                      v-model="neoForeignWord"
+                      outlined dense
+                      :label="t('Collection.Translation')"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                  />
+
+                  <q-input
+                      class="item"
+                      v-if="user.displayTranscription"
+                      outlined
+                      dense
+                      @keydown.enter.stop="addNeoWord"
+                      v-model="neoTranscription"
+                      :label="t('Collection.Transcription')"
+                      lazy-rules
+                      :rules="[val => val.length < 255 || t('Collection.LongWord')]"
+                  />
+
+                  <q-input
+                      class="item"
+                      ref="neoWordInput"
+                      outlined
+                      dense
+                      @keydown.enter.stop="addNeoWord"
+                      v-model="neoWord"
+                      :label="t('Collection.NeoWord')"
+                      lazy-rules
+                      :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                  />
+
+                  <div class="bottom-row-save">
+                    <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
+                      <q-icon name="mdi-content-save" />
+                    </q-btn>
+                  </div>
+                </div>
               </td>
             </tr>
           </template>
@@ -482,7 +527,7 @@
   }
   .add-word{
     td{
-      padding: 0 4px;
+      padding: 0 2px;
     }
     .q-field--with-bottom{
       padding-bottom: 0;
@@ -502,5 +547,23 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+  }
+
+  .bottom-row-items{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 2px;
+
+    .item{
+
+    }
+
+    .bottom-row-save{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
   }
 </style>
