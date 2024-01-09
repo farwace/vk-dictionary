@@ -556,7 +556,7 @@
     gap: 2px;
 
     .item{
-
+      flex-grow: 1;
     }
 
     .bottom-row-save{
@@ -564,6 +564,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      flex-basis: 50px;
     }
   }
 </style>
