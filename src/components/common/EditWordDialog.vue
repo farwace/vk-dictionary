@@ -16,6 +16,7 @@
               <q-input
                   autofocus
                   filled
+                  dense
                   v-model="neoWord"
                   :label="t('Collection.Word')+'*'"
                   lazy-rules
@@ -24,6 +25,7 @@
               <q-input
                   v-if="user.displayTranscription"
                   filled
+                  dense
                   v-model="neoTranscription"
                   :label="t('Collection.Transcription')"
                   lazy-rules
@@ -31,6 +33,7 @@
               />
               <q-input
                   filled
+                  dense
                   v-model="neoForeignWord"
                   :label="t('Collection.Translation')+'*'"
                   lazy-rules

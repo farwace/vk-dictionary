@@ -16,6 +16,7 @@
               <q-input
                   autofocus
                   filled
+                  dense
                   v-model="neoName"
                   :label="t('AddCollection.LabelName')+'*'"
                   lazy-rules
@@ -24,6 +25,8 @@
               <q-input
                   type="textarea"
                   filled
+                  dense
+                  rows="2"
                   v-model="neoDescription"
                   :label="t('AddCollection.LabelDesc')"
                   lazy-rules

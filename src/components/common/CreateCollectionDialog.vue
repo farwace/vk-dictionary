@@ -28,6 +28,7 @@
                   dense
                   type="textarea"
                   filled
+                  rows="2"
                   v-model="neoDesc"
                   :label="t('AddCollection.LabelDesc')"
 
