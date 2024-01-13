@@ -15,13 +15,13 @@
             </div>
             <div v-else class="text-center">
               <div class="copy-link">
-                <q-icon class="interface-btn" name="mdi-reload" @click="regenerateLink"></q-icon>
+                <q-icon :class="{disabled: isLoading}" class="interface-btn" name="mdi-reload" @click="regenerateLink"></q-icon>
                 <q-input outlined dense rounded v-model="shareUrl" readonly type="text"></q-input>
-                <q-icon class="interface-btn" name="mdi-content-copy" @click="copyLink"></q-icon>
-                <q-icon class="interface-btn" name="mdi-share-variant-outline" @click="shareLink"></q-icon>
+                <q-icon :class="{disabled: isLoading}" class="interface-btn" name="mdi-content-copy" @click="copyLink"></q-icon>
+                <q-icon :class="{disabled: isLoading}" class="interface-btn" name="mdi-share-variant-outline" @click="shareLink"></q-icon>
               </div>
               <div class="q-mt-lg">
-                <q-btn @click="removeLink">
+                <q-btn :disabled="isLoading" @click="removeLink">
                   <span v-html="t('share.closePermissions')"></span>
                   <q-icon class="interface-btn" color="negative" name="mdi-delete-forever-outline" ></q-icon>
                 </q-btn>
@@ -59,7 +59,6 @@
   const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 
   const {
-    user,
     isLoading
   } = storeToRefs(UIStore());
 
@@ -69,12 +68,12 @@
   const updateShareLink = (doClear:boolean = false):Promise<boolean> => {
     return new Promise((resolve) => {
       if(props.collection.id){
-        isLoading.value = true;
+        UI?.setLoading(true);
         UI?.updateShareLink(props.collection.id, doClear).then(() => {
-          isLoading.value = false;
+          UI?.setLoading(false);
           resolve(true);
         }).catch((e) => {
-          isLoading.value = false;
+          UI?.setLoading(false);
           resolve(false);
         });
       }
@@ -103,6 +102,9 @@
   });
 
   const regenerateLink = () => {
+    if(isLoading.value){
+      return;
+    }
     updateShareLink(false).then((res) => {
       if(res){
         $q.notify({
@@ -152,6 +154,7 @@
   }
 
   const removeLink = () => {
+
     updateShareLink(true).then((res) => {
       if(res){
         $q.notify({

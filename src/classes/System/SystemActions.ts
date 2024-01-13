@@ -19,6 +19,7 @@ export class SystemActions implements ISystemActions{
     private CAN_TOGGLE_TRANSCRIPTION:boolean = true;
     private CAN_REMOVE_WORD:boolean = true;
     private CAN_SEND_TRAINING:boolean = true;
+    private CAN_UPDATE_SHARE:boolean = true;
 
     constructor() {
         this.UIStore = UIStore();
@@ -317,17 +318,30 @@ export class SystemActions implements ISystemActions{
         }
     }
 
+
     updateShareLink = async (collectionId:number, clear: boolean):Promise<string> => {
         try {
+            if(!this.CAN_UPDATE_SHARE){
+                await this.timeout(1000);
+            }
+            this.CAN_UPDATE_SHARE = false;
+
             const fetchResult = await this.sendQuery('generateShareLink', {
                 collectionId: collectionId,
                 clear: clear
             });
+            this.delayCanUpdateShare();
             return await fetchResult.text();
         }
         catch (e){
             return '';
         }
+    }
+
+    private delayCanUpdateShare = () => {
+        this.timeout(1000).then(() => {
+            this.CAN_UPDATE_SHARE = true;
+        })
     }
 
     getCloneCollectionInfo = async (collectionOrShareId: number | string) => {
