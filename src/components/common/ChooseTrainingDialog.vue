@@ -102,6 +102,11 @@
     }) || [];
   });
 
+  const fillCurrentCollectionsFromSelected = (arIds: number[]) => {
+    currentCollections.value = collections.value.filter((tmpColl) => {
+      return arIds.indexOf(tmpColl.id || 0) >= 0;
+    });
+  }
 
   const fillCurrentCollections = () => {
     currentCollections.value = getCurrentCollections();
@@ -144,24 +149,38 @@
       component: ChooseCollectionsDialog,
       componentProps: {
         selectedCollections: currentCollectionsIds.value,
-        onCollectionsToggle: onCollectionToggle,
+      }
+    }).onOk((okResult) => {
+      if(okResult.selectedCollections){
+        const tmpSelectedCollections = Object.keys(okResult.selectedCollections).filter((collId) => {
+          return !!okResult.selectedCollections[collId];
+        });
+        if(tmpSelectedCollections.length > 0){
+          const selectedCollectionIds = tmpSelectedCollections.map((collId) => {
+            return parseInt(collId)
+          });
+          fillCurrentCollectionsFromSelected(selectedCollectionIds);
+        }
+        else{
+          fillCurrentCollections();
+        }
       }
     })
   }
 
-  const onCollectionToggle = (id:number, value: boolean) => {
-    if(!value){
-      currentCollections.value = currentCollections.value?.filter((currCol) => {
-        return currCol.id != id;
-      });
-      if(!currentCollections.value || currentCollections.value?.length < 1){
-        fillCurrentCollections();
-      }
-    }
-    if(value){
-      addCollectionToCurrentCollections(id);
-    }
-  }
+  // const onCollectionToggle = (id:number, value: boolean) => {
+  //   if(!value){
+  //     currentCollections.value = currentCollections.value?.filter((currCol) => {
+  //       return currCol.id != id;
+  //     });
+  //     if(!currentCollections.value || currentCollections.value?.length < 1){
+  //       fillCurrentCollections();
+  //     }
+  //   }
+  //   if(value){
+  //     addCollectionToCurrentCollections(id);
+  //   }
+  // }
 
   const addCollectionToCurrentCollections = (id: number) => {
     const arFindCollection = collections.value.filter((currCol) => {
@@ -169,7 +188,9 @@
     })
     if(arFindCollection && arFindCollection[0] && arFindCollection[0]['id']){
       if(currentCollections.value){
-        currentCollections.value.push(arFindCollection[0]);
+        if(currentCollections.value?.indexOf(arFindCollection[0]) < 0){
+          currentCollections.value.push(arFindCollection[0]);
+        }
       }
       else{
         currentCollections.value = [arFindCollection[0]];

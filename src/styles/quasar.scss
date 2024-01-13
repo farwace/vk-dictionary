@@ -62,6 +62,9 @@
   .faq-page .question{
     background-color: rgb(26, 26, 26);
   }
+  .q-btn--actionable.q-btn--standard:before{
+    background-color: rgba(59, 59, 59, .3);
+  }
 
   --swiper-pagination-color: rgb(255,255,255);
   --swiper-pagination-bullet-inactive-color: rgb(133, 133, 133);

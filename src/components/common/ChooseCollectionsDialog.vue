@@ -1,18 +1,23 @@
 <template>
-  <q-dialog ref="dialogRef">
+  <q-dialog ref="dialogRef" no-backdrop-dismiss no-esc-dismiss>
     <q-card class="q-dialog-plugin">
       <div class="dialog-container">
         <div class="position-relative">
-          <q-icon class="close-icon" @click.prevent="onDialogCancel" name="mdi-window-close"/>
+          <q-icon class="close-icon" @click.prevent="closeDialog" name="mdi-window-close"/>
 
           <div class="dialog-container__title">
             <div v-html="t('Training.Collections')"></div>
           </div>
           <div class="dialog-container__body toggle-collections-list">
             <q-scroll-area style="height: 40vh; min-height: 200px;">
-              <q-toggle :disable="isLoading" v-on:update:model-value="toggledCollection($event, collection.id!)" v-if="allCollections" v-model="allCollections[collection.id!]" :label="collection.name?.slice(0,30)" v-for="collection in collections" />
+              <q-toggle :disable="isLoading" v-if="allCollections" v-model="allCollections[collection.id!]" :label="collection.name?.slice(0,30)" v-for="collection in collections" />
             </q-scroll-area>
           </div>
+          <q-card-actions class="justify-end">
+            <q-btn @click="closeDialog">
+              <span v-html="t('AddCollection.Save')"></span>
+            </q-btn>
+          </q-card-actions>
         </div>
       </div>
     </q-card>
@@ -23,12 +28,11 @@
   import {useDialogPluginComponent, useQuasar} from "quasar";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {inject, onMounted, ref, watch} from "vue";
+  import {computed, inject, onMounted, ref, watch} from "vue";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {useRouter} from "vue-router";
   import {storeToRefs} from "pinia";
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
-  import {TWord} from "@/classes/Pinia/UIStore/TWord";
 
   const $q = useQuasar();
 
@@ -36,17 +40,15 @@
     ...useDialogPluginComponent.emits
   ]);
   const {t} = useI18n() as {t:TranslateFunction};
-  const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
+  const { dialogRef, onDialogOK, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   const {
-    user,
     collections,
     isLoading,
   } = storeToRefs(UIStore());
 
   const props = defineProps<{
     selectedCollections: number[],
-    onCollectionsToggle: (id: number, val: boolean) => void;
   }>();
 
   const allCollections = ref<{[key: number]: boolean}>();
@@ -62,8 +64,10 @@
     allCollections.value = allCollectionsOb;
   });
 
-  const toggledCollection = (neoVal:boolean, collectionId: number) => {
-    props.onCollectionsToggle(collectionId, neoVal);
+  const closeDialog = () => {
+    onDialogOK({
+      selectedCollections: allCollections.value
+    });
   }
 
 </script>
