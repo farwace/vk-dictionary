@@ -10,7 +10,7 @@
           </div>
           <div class="dialog-container__body toggle-collections-list">
             <q-scroll-area style="height: 40vh; min-height: 200px;">
-              <q-toggle :disable="props.isLoading" v-on:update:model-value="toggledCollection($event, collection.id!)" v-if="allCollections" v-model="allCollections[collection.id!]" :label="collection.name?.slice(0,30)" v-for="collection in collections" />
+              <q-toggle :disable="isLoading" v-on:update:model-value="toggledCollection($event, collection.id!)" v-if="allCollections" v-model="allCollections[collection.id!]" :label="collection.name?.slice(0,30)" v-for="collection in collections" />
             </q-scroll-area>
           </div>
         </div>
@@ -41,12 +41,12 @@
   const {
     user,
     collections,
+    isLoading,
   } = storeToRefs(UIStore());
 
   const props = defineProps<{
     selectedCollections: number[],
     onCollectionsToggle: (id: number, val: boolean) => void;
-    isLoading: boolean,
   }>();
 
   const allCollections = ref<{[key: number]: boolean}>();

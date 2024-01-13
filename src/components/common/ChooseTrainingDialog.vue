@@ -145,7 +145,6 @@
       componentProps: {
         selectedCollections: currentCollectionsIds.value,
         onCollectionsToggle: onCollectionToggle,
-        isLoading: isLoading.value
       }
     })
   }
@@ -184,11 +183,11 @@
 
 
   const getTrainingWords = () => {
-    isLoading.value = true;
+    UI?.setLoading(true);
     UI?.updateTrainingWords(currentCollectionsIds.value).then(() => {
-      isLoading.value = false;
+      UI?.setLoading(false);
     }).catch((e) => {
-      isLoading.value = false;
+      UI?.setLoading(false);
     });
   }
 

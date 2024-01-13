@@ -351,7 +351,9 @@ export class UIActions implements IUIActions{
             });
             return;
         }
-        return;
+        else{
+            return;
+        }
     }
 
     updateUserCollections = async () => {

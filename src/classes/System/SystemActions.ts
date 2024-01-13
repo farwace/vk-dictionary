@@ -18,6 +18,7 @@ export class SystemActions implements ISystemActions{
 
     private CAN_TOGGLE_TRANSCRIPTION:boolean = true;
     private CAN_REMOVE_WORD:boolean = true;
+    private CAN_SEND_TRAINING:boolean = true;
 
     constructor() {
         this.UIStore = UIStore();
@@ -91,16 +92,27 @@ export class SystemActions implements ISystemActions{
 
     getWordsForTraining = async (langId: number, originalLangId: number, arCollections?: number[]) => {
         try {
+            if(!this.CAN_SEND_TRAINING){
+                await this.timeout(1000);
+            }
+            this.CAN_SEND_TRAINING = false;
             const fetchResult = await this.sendQuery('training', {
                 langId: langId,
                 originalLangId: originalLangId,
                 arCollections: arCollections || [],
             });
+            this.delayCanSendTraining();
             return await fetchResult.json();
         }
         catch (e){
             return [];
         }
+    }
+
+    private delayCanSendTraining = () => {
+        this.timeout(1000).then(() => {
+            this.CAN_SEND_TRAINING = true;
+        })
     }
 
     getCollections = async (langId: number, originalLangId: number):Promise<TCollections> => {
