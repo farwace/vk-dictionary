@@ -193,3 +193,9 @@
   padding-top: (calc(env(safe-area-inset-top, 0) + 52px));
   padding-bottom: 52px;
 }
+
+.dialog-container__title{
+  padding-right: 25px;
+  padding-bottom: 10px;
+  line-height: 120%;
+}
