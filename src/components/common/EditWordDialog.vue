@@ -44,7 +44,7 @@
               <div class="error q-my-sm" v-if="errorText" v-html="errorText"></div>
 
               <q-card-actions align="right">
-                <q-btn :disabled="neoWord.trim().length < 1 || neoForeignWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.length > 254"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
+                <q-btn :disabled="neoWord.trim().length < 1 || neoForeignWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.length > 254 || neoTranscription.length > 254"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
               </q-card-actions>
             </q-form>
           </div>

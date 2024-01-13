@@ -77,6 +77,7 @@
                 <q-input
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoForeignWord"
+                    :class="{'q-field--highlighted':neoForeignWordHasError}"
                     ref="neoForeignWordInput"
                     outlined dense
                     :label="t('Collection.Translation')"
@@ -89,6 +90,7 @@
                 <q-input
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoTranscription"
+                    :class="{'q-field--highlighted':neoTranscriptionHasError}"
                     outlined dense
                     :label="t('Collection.Transcription')"
                     lazy-rules
@@ -104,12 +106,13 @@
                     outlined dense
                     :label="t('Collection.NeoWord')"
                     lazy-rules
+                    :class="{'q-field--highlighted':neoWordHasError}"
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
               </td>
 
               <td style="width: 10px;">
-                <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
+                <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading">
                   <q-icon name="mdi-content-save" />
                 </q-btn>
               </td>
@@ -123,6 +126,7 @@
                 <q-input
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoForeignWord"
+                    :class="{'q-field--highlighted':neoForeignWordHasError}"
                     ref="neoForeignWordInput"
                     outlined dense
                     :label="t('Collection.Translation')"
@@ -137,6 +141,7 @@
                     dense
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoTranscription"
+                    :class="{'q-field--highlighted':neoTranscriptionHasError}"
                     :label="t('Collection.Transcription')"
                     lazy-rules
                     :rules="[val => val.length < 255 || t('Collection.LongWord')]"
@@ -148,6 +153,7 @@
                     outlined
                     dense
                     @keydown.enter.stop="addNeoWord"
+                    :class="{'q-field--highlighted':neoWordHasError}"
                     v-model="neoWord"
                     :label="t('Collection.NeoWord')"
                     lazy-rules
@@ -156,7 +162,7 @@
               </td>
 
               <td style="width: 10px;" v-if="rows.length < 1 || isEditMode">
-                <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
+                <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading">
                   <q-icon name="mdi-content-save" />
                 </q-btn>
               </td>
@@ -168,6 +174,7 @@
                       class="item"
                       @keydown.enter.stop="addNeoWord"
                       v-model="neoForeignWord"
+                      :class="{'q-field--highlighted':neoForeignWordHasError}"
                       ref="neoForeignWordInput"
                       outlined dense
                       :label="t('Collection.Translation')"
@@ -181,6 +188,7 @@
                       outlined
                       dense
                       @keydown.enter.stop="addNeoWord"
+                      :class="{'q-field--highlighted':neoTranscriptionHasError}"
                       v-model="neoTranscription"
                       :label="t('Collection.Transcription')"
                       lazy-rules
@@ -194,13 +202,14 @@
                       dense
                       @keydown.enter.stop="addNeoWord"
                       v-model="neoWord"
+                      :class="{'q-field--highlighted':neoWordHasError}"
                       :label="t('Collection.NeoWord')"
                       lazy-rules
                       :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                   />
 
                   <div class="bottom-row-save">
-                    <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.length < 1 && neoForeignWord.length < 1) || isLoading">
+                    <q-btn size="sm" @click.prevent="addNeoWord" :class="{disabled:(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading}">
                       <q-icon name="mdi-content-save" />
                     </q-btn>
                   </div>
@@ -273,6 +282,10 @@
   const neoWord = ref<string>('');
   const neoTranscription = ref<string>('');
   const neoForeignWord = ref<string>('');
+
+  const neoWordHasError = ref<boolean>(false);
+  const neoTranscriptionHasError = ref<boolean>(false);
+  const neoForeignWordHasError = ref<boolean>(false);
 
   const neoWordInput = ref<QInput>();
   const neoForeignWordInput = ref<QInput>();
@@ -438,22 +451,63 @@
     if(isLoading.value){
       return;
     }
-    if(neoWord.value.length < 1){
+    let isAllRight = true;
+    if(neoWord.value.trim().length < 1){
       $q.notify({
         type: 'negative',
         message: t('Errors.WordCanNotBeEmpty'),
         position: "bottom"
       });
-      return;
+      neoWordHasError.value = true;
+      isAllRight = false;
     }
-    if(neoForeignWord.value.length < 1){
+    if(neoForeignWord.value.trim().length < 1){
       $q.notify({
         type: 'negative',
         message: t('Errors.TranscriptionCanNotBeEmpty'),
         position: "bottom"
       });
+      neoForeignWordHasError.value = true;
+      isAllRight = false;
+    }
+    if(neoWord.value.length > 254){
+      $q.notify({
+        type: 'negative',
+        message: t('Collection.LongWord'),
+        position: "bottom"
+      });
+      isAllRight = false;
+      neoWordHasError.value = true;
+    }
+    if(neoTranscription.value.length > 254){
+      $q.notify({
+        type: 'negative',
+        message: t('Collection.LongWord'),
+        position: "bottom"
+      });
+      neoTranscriptionHasError.value = true;
+      isAllRight = false;
+    }
+    if(neoForeignWord.value.length > 254){
+      $q.notify({
+        type: 'negative',
+        message: t('Collection.LongWord'),
+        position: "bottom"
+      });
+      neoForeignWordHasError.value = true;
+      isAllRight = false;
+    }
+
+    setTimeout(() => {
+      neoForeignWordHasError.value = false;
+      neoWordHasError.value = false;
+      neoTranscriptionHasError.value = false;
+    },1000)
+
+    if(!isAllRight){
       return;
     }
+
     UI?.setLoading(true);
     UI?.addWordToCollection(neoWord.value, neoTranscription.value, neoForeignWord.value, currentCollectionId.value)
         .then(() => {
