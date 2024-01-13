@@ -107,7 +107,7 @@
     currentCollections.value = getCurrentCollections();
   }
   const getCurrentCollections = () => {
-    let arCurrentCollections = collections.value;
+    let arCurrentCollections = collections.value.filter(() => {return true});
     if(collectionIds.value.length > 0){
       arCurrentCollections = collections.value.filter((col) => {
         return collectionIds.value.indexOf(col.id || 0) >= 0;
