@@ -620,6 +620,20 @@ export class UIActions implements IUIActions{
                 action: 'create',
                 item: 'hideAD_'+days, // Идентификатор подписки в приложении
             });
+
+            if(bridgeRes.success){
+                bridge.send('VKWebAppHideBannerAd')
+                    .then((data) => {
+                        if (data.result) {
+                            // Баннерная реклама скрыта
+                        }
+                    })
+                    .catch((error) => {
+                        // Ошибка
+                        //console.log(error);
+                    });
+            }
+
             //console.log('Покупка прошла успешно', bridgeRes);
             return true;
         }
@@ -639,18 +653,6 @@ export class UIActions implements IUIActions{
                     user: userRes,
                 });
 
-                if(!this.canShowAd() && canShowAdBefore){
-                    bridge.send('VKWebAppHideBannerAd')
-                        .then((data) => {
-                            if (data.result) {
-                                // Баннерная реклама скрыта
-                            }
-                        })
-                        .catch((error) => {
-                            // Ошибка
-                            //console.log(error);
-                        });
-                }
             }
         }
     }
