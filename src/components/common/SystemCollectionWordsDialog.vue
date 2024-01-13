@@ -115,7 +115,12 @@
         delay: 800
       });
 
-      UI?.cloneCollection(props.collection.id).then((neoCollection) => {
+      let collectionOrShareId: number | string = props.collection.id;
+      if(props.collection.shareId){
+        collectionOrShareId = props.collection.shareId;
+      }
+
+      UI?.cloneCollection(collectionOrShareId).then((neoCollection) => {
         $q.loading.hide();
         if(neoCollection.id){
           router.push({

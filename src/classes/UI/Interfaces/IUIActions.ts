@@ -12,6 +12,7 @@ export interface IUIActions {
     addToFavorites():Promise<boolean>;
     getLanguage():EGetLaunchParamsResponseLanguages;
     showWelcomeSlides(slides:ShowSlidesSheetRequest):void;
+    copyToClipboard(str:string):Promise<boolean>;
 
     setContentHeight(val:string):void;
     getApi():ISystemActions;
@@ -23,17 +24,19 @@ export interface IUIActions {
     updateUserCollections():Promise<TCollections>;
     getCollectionWords(collectionId:number):Promise<TWords>;
     getSystemCollectionWords(collectionId:number):Promise<TWords>;
-    cloneCollection(collectionId: number):Promise<TCollection>;
+    cloneCollection(collectionOrShareId: number | string):Promise<TCollection>;
     addWordToCollection(neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord>;
     removeWord(wordId:number):Promise<boolean>;
     updateWord(word: TWord):Promise<boolean>;
     updateCollection(collection:TCollection):Promise<boolean>;
     removeCollection(collectionId:number):Promise<boolean>;
-    share(hash?: string):Promise<boolean>;
+    share(hash?: string, text?:string):Promise<boolean>;
     clearSharedId():void;
     updateTrainingWords(arCollections: number[]):Promise<void>;
     addWordExperience(wordId: number, count: number):Promise<void>;
     showBetweenScreenAd():Promise<void>;
     trySubscribe(days:number):Promise<boolean>;
     updateUserInfo():Promise<void>;
+    updateShareLink(collectionId: number, doClear:boolean):Promise<string>;
+    tryCloneCollection(collectionOrShareId: number | string):Promise<void>;
 }

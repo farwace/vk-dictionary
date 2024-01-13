@@ -15,7 +15,7 @@ export interface ISystemActions{
     getCollections(langId: number, originalLangId: number):Promise<TCollections>;
     getSystemCollections(langId: number, originalLangId: number):Promise<TCollections>;
     createCollection(name: string, langId: number, originalLangId: number, description:string):Promise<TCollection>;
-    cloneCollection(collectionId: number):Promise<TCollection>;
+    cloneCollection(collectionId: number|string):Promise<TCollection>;
     getCollectionWords(collectionId: number):Promise<any>;
     addNeoWord(neoWord: TWord):Promise<any>;
     updateWord(neoWord: TWord):Promise<string>;
@@ -26,4 +26,6 @@ export interface ISystemActions{
     removeWord(wordId:number):Promise<string>;
     updateCollection(collection:TCollection):Promise<string>;
     removeCollection(collectionId: number):Promise<string>;
+    updateShareLink(collectionId:number, clear:boolean):Promise<string>;
+    getCloneCollectionInfo(collectionOrShareId: number | string):Promise<{collection?: TCollection, words?: TWord[]}>
 }

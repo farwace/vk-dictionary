@@ -49,35 +49,42 @@ export class UIActions implements IUIActions{
                             this.updateUserCollections().then(() => {
 
                                 const currentHash = window.location.hash;
-                                const cloneCollectionRegex = /collection-\d+/;
+                                const cloneCollectionRegex = /collection-\w+/;
                                 const match = currentHash.match(cloneCollectionRegex);
 
                                 if(match){
                                     const tryingCloneId = match[0].replace('collection-', '');
+                                    //для того чтобы исключить, что это системная и уже была добавлена или пытаемся какую-то из своих дублировать.
                                     const arAddedCollections = this.UIStore.$state.collections.filter((collection) => {
-                                        return collection.originalId == parseInt(tryingCloneId) || collection.id == parseInt(tryingCloneId);
+                                        return collection.originalId == parseInt(tryingCloneId) || collection.shareId == tryingCloneId;
                                     });
 
                                     if(arAddedCollections.length < 1){
-                                        this.cloneCollection(parseInt(tryingCloneId)).then((res) => {
-                                            if(res.id){
-                                                this.UIStore.$patch((state) => {
-                                                    //state.collections.unshift(res);
-                                                    state.isReady = true;
-                                                    state.appliedCollection = res.id as number;
-                                                });
+                                        this.UIStore.$patch({
+                                            isReady: true
+                                        });
 
-                                            }
-                                            else{
-                                                this.UIStore.$patch({
-                                                    isReady: true,
-                                                });
-                                            }
-                                        }).catch((e) => {
-                                            this.UIStore.$patch({
-                                                isReady: true,
-                                            });
-                                        })
+                                        this.tryCloneCollection(tryingCloneId);
+                                        // this.cloneCollection(tryingCloneId).then((res) => {
+                                        //     if(res.id){
+                                        //         this.UIStore.$patch((state) => {
+                                        //             //state.collections.unshift(res);
+                                        //             state.isReady = true;
+                                        //             state.appliedCollection = res.id as number;
+                                        //         });
+                                        //
+                                        //     }
+                                        //     else{
+                                        //         this.UIStore.$patch({
+                                        //             isReady: true,
+                                        //         });
+                                        //     }
+                                        // }).catch((e) => {
+                                        //     this.UIStore.$patch({
+                                        //         isReady: true,
+                                        //     });
+                                        // })
+
                                     }
                                     else{
                                         this.UIStore.$patch({
@@ -116,7 +123,8 @@ export class UIActions implements IUIActions{
     }
     clearSharedId(){
         this.UIStore.$patch({
-            appliedCollection: 0
+            appliedCollection: {},
+            appliedCollectionId: 0
         });
     }
     setInitializeError(){
@@ -207,6 +215,19 @@ export class UIActions implements IUIActions{
         bridge.send('VKWebAppShowSlidesSheet', slides).then().catch();
     }
 
+    copyToClipboard = async (text:string) => {
+        try {
+            const copyResult = await bridge.send('VKWebAppCopyText', {
+                text: text
+            });
+            console.log(copyResult);
+            return true;
+        }
+        catch (e){
+            console.log(e);
+            return false;
+        }
+    }
 
     setContentHeight(val: string) {
         this.UIStore.$patch({
@@ -214,22 +235,38 @@ export class UIActions implements IUIActions{
         })
     }
 
-    share = async (hash:string = ''):Promise<boolean> => {
+    share = async (hash:string = '', message?:string):Promise<boolean> => {
         if(hash.length > 0){
             hash = '#' + hash
         }
-        try {
-            const shareRes:any = await bridge.send('VKWebAppShare', {
-                link: 'https://vk.com/app51805937' + hash
-            });
 
-            return !!shareRes.result; //может быть массив вида `type:"message"`, а что с ним делать - пока ничего)
+        if(!message){
+            try {
+                const shareRes:any = await bridge.send('VKWebAppShare', {
+                    link: 'https://vk.com/app51805937' + hash
+                });
 
+                return !!shareRes.result; //может быть массив вида `type:"message"`, а что с ним делать - пока ничего)
+
+            }
+            catch (e){
+                return false;
+            }
         }
-        catch (e){
-            return false;
-        }
+        else{
+            try {
+                const shareRes:any = await bridge.send('VKWebAppShowWallPostBox', {
+                    message: message,
+                    attachments: 'https://vk.com/app51805937' + hash
+                });
 
+                return !!shareRes.result; //может быть массив вида `type:"message"`, а что с ним делать - пока ничего)
+
+            }
+            catch (e){
+                return false;
+            }
+        }
 
     }
 
@@ -432,7 +469,7 @@ export class UIActions implements IUIActions{
         return await this.API.getCollectionWords(collectionId) || [];
     }
 
-    cloneCollection = async (collectionId: number):Promise<TCollection> => {
+    cloneCollection = async (collectionId: number | string):Promise<TCollection> => {
         const cloneCollectionResult =  await this.API.cloneCollection(collectionId);
 
         if(cloneCollectionResult.id){
@@ -451,6 +488,7 @@ export class UIActions implements IUIActions{
                     id: cloneCollectionResult.id,
                 });
                 state.currentCollectionWords = undefined;
+                state.appliedCollectionId = cloneCollectionResult.id!;
             });
         }
 
@@ -603,6 +641,46 @@ export class UIActions implements IUIActions{
                     user: userRes,
                 });
             }
+        }
+    }
+
+    updateShareLink = async(collectionId: number, clear:boolean) => {
+        const neoShareId = await this.API.updateShareLink(collectionId, clear);
+        let neoShareHash:string | null = '';
+        if(clear && neoShareId == 'OK'){
+            neoShareHash = null;
+        }
+        else if(!clear && neoShareId.length > 0){
+            neoShareHash = neoShareId;
+        }
+        if(neoShareHash!=''){
+            this.UIStore.$patch((state) => {
+                state.collections.map((origCollection) => {
+                    if(origCollection.id == collectionId){
+                        origCollection.shareId = neoShareHash;
+                    }
+                    return origCollection;
+                })
+            });
+        }
+
+        return '';
+    }
+
+    tryCloneCollection = async (collectionOrShareId: number | string) => {
+        const cloneCollectionInfo = await this.API.getCloneCollectionInfo(collectionOrShareId);
+        let collectionInfo:{collection?:TCollection, words?:TWord[], filled: boolean} = {filled: false};
+        if(cloneCollectionInfo.collection){
+            collectionInfo.collection = cloneCollectionInfo.collection;
+        }
+        if(cloneCollectionInfo.words){
+            collectionInfo.words = cloneCollectionInfo.words;
+        }
+        if(collectionInfo.collection && collectionInfo.words){
+            collectionInfo.filled = true;
+            this.UIStore.$patch({
+                appliedCollection: collectionInfo
+            });
         }
     }
 }

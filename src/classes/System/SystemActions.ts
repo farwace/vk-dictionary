@@ -127,7 +127,7 @@ export class SystemActions implements ISystemActions{
             return {};
         }
     }
-    cloneCollection = async (collectionId: number): Promise<TCollection> => {
+    cloneCollection = async (collectionId: number|string): Promise<TCollection> => {
         try {
             const fetchResult = await this.sendQuery('cloneCollection', {
                 collectionId: collectionId,
@@ -277,6 +277,31 @@ export class SystemActions implements ISystemActions{
         }
         catch (e){
             return '';
+        }
+    }
+
+    updateShareLink = async (collectionId:number, clear: boolean):Promise<string> => {
+        try {
+            const fetchResult = await this.sendQuery('generateShareLink', {
+                collectionId: collectionId,
+                clear: clear
+            });
+            return await fetchResult.text();
+        }
+        catch (e){
+            return '';
+        }
+    }
+
+    getCloneCollectionInfo = async (collectionOrShareId: number | string) => {
+        try {
+            const fetchResult = await this.sendQuery('getCloneCollectionInfo', {
+                collectionId: collectionOrShareId,
+            });
+            return await fetchResult.json();
+        }
+        catch (e){
+            return {};
         }
     }
 

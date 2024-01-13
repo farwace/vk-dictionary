@@ -17,7 +17,8 @@ export const UIStore = defineStore('UIStore', {
             trainingWords: undefined,
             contentHeight: '',
             Authorization: '',
-            appliedCollection: 0,
+            appliedCollection: {filled: false},
+            appliedCollectionId: 0,
             trainingCollections: []
         }
     }

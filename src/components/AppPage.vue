@@ -36,6 +36,9 @@
   import PageHeader from "@/components/PageHeader.vue";
   import ProfileSettingsDialog from "@/components/common/ProfileSettingsDialog.vue";
   import {useRouter} from "vue-router";
+  import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
+  import {TWord} from "@/classes/Pinia/UIStore/TWord";
+  import SystemCollectionWordsDialog from "@/components/common/SystemCollectionWordsDialog.vue";
 
   const UI = inject<IUIActions>('UI');
   const API = UI!.getApi()!;
@@ -72,22 +75,28 @@
   });
 
 
-  watch(appliedCollection, (neoVal) => {
-    if(neoVal > 0){
-      tryOpenAppliedCollection(neoVal);
-    }
+  watch(appliedCollection.value, (neoVal) => {
+     tryOpenAppliedCollection(appliedCollection.value);
   })
 
-  const tryOpenAppliedCollection = (collectionId: number) => {
-    if(collectionId < 1){
+  const tryOpenAppliedCollection = (neoAppliedCollection: { collection?: TCollection, words?: TWord[] }) => {
+    if(!neoAppliedCollection.collection || !neoAppliedCollection.words){
       return;
     }
-    router.push({
-      name: 'collection',
-      params: {
-        id: collectionId
+    $q.dialog({
+      component: SystemCollectionWordsDialog,
+      componentProps: {
+        words: neoAppliedCollection.words,
+        collection: neoAppliedCollection.collection
       }
-    })
+    });
+    setTimeout(() => {
+      $q.dialog({
+        title: t('Collection.SomeOneShareCollection'),
+        message: t('Collection.YouCanAddThisCollection'),
+      });
+    }, 300)
+
   }
 
   const writeContentHeight = () => {

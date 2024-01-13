@@ -242,6 +242,7 @@
   import EditWordDialog from "@/components/common/EditWordDialog.vue";
   import EditCollectionDialog from "@/components/common/EditCollectionDialog.vue";
   import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
+  import ShareCollectionDialog from "@/components/common/ShareCollectionDialog.vue";
 
   const $q = useQuasar();
 
@@ -261,7 +262,7 @@
     currentCollectionWords,
     user,
     collections,
-    appliedCollection
+    appliedCollectionId
   } = storeToRefs(UIStore());
 
   const sadAnimal = ref<string>('');
@@ -413,9 +414,9 @@
 
     sadAnimal.value = getRandomSadPicture();
 
-    if(appliedCollection.value > 0 && currentCollection.value?.id == appliedCollection.value){
+    if(appliedCollectionId.value > 0 && currentCollection.value?.id == appliedCollectionId.value){
       $q.dialog({
-        title: t('Collection.SomeOneShareCollection'),
+        title: t('AddCollection.Title'),
         message: t('Collection.CollectionHasBeenAdded'),
         cancel: false
       });
@@ -484,7 +485,12 @@
   }
 
   const doShareAction = () => {
-    UI?.share('collection-' + currentCollection.value?.id);
+    $q.dialog({
+      component: ShareCollectionDialog,
+      componentProps: {
+        collection: currentCollection.value
+      }
+    });
   }
 
   onUnmounted(() => {

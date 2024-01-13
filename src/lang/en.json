@@ -84,6 +84,7 @@
     "ConfirmRemoveText": "The collection of words will be deleted and it will be impossible to restore it",
     "AddToMyCollections": "Add to my collections",
     "SomeOneShareCollection": "A collection of words has been shared with you",
+    "YouCanAddThisCollection": "You can add it to the list of your collections",
     "CollectionHasBeenAdded": "This collection has been added to the list of your sets"
   },
   "Training": {
@@ -179,5 +180,17 @@
     "buy7": "Subscribe for 7 days",
     "buy30": "Subscribe for 30 days",
     "buy90": "Subscribe for 90 days"
+  },
+  "share": {
+    "title": "Share a set of words",
+    "openPermission": "Open access via the link",
+    "youCanShare": "You can share a set of words",
+    "closePermissions": "Close access to a set of words",
+    "linkGeneratedSuccess": "The link was successfully generated",
+    "linkGeneratedError": "The link could not be generated",
+    "linkCopiedSuccess": "The link has been copied to the clipboard",
+    "linkCopiedError": "The link could not be copied",
+    "linkDeletedSuccess": "The link was successfully deleted",
+    "linkDeletedError": "The link could not be deleted"
   }
 }
