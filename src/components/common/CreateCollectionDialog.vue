@@ -38,7 +38,7 @@
               <div class="error q-my-sm" v-if="errorText" v-html="errorText"></div>
 
               <q-card-actions align="right">
-                <q-btn :disabled="neoName.length < 1"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
+                <q-btn :disabled="neoName.trim().length < 1"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
               </q-card-actions>
             </q-form>
           </div>

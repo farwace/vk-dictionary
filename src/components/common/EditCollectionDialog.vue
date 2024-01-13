@@ -38,7 +38,7 @@
                   {{ t!('Collection.Remove') }} <q-icon name="mdi-delete-forever-outline"/>
                 </q-btn>
 
-                <q-btn :disabled="neoName.length < 1 || isLoading"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
+                <q-btn :disabled="neoName.trim().length < 1 || isLoading"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
               </q-card-actions>
             </q-form>
           </div>
