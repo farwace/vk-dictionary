@@ -16,6 +16,8 @@ export class SystemActions implements ISystemActions{
 
     private UIStore;
 
+    private CAN_TOGGLE_TRANSCRIPTION:boolean = true;
+
     constructor() {
         this.UIStore = UIStore();
     }
@@ -230,15 +232,25 @@ export class SystemActions implements ISystemActions{
 
     toggleTranscription = async (isEnabled: boolean): Promise<any> => {
         try {
+            if(!this.CAN_TOGGLE_TRANSCRIPTION){
+                await this.timeout(800);
+            }
+            this.CAN_TOGGLE_TRANSCRIPTION = false;
             const fetchResult = await this.sendQuery('toggleTranscription', {
                 isEnabled: isEnabled
             });
-            await this.timeout(800);
+            this.delayCanToggleTranscription();
             return await fetchResult.json();
         }
         catch (e){
             return [];
         }
+    }
+
+    delayCanToggleTranscription = () => {
+        this.timeout(800).then(() => {
+            this.CAN_TOGGLE_TRANSCRIPTION = true;
+        })
     }
 
     removeWord = async (wordId: number):Promise<string> => {
