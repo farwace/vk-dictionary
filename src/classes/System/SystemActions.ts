@@ -248,7 +248,7 @@ export class SystemActions implements ISystemActions{
     }
 
     delayCanToggleTranscription = () => {
-        this.timeout(800).then(() => {
+        this.timeout(1000).then(() => {
             this.CAN_TOGGLE_TRANSCRIPTION = true;
         })
     }
