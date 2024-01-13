@@ -60,7 +60,7 @@
     UI?.setLoading(true);
     UI?.trySubscribe(days).then(() => {
       UI?.setLoading(false);
-      UI.updateUserInfo();
+      UI?.updateUserInfo();
     }).catch(() => {
       UI?.setLoading(false);
     })

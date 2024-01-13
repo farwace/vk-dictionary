@@ -620,7 +620,7 @@ export class UIActions implements IUIActions{
                 action: 'create',
                 item: 'hideAD_'+days, // Идентификатор подписки в приложении
             });
-            console.log('Покупка прошла успешно', bridgeRes);
+            //console.log('Покупка прошла успешно', bridgeRes);
             return true;
         }
         catch (e){
@@ -631,12 +631,26 @@ export class UIActions implements IUIActions{
 
     updateUserInfo = async () => {
         const launchParams = this.UIStore.$state.launchParams;
+        const canShowAdBefore = this.canShowAd();
         if(launchParams){
             const userRes = await this.API.getUserInfo(launchParams);
             if(userRes?.id){
                 this.UIStore.$patch({
                     user: userRes,
                 });
+
+                if(!this.canShowAd() && canShowAdBefore){
+                    bridge.send('VKWebAppHideBannerAd')
+                        .then((data) => {
+                            if (data.result) {
+                                // Баннерная реклама скрыта
+                            }
+                        })
+                        .catch((error) => {
+                            // Ошибка
+                            //console.log(error);
+                        });
+                }
             }
         }
     }
