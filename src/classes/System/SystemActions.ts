@@ -17,6 +17,7 @@ export class SystemActions implements ISystemActions{
     private UIStore;
 
     private CAN_TOGGLE_TRANSCRIPTION:boolean = true;
+    private CAN_REMOVE_WORD:boolean = true;
 
     constructor() {
         this.UIStore = UIStore();
@@ -233,7 +234,7 @@ export class SystemActions implements ISystemActions{
     toggleTranscription = async (isEnabled: boolean): Promise<any> => {
         try {
             if(!this.CAN_TOGGLE_TRANSCRIPTION){
-                await this.timeout(800);
+                await this.timeout(1000);
             }
             this.CAN_TOGGLE_TRANSCRIPTION = false;
             const fetchResult = await this.sendQuery('toggleTranscription', {
@@ -247,7 +248,7 @@ export class SystemActions implements ISystemActions{
         }
     }
 
-    delayCanToggleTranscription = () => {
+    private delayCanToggleTranscription = () => {
         this.timeout(1000).then(() => {
             this.CAN_TOGGLE_TRANSCRIPTION = true;
         })
@@ -255,14 +256,25 @@ export class SystemActions implements ISystemActions{
 
     removeWord = async (wordId: number):Promise<string> => {
         try {
+            if(!this.CAN_REMOVE_WORD){
+                await this.timeout(1000);
+            }
+            this.CAN_REMOVE_WORD = false;
             const fetchResult = await this.sendQuery('removeWord', {
                 id:wordId
             });
+            this.delayCanRemoveWord();
             return await fetchResult.text();
         }
         catch (e){
             return '';
         }
+    }
+
+    private delayCanRemoveWord = () => {
+        this.timeout(1000).then(() => {
+            this.CAN_REMOVE_WORD = true;
+        })
     }
 
     updateCollection = async(collection:TCollection):Promise<string> => {

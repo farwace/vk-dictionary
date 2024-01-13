@@ -77,6 +77,7 @@
                 <q-input
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoForeignWord"
+                    ref="neoForeignWordInput"
                     outlined dense
                     :label="t('Collection.Translation')"
                     lazy-rules
@@ -122,6 +123,7 @@
                 <q-input
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoForeignWord"
+                    ref="neoForeignWordInput"
                     outlined dense
                     :label="t('Collection.Translation')"
                     lazy-rules
@@ -166,6 +168,7 @@
                       class="item"
                       @keydown.enter.stop="addNeoWord"
                       v-model="neoForeignWord"
+                      ref="neoForeignWordInput"
                       outlined dense
                       :label="t('Collection.Translation')"
                       lazy-rules
@@ -253,7 +256,6 @@
   const routeParams = ref(route.params);
   const router = useRouter();
 
-  const isLoading = ref<boolean>(false);
   const isEditMode = ref<boolean>(false);
 
   const {t} = useI18n() as {t:TranslateFunction};
@@ -262,7 +264,8 @@
     currentCollectionWords,
     user,
     collections,
-    appliedCollectionId
+    appliedCollectionId,
+    isLoading
   } = storeToRefs(UIStore());
 
   const sadAnimal = ref<string>('');
@@ -272,6 +275,7 @@
   const neoForeignWord = ref<string>('');
 
   const neoWordInput = ref<QInput>();
+  const neoForeignWordInput = ref<QInput>();
 
   const rows = computed(() => {
     if(!currentCollectionWords?.value){
@@ -344,16 +348,16 @@
   });
 
   const removeWord = (id:number) => {
-    isLoading.value = true;
+    UI?.setLoading(true);
     UI?.removeWord(id).then(() => {
       $q.notify({
         type: 'positive',
         message: t('Messages.WordHasBeenRemoved'),
         position: "bottom"
       });
-      isLoading.value = false;
+      UI?.setLoading(false);
     }).catch((e) => {
-      isLoading.value = false;
+      UI?.setLoading(false);
     });
   }
 
@@ -389,11 +393,11 @@
         router.push({name: 'home'});
         return;
       }
-      isLoading.value = true;
+      UI?.setLoading(false);
       UI?.getCollectionWords(currentCollectionId.value).then(() => {
-        isLoading.value = false;
+        UI?.setLoading(false);
       }).catch((e) => {
-        isLoading.value = false;
+        UI?.setLoading(false);
         $q.notify({
           type: 'negative',
           message: t('Errors.CollectionDetailErrorGetWords'),
@@ -431,6 +435,9 @@
   }
 
   const addNeoWord = () => {
+    if(isLoading.value){
+      return;
+    }
     if(neoWord.value.length < 1){
       $q.notify({
         type: 'negative',
@@ -447,14 +454,14 @@
       });
       return;
     }
-    isLoading.value = true;
+    UI?.setLoading(true);
     UI?.addWordToCollection(neoWord.value, neoTranscription.value, neoForeignWord.value, currentCollectionId.value)
         .then(() => {
           neoWord.value = '';
           neoTranscription.value = '';
           neoForeignWord.value = '';
-          isLoading.value = false;
-          neoWordInput.value?.$el.querySelector('input').focus();
+          UI?.setLoading(false);
+          neoForeignWordInput.value?.$el.querySelector('input').focus();
           $q.notify({
             type: 'positive',
             message: t('Messages.WordHasBeenAdded'),
@@ -462,8 +469,8 @@
           })
 
         }).catch(() => {
-          isLoading.value = false;
-    });
+          UI?.setLoading(false);
+        });
   }
 
   const startTraining = () => {
