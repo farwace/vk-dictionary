@@ -19,6 +19,7 @@
             <div class="user-settings">
               <q-toggle
                   v-model="transcription"
+                  @update:model-value="updateTranscription"
                   :label="t('ProfileSettingsDialog.UseTranscription')"
                   :disable="isLoading"
               />
@@ -102,10 +103,18 @@
     return userLang[0] || {}
   });
 
-
-  watch(transcription, (neoVal) => {
-    UI?.setTranscription(neoVal).then();
-  })
+  const updateTranscription = (neoVal: boolean) => {
+    UI?.setLoading(true);
+    UI?.setTranscription(neoVal).then((res) => {
+      if(!res){
+        transcription.value = !neoVal;
+      }
+      UI?.setLoading(false);
+    }).catch(() => {
+      transcription.value = !neoVal;
+      UI?.setLoading(false);
+    });
+  }
 
 </script>
 

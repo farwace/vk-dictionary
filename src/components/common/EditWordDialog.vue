@@ -97,7 +97,7 @@
       return;
     }
     errorText.value = '';
-    $q.loading.show({delay: 1000});
+    UI?.setLoading(true);
     UI?.updateWord({
       word: neoWord.value,
       foreignWord: neoForeignWord.value,
@@ -105,7 +105,7 @@
       collectionId: props.word.collectionId,
       id: props.word.id,
     }).then(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
       $q.notify({
         type: 'positive',
         message: t('Messages.WordHasBeenUpdated'),
@@ -113,7 +113,7 @@
       });
       onDialogOK();
     }).catch((e) => {
-      $q.loading.hide();
+      UI?.setLoading(false);
     })
   }
 

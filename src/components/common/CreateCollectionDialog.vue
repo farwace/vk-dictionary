@@ -84,9 +84,9 @@
       return;
     }
     errorText.value = '';
-    $q.loading.show({delay: 1000});
+    UI?.setLoading(true);
     UI?.createCollection(neoName.value, neoDesc.value).then((res) => {
-      $q.loading.hide();
+      UI?.setLoading(false);
       if(res.id){
         router.push({
           name: 'collection',
@@ -97,7 +97,7 @@
       }
     }).catch((e) => {
       errorText.value = t('Common.Errors.UnknownError');
-      $q.loading.hide();
+      UI?.setLoading(false);
     })
   }
 

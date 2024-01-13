@@ -111,9 +111,7 @@
 
   const doSave = () => {
     if(props.collection.id){
-      $q.loading.show({
-        delay: 800
-      });
+      UI?.setLoading(true);
 
       let collectionOrShareId: number | string = props.collection.id;
       if(props.collection.shareId){
@@ -121,7 +119,7 @@
       }
 
       UI?.cloneCollection(collectionOrShareId).then((neoCollection) => {
-        $q.loading.hide();
+        UI?.setLoading(false);
         if(neoCollection.id){
           router.push({
             name: 'collection',
@@ -131,7 +129,7 @@
           });
         }
       }).catch((e) => {
-        $q.loading.hide();
+        UI?.setLoading(false);
       })
 
     }

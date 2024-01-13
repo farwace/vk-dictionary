@@ -233,6 +233,7 @@ export class SystemActions implements ISystemActions{
             const fetchResult = await this.sendQuery('toggleTranscription', {
                 isEnabled: isEnabled
             });
+            await this.timeout(800);
             return await fetchResult.json();
         }
         catch (e){

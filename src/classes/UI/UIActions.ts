@@ -435,20 +435,17 @@ export class UIActions implements IUIActions{
 
 
     async setTranscription(neoVal: boolean) {
-        this.UIStore.$patch({
-            isLoading: true,
-        });
         const toggleTranscriptionResult = await this.API.toggleTranscription(neoVal);
+        const user = this.UIStore.$state.user;
         if(toggleTranscriptionResult.result == 'ok'){
-            const user = this.UIStore.$state.user;
             user.displayTranscription = neoVal;
             this.UIStore.$patch({
                 user: user,
-                isLoading: false,
             });
+            return true;
         }
         else{
-            //todo: почему может не выставиться праметр?
+            return false;
         }
     }
 
@@ -682,5 +679,10 @@ export class UIActions implements IUIActions{
                 appliedCollection: collectionInfo
             });
         }
+    }
+    setLoading = (show = false) => {
+        this.UIStore.$patch({
+            isLoading: show
+        });
     }
 }

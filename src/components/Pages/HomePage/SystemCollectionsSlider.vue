@@ -61,9 +61,9 @@
   const swiperModules = [Pagination];
 
   const openCollection = (id:number, collection:TCollection) => {
-    $q.loading.show({delay: 800});
+    UI?.setLoading(true);
     UI?.getSystemCollectionWords(id).then((res) => {
-      $q.loading.hide();
+      UI?.setLoading(false);
 
       $q.dialog({
         component: SystemCollectionWordsDialog,
@@ -74,7 +74,7 @@
       });
 
     }).catch(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
     })
   }
 

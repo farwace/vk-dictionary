@@ -50,7 +50,7 @@
   watch(isLoading, (neoVal) => {
     if(neoVal){
       $q.loading.show({
-        delay: 1000
+        delay: 500
       });
     }
     else{

@@ -269,9 +269,7 @@
 
   const doReplay = () => {
     UI?.showBetweenScreenAd();
-    $q.loading.show({
-      delay: 800
-    })
+    UI?.setLoading(true);
     UI?.updateTrainingWords(trainingCollections.value).then(() => {
       countRightAnswers.value = 0;
       countFaultAnswers.value = 0;
@@ -288,9 +286,9 @@
       isAll.value = false;
       fillWordsForRepeat();
       doChooseValue();
-      $q.loading.hide();
+      UI?.setLoading(false);
     }).catch(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
     })
 
   }

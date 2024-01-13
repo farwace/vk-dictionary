@@ -78,12 +78,12 @@
   }
 
   const openCollection = (id:number) => {
-    $q.loading.show({delay: 800});
+    UI?.setLoading(true);
     UI?.getCollectionWords(id).then(() => {
       router.push({name: 'collection', params: {id: id}})
-      $q.loading.hide();
+      UI?.setLoading(false);
     }).catch(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
     })
   }
 

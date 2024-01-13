@@ -93,14 +93,14 @@
       return;
     }
     errorText.value = '';
-    $q.loading.show({delay: 1000});
+    UI?.setLoading(true);
     isLoading.value = true;
     UI?.updateCollection({
       name: neoName.value.trim(),
       description: neoDescription.value.trim(),
       id: props.collection.id
     }).then(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
       $q.notify({
         type: 'positive',
         message: t('Messages.CollectionHasBeenUpdated'),
@@ -109,7 +109,7 @@
       isLoading.value = false;
       onDialogOK();
     }).catch((e) => {
-      $q.loading.hide();
+      UI?.setLoading(false);
       isLoading.value = false;
     })
   }
@@ -123,12 +123,10 @@
     }).onOk(() => {
       if(props.collection.id){
         isLoading.value = true;
-        $q.loading.show({
-          delay: 1000
-        })
+        UI?.setLoading(true);
         UI?.removeCollection(props.collection.id).then((res) => {
           isLoading.value = false;
-          $q.loading.hide();
+          UI?.setLoading(false);
           if(res){
             $q.notify({
               type: 'positive',
@@ -141,7 +139,7 @@
             onDialogCancel();
           }
         }).catch((e) => {
-          $q.loading.hide();
+          UI?.setLoading(false);
           isLoading.value = false;
         });
       }

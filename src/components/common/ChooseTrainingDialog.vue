@@ -61,12 +61,13 @@
     user,
     collections,
     trainingWords,
+    isLoading,
   } = storeToRefs(UIStore());
 
   const UI = inject<IUIActions>('UI');
   const router = useRouter();
 
-  const isLoading = ref<boolean>(true);
+
 
   const trainingList = [
     {
@@ -181,16 +182,6 @@
     getTrainingWords();
   });
 
-  watch(isLoading, (neoVal) => {
-    if(neoVal){
-      $q.loading.show({
-        delay: 200
-      });
-    }
-    else{
-      $q.loading.hide();
-    }
-  })
 
   const getTrainingWords = () => {
     isLoading.value = true;

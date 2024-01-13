@@ -57,14 +57,12 @@
 
 
   const doSubscribe = (days:number) => {
-    $q.loading.show({
-      delay: 800
-    });
+    UI?.setLoading(true);
     UI?.trySubscribe(days).then(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
       UI.updateUserInfo();
     }).catch(() => {
-      $q.loading.hide();
+      UI?.setLoading(false);
     })
   }
 

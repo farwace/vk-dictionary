@@ -17,7 +17,7 @@ export interface IUIActions {
     setContentHeight(val:string):void;
     getApi():ISystemActions;
     setLanguage(languageId: number, learnLanguageId: number):Promise<void>;
-    setTranscription(isEnabled:boolean):Promise<void>;
+    setTranscription(isEnabled:boolean):Promise<boolean>;
     loadCollections():Promise<any>;
     createCollection(name: string, description: string):Promise<TCollection>
     updateSystemCollections():Promise<TCollections>;
@@ -39,4 +39,5 @@ export interface IUIActions {
     updateUserInfo():Promise<void>;
     updateShareLink(collectionId: number, doClear:boolean):Promise<string>;
     tryCloneCollection(collectionOrShareId: number | string):Promise<void>;
+    setLoading(show:boolean):void;
 }
