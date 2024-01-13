@@ -44,7 +44,7 @@
               <div class="error q-my-sm" v-if="errorText" v-html="errorText"></div>
 
               <q-card-actions align="right">
-                <q-btn :disabled="neoWord.length < 1 || neoForeignWord.length < 1"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
+                <q-btn :disabled="neoWord.trim().length < 1 || neoForeignWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.length > 254"  type="submit" color="primary" :label="t('AddCollection.Save')" @click="onOKClick" />
               </q-card-actions>
             </q-form>
           </div>
@@ -95,6 +95,11 @@
   const neoForeignWord = ref<string>('');
 
   const submitForm = () => {
+    if(neoWord.value == props.word.word && neoForeignWord.value == props.word.foreignWord && neoTranscription.value == props.word.transcription){
+      onDialogOK();
+      return;
+    }
+
     if(neoWord.value.length < 1 || neoForeignWord.value.length < 1){
       errorText.value = t('AddCollection.EmptyNameError');
       return;
