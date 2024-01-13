@@ -632,6 +632,11 @@ export class UIActions implements IUIActions{
                         // Ошибка
                         //console.log(error);
                     });
+                const date = new Date();
+                date.setDate(date.getDate() + days);
+                this.UIStore.$patch((state) => {
+                    state.user.subscriptionExpired = date;
+                });
             }
 
             //console.log('Покупка прошла успешно', bridgeRes);
@@ -645,7 +650,6 @@ export class UIActions implements IUIActions{
 
     updateUserInfo = async () => {
         const launchParams = this.UIStore.$state.launchParams;
-        const canShowAdBefore = this.canShowAd();
         if(launchParams){
             const userRes = await this.API.getUserInfo(launchParams);
             if(userRes?.id){
