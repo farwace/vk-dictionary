@@ -14,6 +14,11 @@
                 <q-icon name="mdi-arrow-right-thin"/>
                 <img v-if="userLearnLang.nameCode" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
               </div>
+              <div class="settings-icons">
+                <div class="interface-btn">
+                  <q-icon :name="soundIcon" @click="toggleSoundEnabled" />
+                </div>
+              </div>
             </div>
 
             <div class="user-settings">
@@ -71,7 +76,8 @@
   const {
     user,
     availableLanguages,
-    isLoading
+    isLoading,
+    isSoundEnabled,
   } = storeToRefs(UIStore());
 
   const UI = inject<IUIActions>('UI');
@@ -102,6 +108,17 @@
     })
     return userLang[0] || {}
   });
+
+  const soundIcon = computed(() => {
+    if(isSoundEnabled.value){
+      return 'mdi-volume-high'
+    }
+    return 'mdi-volume-off';
+  });
+
+  const toggleSoundEnabled = () => {
+    UI?.toggleSoundEnabled(!isSoundEnabled.value);
+  }
 
   const updateTranscription = (neoVal: boolean) => {
     UI?.setLoading(true);
@@ -160,6 +177,10 @@
       font-size: .875rem;
       margin-top: 40px;
     }
+  }
+  .settings-icons{
+    margin-left: auto;
+    margin-top: -5px;
   }
 
 }

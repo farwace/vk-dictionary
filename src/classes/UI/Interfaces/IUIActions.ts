@@ -40,4 +40,5 @@ export interface IUIActions {
     updateShareLink(collectionId: number, doClear:boolean):Promise<string>;
     tryCloneCollection(collectionOrShareId: number | string):Promise<void>;
     setLoading(show:boolean):void;
+    toggleSoundEnabled(val?:boolean):void;
 }

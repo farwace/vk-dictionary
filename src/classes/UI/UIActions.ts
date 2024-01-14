@@ -61,7 +61,7 @@ export class UIActions implements IUIActions{
                             });
                             this.updateSystemCollections().then();
                             this.updateUserCollections().then(() => {
-
+                                this.checkStorageVariables();
                                 this.checkSharedCollection();
                                 bridge.subscribe((e) => {
                                     if (e.detail.type === 'VKWebAppChangeFragment') {
@@ -705,6 +705,49 @@ export class UIActions implements IUIActions{
         }
 
         return '';
+    }
+
+    checkStorageVariables = () => {
+        bridge.send('VKWebAppStorageGet', {
+            keys: [
+                'isSoundEnabled',
+            ]})
+            .then((data) => {
+                if (data.keys) {
+                    let obData:{[key:string]:string} = {};
+                    data.keys.forEach((dataKey) => {
+                        obData[dataKey.key] = dataKey.value
+                    });
+
+                    if(obData.isSoundEnabled != undefined){
+                        this.UIStore.$patch({
+                            isSoundEnabled: !!obData.isSoundEnabled
+                        });
+                    }
+                }
+            })
+            .catch((error) => {
+                // Ошибка
+                //console.log(error);
+            });
+    }
+
+    toggleSoundEnabled = (val?:boolean) => {
+        if(val == undefined){
+            val = !(this.UIStore.$state.isSoundEnabled)
+        }
+
+        this.UIStore.$patch({
+            isSoundEnabled: val
+        });
+        let strVal = '0';
+        if(val){
+            strVal = '1';
+        }
+        bridge.send('VKWebAppStorageSet', {
+            key: 'isSoundEnabled',
+            value: strVal
+        })
     }
 
     tryCloneCollection = async (collectionOrShareId: number | string) => {

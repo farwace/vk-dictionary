@@ -41,14 +41,16 @@
   import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
   import {TWord} from "@/classes/Pinia/UIStore/TWord";
   import SystemCollectionWordsDialog from "@/components/common/SystemCollectionWordsDialog.vue";
+  import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
 
   const UI = inject<IUIActions>('UI');
+  const SOUND = inject<ISoundActions>('SOUND');
   const API = UI!.getApi()!;
 
   const $q = useQuasar();
   const {t} = useI18n() as {t:TranslateFunction};
 
-  const { user, availableLanguages, appliedCollection, launchParams } = storeToRefs(UIStore())
+  const { user, availableLanguages, appliedCollection, launchParams, isSoundEnabled } = storeToRefs(UIStore())
 
   const content = ref<HTMLDivElement>();
 
@@ -159,6 +161,12 @@
       }
     })
   }
+
+  watch(isSoundEnabled, (neoVal) => {
+    if(!neoVal){
+      SOUND?.stopAll();
+    }
+  })
 
 </script>
 

@@ -35,11 +35,15 @@ export class SoundActions implements ISoundActions{
         this.faultSound.load();
     }
     playSuccess() {
-        this.stopAll();
-        this.successSound?.play();
+        if(this.UIStore.isSoundEnabled){
+            this.stopAll();
+            this.successSound?.play();
+        }
     }
     plyFault() {
-        this.stopAll();
-        this.faultSound?.play();
+        if(this.UIStore.isSoundEnabled) {
+            this.stopAll();
+            this.faultSound?.play();
+        }
     }
 }

@@ -20,6 +20,7 @@ export const UIStore = defineStore('UIStore', {
             appliedCollection: {filled: false},
             appliedCollectionId: 0,
             trainingCollections: [],
+            isSoundEnabled: true,
             collectionExamples: {
                 "ru-en": [
                     {foreignWord: "I",transcription: "Ай",word: "Я",collectionId: 0},
