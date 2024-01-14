@@ -65,7 +65,9 @@ export class UIActions implements IUIActions{
                                 this.checkSharedCollection();
                                 bridge.subscribe((e) => {
                                     if (e.detail.type === 'VKWebAppChangeFragment') {
-                                        this.checkSharedCollection();
+                                        if(e.detail.data && e.detail.data.location){
+                                            this.checkSharedCollection(e.detail.data.location);
+                                        }
                                     }
                                 });
                             });
@@ -92,8 +94,11 @@ export class UIActions implements IUIActions{
         }
     }
 
-    private checkSharedCollection = () => {
-        const currentHash = window.location.hash;
+    private checkSharedCollection = (location?:string) => {
+        let currentHash = window.location.hash;
+        if(location){
+            currentHash = location;
+        }
         const cloneCollectionRegex = /collection-\w+/;
         const match = currentHash.match(cloneCollectionRegex);
 
