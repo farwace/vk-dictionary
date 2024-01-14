@@ -129,6 +129,11 @@
       }
     }).onOk((res) => {
       if(res.selectedLang && res.selectedLearnLang){
+        if(user.value.userLangId != res.selectedLang || user.value.userLearnLangId != res.selectedLearnLang){
+          router.push({
+            name: 'home'
+          });
+        }
         UI?.setLanguage(res.selectedLang, res.selectedLearnLang).then(() => {
           loadCollections();
         });
