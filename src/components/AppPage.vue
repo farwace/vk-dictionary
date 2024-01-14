@@ -75,8 +75,8 @@
     // });
     //
     if(launchParams?.value?.vk_platform == 'mobile_iphone' || launchParams?.value?.vk_platform == 'mobile_ipad' || launchParams?.value?.vk_platform == 'mobile_iphone_messenger'){
-      enterActiveClass.value = 'animated';
-      leaveActiveClass.value = 'animated';
+      enterActiveClass.value = '';
+      leaveActiveClass.value = '';
     }
   });
 
