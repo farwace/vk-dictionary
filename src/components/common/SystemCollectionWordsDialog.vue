@@ -69,12 +69,11 @@
   }
 
   const columns = computed(():QTableProps['columns'] => {
-    const nameCol = {
-      name: 'word',
-      required: true,
+    const translateCol = {
+      name: 'translate',
       label: t('Collection.Word'),
-      align: 'right' as 'right',
-      field: (row:TWord) => {return row.word},
+      align: 'left' as "left",
+      field: (row:TWord) => {return row.foreignWord},
       sortable: true
     };
     const transcriptionCol = {
@@ -83,11 +82,12 @@
       align: 'center' as "center",
       field: (row:TWord) => {return row.transcription},
     };
-    const translateCol = {
-      name: 'translate',
+    const nameCol = {
+      name: 'word',
+      required: true,
       label: t('Collection.Translation'),
-      align: 'left' as "left",
-      field: (row:TWord) => {return row.foreignWord},
+      align: 'right' as 'right',
+      field: (row:TWord) => {return row.word},
       sortable: true
     };
 

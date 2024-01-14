@@ -21,4 +21,5 @@ export type TUIStore = {
     appliedCollectionId: number,
     trainingWords?:TWord[],
     trainingCollections: number[],
+    collectionExamples: {[key:string]:TWord[]}
 }

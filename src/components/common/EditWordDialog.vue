@@ -14,10 +14,9 @@
                 @submit="submitForm"
             >
               <q-input
-                  autofocus
                   filled
                   dense
-                  v-model="neoWord"
+                  v-model="neoForeignWord"
                   :label="t('Collection.Word')+'*'"
                   lazy-rules
                   :rules="[val => val && val.length > 0 || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
@@ -32,13 +31,15 @@
                   :rules="[val => val.length < 255 || t('Collection.LongWord')]"
               />
               <q-input
+                  autofocus
                   filled
                   dense
-                  v-model="neoForeignWord"
+                  v-model="neoWord"
                   :label="t('Collection.Translation')+'*'"
                   lazy-rules
                   :rules="[val => val && val.length > 0 || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
               />
+
 
 
               <div class="error q-my-sm" v-if="errorText" v-html="errorText"></div>

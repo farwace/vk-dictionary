@@ -80,7 +80,7 @@
                     :class="{'q-field--highlighted':neoForeignWordHasError}"
                     ref="neoForeignWordInput"
                     outlined dense
-                    :label="t('Collection.Translation')"
+                    :label="t('Collection.NeoWord')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
@@ -104,7 +104,7 @@
                     @keydown.enter.stop="addNeoWord"
                     v-model="neoWord"
                     outlined dense
-                    :label="t('Collection.NeoWord')"
+                    :label="t('Collection.Translation')"
                     lazy-rules
                     :class="{'q-field--highlighted':neoWordHasError}"
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
@@ -120,6 +120,28 @@
           </template>
 
           <template v-slot:bottom-row>
+
+            <tr class="examples" v-if="rows.length < 1 && currentCollectionExample">
+              <td class="text-left">
+                <div v-for="exWord in currentCollectionExample">
+                  {{exWord.foreignWord}}
+                </div>
+              </td>
+              <td class="text-center" v-if="user.displayTranscription">
+                <div v-for="exWord in currentCollectionExample">
+                  {{exWord.transcription}}
+                </div>
+              </td>
+              <td class="text-right">
+                <div v-for="exWord in currentCollectionExample">
+                  {{exWord.word}}
+                </div>
+              </td>
+              <td>
+
+              </td>
+            </tr>
+
             <tr class="add-word" v-if="isEditMode">
 
               <td>
@@ -129,7 +151,7 @@
                     :class="{'q-field--highlighted':neoForeignWordHasError}"
                     ref="neoForeignWordInput"
                     outlined dense
-                    :label="t('Collection.Translation')"
+                    :label="t('Collection.NeoWord')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
@@ -155,7 +177,7 @@
                     @keydown.enter.stop="addNeoWord"
                     :class="{'q-field--highlighted':neoWordHasError}"
                     v-model="neoWord"
-                    :label="t('Collection.NeoWord')"
+                    :label="t('Collection.Translation')"
                     lazy-rules
                     :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                 />
@@ -177,7 +199,7 @@
                       :class="{'q-field--highlighted':neoForeignWordHasError}"
                       ref="neoForeignWordInput"
                       outlined dense
-                      :label="t('Collection.Translation')"
+                      :label="t('Collection.NeoWord')"
                       lazy-rules
                       :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                   />
@@ -203,7 +225,7 @@
                       @keydown.enter.stop="addNeoWord"
                       v-model="neoWord"
                       :class="{'q-field--highlighted':neoWordHasError}"
-                      :label="t('Collection.NeoWord')"
+                      :label="t('Collection.Translation')"
                       lazy-rules
                       :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                   />
@@ -274,7 +296,9 @@
     user,
     collections,
     appliedCollectionId,
-    isLoading
+    isLoading,
+    availableLanguages,
+    collectionExamples
   } = storeToRefs(UIStore());
 
   const sadAnimal = ref<string>('');
@@ -286,6 +310,26 @@
   const neoWordHasError = ref<boolean>(false);
   const neoTranscriptionHasError = ref<boolean>(false);
   const neoForeignWordHasError = ref<boolean>(false);
+
+  const currentCollectionExample = computed(():TWord[] | undefined =>{
+    let userLangCode = availableLanguages.value?.filter((obLang) => {
+      return obLang.id == user.value.userLangId;
+    });
+    let userLearnLangCode = availableLanguages.value?.filter((obLang) => {
+      return obLang.id == user.value.userLearnLangId;
+    });
+
+    if(userLangCode && userLangCode[0] && userLangCode[0]['nameCode'] && userLearnLangCode && userLearnLangCode[0] && userLearnLangCode[0]['nameCode']){
+      const langCode = userLangCode[0]['nameCode'] + '-' + userLearnLangCode[0]['nameCode'];
+      if(collectionExamples.value[langCode]){
+        return collectionExamples.value[langCode];
+      }
+    }
+    else{
+      return undefined;
+    }
+
+  })
 
   const neoWordInput = ref<QInput>();
   const neoForeignWordInput = ref<QInput>();
@@ -321,12 +365,11 @@
 
   const columns = computed(():QTableProps['columns'] => {
 
-    const nameCol = {
-      name: 'word',
-      required: true,
+    const translateCol = {
+      name: 'translate',
       label: t('Collection.Word'),
-      align: 'right' as 'right',
-      field: (row:TWord) => {return row.word},
+      align: 'left' as "left",
+      field: (row:TWord) => {return row.foreignWord},
       sortable: true
     };
     const transcriptionCol = {
@@ -335,11 +378,12 @@
       align: 'center' as "center",
       field: (row:TWord) => {return row.transcription},
     };
-    const translateCol = {
-      name: 'translate',
+    const nameCol = {
+      name: 'word',
+      required: true,
       label: t('Collection.Translation'),
-      align: 'left' as "left",
-      field: (row:TWord) => {return row.foreignWord},
+      align: 'right' as 'right',
+      field: (row:TWord) => {return row.word},
       sortable: true
     };
 
@@ -632,6 +676,13 @@
       justify-content: center;
       align-items: center;
       flex-basis: 50px;
+    }
+  }
+
+  .examples{
+    td{
+      font-style: italic;
+      color: $primary;
     }
   }
 </style>
