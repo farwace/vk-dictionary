@@ -719,9 +719,13 @@ export class UIActions implements IUIActions{
                         obData[dataKey.key] = dataKey.value
                     });
 
-                    if(obData.isSoundEnabled != undefined){
+                    if(obData.isSoundEnabled == '0' || obData.isSoundEnabled == '1'){
+                        let isSoundEnabled = true;
+                        if(obData.isSoundEnabled == '0'){
+                            isSoundEnabled = false;
+                        }
                         this.UIStore.$patch({
-                            isSoundEnabled: !!obData.isSoundEnabled
+                            isSoundEnabled: isSoundEnabled
                         });
                     }
                 }
