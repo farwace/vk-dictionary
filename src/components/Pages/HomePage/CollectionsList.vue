@@ -143,6 +143,7 @@
       flex-wrap: wrap;
       justify-content: space-between;
       gap: 20px;
+      min-height: 40px;
     }
     &__sort{
       .q-icon{
