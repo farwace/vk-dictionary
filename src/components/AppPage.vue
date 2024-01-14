@@ -10,8 +10,8 @@
             <router-view v-slot="{Component}">
               <transition
                   appear
-                  enter-active-class="animated fadeInLeft"
-                  leave-active-class="animated fadeOutLeft"
+                  :enter-active-class="enterActiveClass"
+                  :leave-active-class="leaveActiveClass"
               >
                 <component :is="Component"></component>
               </transition>
@@ -46,13 +46,16 @@
   const $q = useQuasar();
   const {t} = useI18n() as {t:TranslateFunction};
 
-  const { user, availableLanguages, appliedCollection } = storeToRefs(UIStore())
+  const { user, availableLanguages, appliedCollection, launchParams } = storeToRefs(UIStore())
 
   const content = ref<HTMLDivElement>();
 
   const resizeTimeout = ref<number>();
 
   const router = useRouter();
+
+  const enterActiveClass = ref<string>('animated fadeInLeft');
+  const leaveActiveClass = ref<string>('animated fadeOutLeft');
 
   onMounted(() => {
 
@@ -71,7 +74,10 @@
     //   console.log('>>> LANGUAGES', res);
     // });
     //
-
+    if(launchParams?.value?.vk_platform == 'mobile_iphone' || launchParams?.value?.vk_platform == 'mobile_ipad' || launchParams?.value?.vk_platform == 'mobile_iphone_messenger'){
+      enterActiveClass.value = 'animated';
+      leaveActiveClass.value = 'animated';
+    }
   });
 
 

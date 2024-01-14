@@ -4,8 +4,8 @@
       <div class="page-container subscription">
         <div v-if="!user.subscriptionExpired || new Date() > user.subscriptionExpired">
           <div class="q-mb-sm" v-html="t('subscription.buyTitle')"></div>
-          <div v-if="launchParams?.vk_platform == 'mobile_iphone'" v-html="t('subscription.iosError')"></div>
-          <div v-if="launchParams?.vk_platform !== 'mobile_iphone'">
+          <div v-if="launchParams?.vk_platform == 'mobile_iphone' || launchParams?.vk_platform == 'mobile_ipad' || launchParams?.vk_platform == 'mobile_iphone_messenger'" v-html="t('subscription.iosError')"></div>
+          <div v-if="launchParams?.vk_platform !== 'mobile_iphone' && launchParams?.vk_platform !== 'mobile_ipad' && launchParams?.vk_platform !== 'mobile_iphone_messenger'">
             <div class="text-subtitle1" v-html="t('subscription.buySubtitle')"></div>
             <div class="subscription__items">
               <q-btn @click="doSubscribe(7)">

@@ -49,7 +49,7 @@ export class UIActions implements IUIActions{
             this.queryLaunchParams().then(() => {
                 const launchParams = this.UIStore.$state.launchParams;
                 if(launchParams){
-                    if(launchParams.vk_platform == 'mobile_iphone'){
+                    if(launchParams.vk_platform == 'mobile_iphone' || launchParams?.vk_platform == 'mobile_ipad' || launchParams?.vk_platform == 'mobile_iphone_messenger'){
                         bridge.send('VKWebAppSetSwipeSettings', {
                             history: true
                         });
