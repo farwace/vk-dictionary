@@ -613,7 +613,7 @@
     justify-content: space-between;
 
     .collection-title{
-
+      word-break: break-all;
     }
     .collection-actions{
       flex-shrink: 0;
