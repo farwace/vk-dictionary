@@ -62,56 +62,12 @@ export class UIActions implements IUIActions{
                             this.updateSystemCollections().then();
                             this.updateUserCollections().then(() => {
 
-                                const currentHash = window.location.hash;
-                                const cloneCollectionRegex = /collection-\w+/;
-                                const match = currentHash.match(cloneCollectionRegex);
-
-                                if(match){
-                                    const tryingCloneId = match[0].replace('collection-', '');
-                                    //для того чтобы исключить, что это системная и уже была добавлена или пытаемся какую-то из своих дублировать.
-                                    const arAddedCollections = this.UIStore.$state.collections.filter((collection) => {
-                                        return collection.originalId == parseInt(tryingCloneId) || collection.shareId == tryingCloneId;
-                                    });
-
-                                    if(arAddedCollections.length < 1){
-                                        this.UIStore.$patch({
-                                            isReady: true
-                                        });
-
-                                        this.tryCloneCollection(tryingCloneId);
-                                        // this.cloneCollection(tryingCloneId).then((res) => {
-                                        //     if(res.id){
-                                        //         this.UIStore.$patch((state) => {
-                                        //             //state.collections.unshift(res);
-                                        //             state.isReady = true;
-                                        //             state.appliedCollection = res.id as number;
-                                        //         });
-                                        //
-                                        //     }
-                                        //     else{
-                                        //         this.UIStore.$patch({
-                                        //             isReady: true,
-                                        //         });
-                                        //     }
-                                        // }).catch((e) => {
-                                        //     this.UIStore.$patch({
-                                        //         isReady: true,
-                                        //     });
-                                        // })
-
+                                this.checkSharedCollection();
+                                bridge.subscribe((e) => {
+                                    if (e.detail.type === 'VKWebAppChangeFragment') {
+                                        this.checkSharedCollection();
                                     }
-                                    else{
-                                        this.UIStore.$patch({
-                                            isReady: true,
-                                        });
-                                    }
-                                }
-                                else{
-                                    this.UIStore.$patch({
-                                        isReady: true,
-                                    })
-                                }
-
+                                });
                             });
                         }
                         else{
@@ -135,6 +91,39 @@ export class UIActions implements IUIActions{
             this.setInitializeError();
         }
     }
+
+    private checkSharedCollection = () => {
+        const currentHash = window.location.hash;
+        const cloneCollectionRegex = /collection-\w+/;
+        const match = currentHash.match(cloneCollectionRegex);
+
+        if(match){
+            const tryingCloneId = match[0].replace('collection-', '');
+            //для того чтобы исключить, что это системная и уже была добавлена или пытаемся какую-то из своих дублировать.
+            const arAddedCollections = this.UIStore.$state.collections.filter((collection) => {
+                return collection.originalId == parseInt(tryingCloneId) || collection.shareId == tryingCloneId;
+            });
+
+            if(arAddedCollections.length < 1){
+                this.UIStore.$patch({
+                    isReady: true
+                });
+
+                this.tryCloneCollection(tryingCloneId);
+            }
+            else{
+                this.UIStore.$patch({
+                    isReady: true,
+                });
+            }
+        }
+        else{
+            this.UIStore.$patch({
+                isReady: true,
+            })
+        }
+    }
+
     clearSharedId(){
         this.UIStore.$patch({
             appliedCollection: {},
