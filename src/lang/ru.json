@@ -121,8 +121,8 @@
     "WordHasBeenUpdated": "Слово успешно изменено"
   },
   "Errors": {
-    "CollectionDetailNotIsAllRight": "Не удалось загрузить набор слов для тренировки. Попробуйте еще раз.",
-    "CollectionDetailErrorGetWords": "Не удалось загрузить слова для тренировки из набора слов. Попробуйте еще раз.",
+    "CollectionDetailNotIsAllRight": "Не удалось загрузить набор слов. Попробуйте еще раз.",
+    "CollectionDetailErrorGetWords": "Не удалось загрузить слова из набора слов. Попробуйте еще раз.",
     "TrainingNoCollectionInQuery": "Не удалось получить наборы слов для тренировки. Попробуйте еще раз",
     "TrainingLowWords": "Недостаточно слов для начала тренировки.",
     "GetTrainingWordsError": "Не удалось получить слова для тренировки. Попробуйте еще раз",

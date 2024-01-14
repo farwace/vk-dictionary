@@ -121,8 +121,8 @@
     "WordHasBeenUpdated": "The word has been successfully changed"
   },
   "Errors": {
-    "CollectionDetailNotIsAllRight": "The training set could not be loaded. Try again.",
-    "CollectionDetailErrorGetWords": "Failed to load training words from a set of words. Try again.",
+    "CollectionDetailNotIsAllRight": "The collection could not be loaded. Try again.",
+    "CollectionDetailErrorGetWords": "Failed to load words from a set of words. Try again.",
     "TrainingNoCollectionInQuery": "It was not possible to get sets of words for training. Try again",
     "TrainingLowWords": "There are not enough words to start a workout.",
     "GetTrainingWordsError": "I couldn't get the words to practice. Try again",
