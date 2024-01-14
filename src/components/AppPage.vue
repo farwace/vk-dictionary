@@ -9,12 +9,14 @@
           <div class="content" ref="content">
             <router-view v-slot="{Component}">
               <transition
+                  v-if="!isApple"
                   appear
-                  :enter-active-class="enterActiveClass"
-                  :leave-active-class="leaveActiveClass"
+                  enter-active-class="animated fadeInLeft"
+                  leave-active-class="animated fadeOutLeft"
               >
                 <component :is="Component"></component>
               </transition>
+              <component v-else :is="Component"></component>
             </router-view>
 
           </div>
@@ -54,8 +56,7 @@
 
   const router = useRouter();
 
-  const enterActiveClass = ref<string>('animated fadeInLeft');
-  const leaveActiveClass = ref<string>('animated fadeOutLeft');
+  const isApple = ref<boolean>(false);
 
   onMounted(() => {
 
@@ -75,8 +76,7 @@
     // });
     //
     if(launchParams?.value?.vk_platform == 'mobile_iphone' || launchParams?.value?.vk_platform == 'mobile_ipad' || launchParams?.value?.vk_platform == 'mobile_iphone_messenger'){
-      enterActiveClass.value = '';
-      leaveActiveClass.value = '';
+      isApple.value = true;
     }
   });
 
