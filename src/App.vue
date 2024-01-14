@@ -20,9 +20,7 @@
   import {useI18n} from "vue-i18n";
   import AppPage from "@/components/AppPage.vue";
   import {useRouter} from "vue-router";
-  /* @ts-ignore */
-  //import Hammer from 'hammerjs';
-  import { interval, Subject, throttle} from "rxjs";
+  import bridge from "@vkontakte/vk-bridge";
   import i18n from "@/classes/install/i18n";
   import enLang from 'quasar/lang/en-US.js';
   import ruLang from 'quasar/lang/ru.js';
@@ -175,53 +173,19 @@
         });
       }
 
-      // const navigateSubject = new Subject();
-      //   navigateSubject.pipe(
-      //       throttle(() => interval(300))
-      //   ).subscribe((value) => {
-      //     doNavigate(value as number);
-      //   });
-      // const body = document.querySelector('body')!;
-      // if(Hammer.defaults.cssProps.userSelect){
-      //   /** @ts-ignore */
-      //   delete Hammer.defaults.cssProps.userSelect;
-      // }
-      // const mc = new Hammer(body);
-      // mc.get('pan').set({direction: Hammer.DIRECTION_HORIZONTAL});
-      // mc.on('panleft panright', (swipeEvent:any) => {
-      //   const isEditModePage = document.querySelectorAll('.page.edit-mode');
-      //   if(isEditModePage.length > 0){
-      //     return;
-      //   }
-      //
-      //   if(!swipeEvent.isFinal || swipeEvent.pointerType == 'mouse'){
-      //     return;
-      //   }
-      //   const target = swipeEvent.target;
-      //   if(target && target.closest('.swiper')){
-      //     return;
-      //   }
-      //   if(target && target.closest('.q-dialog')){
-      //     return;
-      //   }
-      //   if(swipeEvent.distance > 200){
-      //     if(swipeEvent.additionalEvent == 'panleft'){
-      //       navigateSubject.next(1);
-      //     }
-      //     if(swipeEvent.additionalEvent == 'panright'){
-      //       navigateSubject.next(-1);
-      //     }
-      //
-      //   }
-      //
-      // });
+    bridge.subscribe((e) => {
+      if (e.detail.type === 'VKWebAppUpdateConfig') {
+        if(e.detail.data.appearance == 'light'){
+          $q.dark.set(false);
+        }
+        else if(e.detail.data.appearance == 'dark'){
+          $q.dark.set(true);
+        }
+
+      }
+    });
 
   });
 
-  // const doNavigate = (delta: number) => {
-  //   if(delta != 0){
-  //     router.go(delta);
-  //   }
-  // }
 
 </script>
