@@ -71,7 +71,7 @@
             </div>
           </template>
 
-          <template v-slot:top-row v-if="isEditMode && rows.length > 0">
+          <template v-slot:top-row v-if="isEditMode && rows.length > 10">
             <tr class="add-word">
               <td>
                 <q-input
