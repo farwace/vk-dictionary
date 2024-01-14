@@ -54,11 +54,14 @@
   import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
+  import {useRouter} from "vue-router";
 
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
   const SOUND = inject<ISoundActions>('SOUND');
   const UI = inject<IUIActions>('UI');
+
+  const router = useRouter();
 
   const {
     trainingWords,
@@ -218,7 +221,10 @@
   const wordsForRepeat = ref<TWord[]>();
 
   const fillWordsForRepeat = () => {
-    wordsForRepeat.value = fillRepeatArray(trainingWords!.value!, trainingCnt);
+    const arWordsForRepeat = fillRepeatArray(trainingWords!.value!, trainingCnt);
+    if(arWordsForRepeat){
+      wordsForRepeat.value = arWordsForRepeat;
+    }
   }
 
   const getRandomWordForTraining = () => {
@@ -243,6 +249,17 @@
 
 
   const fillRepeatArray = (arr:any[], count:number) => {
+    if(!Array.isArray(arr) || arr.length < 1){
+      $q.notify({
+        type: 'negative',
+        message: t('Errors.GetTrainingWordsError'),
+        position: "bottom"
+      });
+      router.push({
+        name: 'home'
+      });
+      return false;
+    }
     let result = arr.slice(0, count);
     while (result.length < count) {
       result = result.concat(arr.slice(0, count - result.length));
