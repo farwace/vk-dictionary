@@ -15,11 +15,14 @@ import {ISystemActions} from "@/classes/System/Interfaces/ISystemActions";
 import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/data";
 import {TRawWord, TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
 import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
+import {bufferTime, Subject, throttleTime} from "rxjs";
 
 @injectable()
 export class UIActions implements IUIActions{
     private UIStore;
     private language:EGetLaunchParamsResponseLanguages = EGetLaunchParamsResponseLanguages.RU;
+
+    private updateWordExperience$:Subject<{ id:number, count: number }>;
 
     constructor(
         @inject('UserActions')
@@ -29,6 +32,12 @@ export class UIActions implements IUIActions{
         private API:ISystemActions
     ) {
         this.UIStore = UIStore();
+        this.updateWordExperience$ = new Subject();
+        this.updateWordExperience$.pipe(
+            bufferTime(3000)
+        ).subscribe((values) => {
+            this.sendWordExperience(values);
+        })
     }
 
     getLanguage(){
@@ -539,12 +548,25 @@ export class UIActions implements IUIActions{
     }
 
     addWordExperience = async (id: number, count: number) => {
-        await this.API.updateWordExperience([
-            {
-                wordId: id,
-                experience: count
+        this.updateWordExperience$.next({id: id, count: count});
+        // await this.API.updateWordExperience([
+        //     {
+        //         wordId: id,
+        //         experience: count
+        //     }
+        // ])
+    }
+
+    private sendWordExperience = async (values: {id: number, count: number}[]) => {
+        if(values.length < 1){
+            return;
+        }
+        await this.API.updateWordExperience(values.map((val) => {
+            return {
+                wordId: val.id,
+                experience: val.count
             }
-        ])
+        }))
     }
 
     updateWord = async(word: TWord) => {
