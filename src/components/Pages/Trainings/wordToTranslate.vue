@@ -7,7 +7,7 @@
   >
     <template v-slot:top>
       <div>
-        <div v-if="stepWord && !isAll" class="original-word animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer}">
+        <div v-if="stepWord && !isAll" class="original-word animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer, 'long-word':isLongTopWord(stepWord.word)}">
           {{ stepWord.word }}
         </div>
         <div v-if="isAll">
@@ -19,7 +19,7 @@
       <div>
         <div v-if="!isAll" class="word-variants animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer}">
           <div v-for="variant in stepVariants" class="variant-item">
-            <q-btn class="variant-button" @click="doChooseValue(variant)" rounded outline color="primary" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive, 'right-answer': rightAnswerId == variant.id, 'fail-answer': failAnswerId == variant.id}">
+            <q-btn class="variant-button" @click="doChooseValue(variant)" rounded outline color="primary" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive, 'right-answer': rightAnswerId == variant.id, 'fail-answer': failAnswerId == variant.id, 'long-word':isLongBottomWord(variant.foreignWord)}">
               {{variant.foreignWord}}
             </q-btn>
           </div>
@@ -314,6 +314,22 @@
     UI?.showBetweenScreenAd();
   })
 
+  const getMaxWithoutSpaceLength = (str:string) => {
+    const words = str.split(' ');
+    return Math.max(...words.map(word => word.length));
+  }
+
+  const isLongTopWord = (str:string = '') => {
+    const oneLetterWirth = 22;
+    const maxLength = getMaxWithoutSpaceLength(str);
+    return oneLetterWirth * maxLength > window.innerWidth;
+  }
+
+  const isLongBottomWord = (str:string = '') => {
+    const oneLetterWirth = 18.5;
+    const maxLength = getMaxWithoutSpaceLength(str);
+    return oneLetterWirth * maxLength > (window.innerWidth - 60);
+  }
 
 </script>
 <style lang="scss" scoped>
@@ -354,5 +370,8 @@
     &:hover{
       transform: scale3d(1.5, 1.5, 1.5);
     }
+  }
+  .long-word{
+    word-break: break-all;
   }
 </style>

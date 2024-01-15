@@ -7,7 +7,7 @@
   >
     <template v-slot:top>
       <div>
-        <div v-if="stepWord && !isAll" class="original-word animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer}">
+        <div v-if="stepWord && !isAll" class="original-word animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer, 'long-word':isLongTopWord(stepWord.foreignWord)}">
           {{ stepWord.foreignWord }}
         </div>
         <div v-if="isAll">
@@ -19,7 +19,7 @@
       <div>
         <div v-if="!isAll" class="word-variants animated" :class="{fadeOut: isStepAnswer, fadeIn: !isStepAnswer}">
           <div v-for="variant in stepVariants" class="variant-item">
-            <q-btn class="variant-button" @click="doChooseValue(variant)" rounded outline color="primary" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive, 'right-answer': rightAnswerId == variant.id, 'fail-answer': failAnswerId == variant.id}">
+            <q-btn class="variant-button" @click="doChooseValue(variant)" rounded outline color="primary" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive, 'right-answer': rightAnswerId == variant.id, 'fail-answer': failAnswerId == variant.id, 'long-word':isLongBottomWord(variant.word)}">
               {{variant.word}}
             </q-btn>
           </div>
@@ -43,20 +43,20 @@
   </training-choose-translate-component>
 </template>
 <script lang="ts" setup>
-  import {storeToRefs} from "pinia";
-  import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
-  import {useI18n} from "vue-i18n";
-  import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {inject, onBeforeUnmount, onMounted, ref, watch} from "vue";
-  import TrainingChooseTranslateComponent from "@/components/Pages/Trainings/TrainingChooseTranslateComponent.vue";
-  import {TWord} from "@/classes/Pinia/UIStore/TWord";
-  import {useQuasar} from "quasar";
-  import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
-  import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
-  import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
-  import {useRouter} from "vue-router";
+import {storeToRefs} from "pinia";
+import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
+import {useI18n} from "vue-i18n";
+import type {TranslateFunction} from "@/lang/TranslateFunction";
+import {inject, onBeforeUnmount, onMounted, ref, watch} from "vue";
+import TrainingChooseTranslateComponent from "@/components/Pages/Trainings/TrainingChooseTranslateComponent.vue";
+import {TWord} from "@/classes/Pinia/UIStore/TWord";
+import {useQuasar} from "quasar";
+import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
+import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
+import {useRouter} from "vue-router";
 
-  const {t} = useI18n() as {t:TranslateFunction};
+const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
   const SOUND = inject<ISoundActions>('SOUND');
   const UI = inject<IUIActions>('UI');
@@ -312,7 +312,25 @@
 
   onBeforeUnmount(() => {
     UI?.showBetweenScreenAd();
-  })
+  });
+
+
+  const getMaxWithoutSpaceLength = (str:string) => {
+    const words = str.split(' ');
+    return Math.max(...words.map(word => word.length));
+  }
+
+  const isLongTopWord = (str:string = '') => {
+    const oneLetterWirth = 22;
+    const maxLength = getMaxWithoutSpaceLength(str);
+    return oneLetterWirth * maxLength > window.innerWidth;
+  }
+
+  const isLongBottomWord = (str:string = '') => {
+    const oneLetterWirth = 22;
+    const maxLength = getMaxWithoutSpaceLength(str);
+    return oneLetterWirth * maxLength > window.innerWidth;
+  }
 
 
 </script>
@@ -354,5 +372,8 @@
     &:hover{
       transform: scale3d(1.5, 1.5, 1.5);
     }
+  }
+  .long-word{
+    word-break: break-all;
   }
 </style>
