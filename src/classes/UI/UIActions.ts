@@ -168,7 +168,7 @@ export class UIActions implements IUIActions{
             }
         }
         catch (e){
-
+            this.setInitializeError();
         }
     }
 
