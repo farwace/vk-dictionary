@@ -43,23 +43,25 @@
   </training-choose-translate-component>
 </template>
 <script lang="ts" setup>
-import {storeToRefs} from "pinia";
-import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
-import {useI18n} from "vue-i18n";
-import type {TranslateFunction} from "@/lang/TranslateFunction";
-import {inject, onBeforeUnmount, onMounted, ref, watch} from "vue";
-import TrainingChooseTranslateComponent from "@/components/Pages/Trainings/TrainingChooseTranslateComponent.vue";
-import {TWord} from "@/classes/Pinia/UIStore/TWord";
-import {useQuasar} from "quasar";
-import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
-import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
-import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
-import {useRouter} from "vue-router";
+  import {storeToRefs} from "pinia";
+  import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
+  import {useI18n} from "vue-i18n";
+  import type {TranslateFunction} from "@/lang/TranslateFunction";
+  import {inject, onBeforeUnmount, onMounted, ref, watch} from "vue";
+  import TrainingChooseTranslateComponent from "@/components/Pages/Trainings/TrainingChooseTranslateComponent.vue";
+  import {TWord} from "@/classes/Pinia/UIStore/TWord";
+  import {useQuasar} from "quasar";
+  import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
+  import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
+  import {useRouter} from "vue-router";
+  import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
-const {t} = useI18n() as {t:TranslateFunction};
+  const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
   const SOUND = inject<ISoundActions>('SOUND');
   const UI = inject<IUIActions>('UI');
+  const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
 
   const router = useRouter();
 
@@ -331,6 +333,12 @@ const {t} = useI18n() as {t:TranslateFunction};
     const maxLength = getMaxWithoutSpaceLength(str);
     return oneLetterWirth * maxLength > window.innerWidth;
   }
+
+  watch(isStart, (neoVal) => {
+    if(neoVal){
+      TARGET_EVENTS?.sendEvent('StartTranslateToWordTraining');
+    }
+  })
 
 
 </script>

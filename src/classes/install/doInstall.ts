@@ -18,6 +18,8 @@ import Training from "@/components/Pages/Trainings/Training.vue";
 import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
 import {SoundActions} from "@/classes/UI/SoundActions";
 import Subscribe from "@/components/Pages/Subscribe.vue";
+import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
+import {EventActions} from "@/classes/UI/EventActions";
 //import {TestSystemActions} from "@/classes/System/TestSystemActions";
 
 
@@ -32,14 +34,17 @@ export class doInstall{
         container.bind<IUIActions>('UI').to(UIActions).inSingletonScope();
         container.bind<ISystemActions>('API').to(SystemActions).inSingletonScope();
         container.bind<ISoundActions>('SOUND').to(SoundActions).inSingletonScope();
+        container.bind<IEventActions>('TARGET_EVENTS').to(EventActions).inSingletonScope();
         const UILayer:IUIActions = container.get('UI');
         const API:ISystemActions = container.get('API');
         const SoundLayer:ISoundActions = container.get('SOUND');
+        const TargetEventsLayer:IEventActions = container.get('TARGET_EVENTS');
 
         try {
             const checkLaunchStatus = await API.checkLaunchParams();
             UILayer.install(app, checkLaunchStatus);
             SoundLayer.install(app);
+            TargetEventsLayer.install(app);
         }
         catch (e){
 
