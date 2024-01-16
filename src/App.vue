@@ -24,11 +24,13 @@
   import i18n from "@/classes/install/i18n";
   import enLang from 'quasar/lang/en-US.js';
   import ruLang from 'quasar/lang/ru.js';
+  import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
   const $q = useQuasar();
   $q.dark.set('auto');
   const router = useRouter();
   const UI = inject<IUIActions>('UI');
+  const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
 
   const {t} = useI18n() as {t:TranslateFunction};
 
@@ -127,7 +129,11 @@
 
 
           ]
-        })
+        });
+        TARGET_EVENTS?.sendEvent('registration');
+      }
+      else{
+        TARGET_EVENTS?.sendEvent('login');
       }
       let neoLang: "ru" | "en" = 'ru';
       if(launchParams?.value?.vk_language){
