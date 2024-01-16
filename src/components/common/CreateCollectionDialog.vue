@@ -57,6 +57,7 @@
   import {inject, ref, watch} from "vue";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {useRouter} from "vue-router";
+  import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
   const $q = useQuasar();
 
@@ -67,6 +68,7 @@
   const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 
   const UI = inject<IUIActions>('UI');
+  const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
   const router = useRouter();
 
   const errorText = ref<string>();
@@ -96,6 +98,7 @@
           }
         })
       }
+      TARGET_EVENTS?.sendEvent('CreateCollection');
     }).catch((e) => {
       errorText.value = t('Common.Errors.UnknownError');
       UI?.setLoading(false);

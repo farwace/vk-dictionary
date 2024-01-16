@@ -277,10 +277,12 @@
   import EditCollectionDialog from "@/components/common/EditCollectionDialog.vue";
   import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
   import ShareCollectionDialog from "@/components/common/ShareCollectionDialog.vue";
+  import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
   const $q = useQuasar();
 
   const UI = inject<IUIActions>('UI');
+  const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
   const filter = ref<string>('');
 
   const route = useRoute();
@@ -564,8 +566,8 @@
             type: 'positive',
             message: t('Messages.WordHasBeenAdded'),
             position: "bottom"
-          })
-
+          });
+          TARGET_EVENTS?.sendEvent('AddedNeoWord');
         }).catch(() => {
           UI?.setLoading(false);
         });

@@ -47,6 +47,7 @@
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
   import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
   import {useRouter} from "vue-router";
+  import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
   const {t} = useI18n() as {t:TranslateFunction};
   const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
@@ -55,6 +56,7 @@
   const router = useRouter();
 
   const UI = inject<IUIActions>('UI');
+  const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
   const {
     user,
   } = storeToRefs(UIStore());
@@ -127,6 +129,7 @@
               id: neoCollection.id
             }
           });
+          TARGET_EVENTS?.sendEvent('AddedCollectionFromPreview')
         }
       }).catch((e) => {
         UI?.setLoading(false);
