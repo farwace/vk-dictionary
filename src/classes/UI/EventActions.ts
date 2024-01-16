@@ -16,7 +16,6 @@ export class EventActions implements IEventActions{
     }
 
     sendEvent = (eventName: string) => {
-        console.log('>>> sendEvent', eventName);
         const userId = this.UIStore.$state?.user?.id;
         let props:{event_name: string, user_id?: number} = {
             event_name: eventName,
