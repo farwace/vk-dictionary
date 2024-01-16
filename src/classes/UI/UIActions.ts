@@ -641,7 +641,7 @@ export class UIActions implements IUIActions{
         try {
             const bridgeRes = await bridge.send('VKWebAppShowSubscriptionBox', {
                 action: 'create',
-                item: 'hideAD_'+days, // Идентификатор подписки в приложении
+                item: 'hideADS_'+days, // Идентификатор подписки в приложении
             });
 
             if(bridgeRes.success){
