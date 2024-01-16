@@ -99,7 +99,7 @@ export class UIActions implements IUIActions{
         if(location){
             currentHash = location;
         }
-        const cloneCollectionRegex = /collection-\w+/;
+        const cloneCollectionRegex = /collection-\S+/;
         const match = currentHash.match(cloneCollectionRegex);
 
         if(match){
