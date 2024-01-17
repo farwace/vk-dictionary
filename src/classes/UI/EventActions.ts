@@ -26,9 +26,9 @@ export class EventActions implements IEventActions{
         try {
             /* @ts-ignore */
             bridge.send('VKWebAppTrackEvent', props).then((sendRes) => {
-                console.log('>>> SEND RES', sendRes)
+                //console.log('>>> SEND RES', sendRes)
             }).catch((e) => {
-                console.log('>>> send error', e)
+                //console.log('>>> send error', e)
             });
 
         }
