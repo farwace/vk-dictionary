@@ -20,6 +20,7 @@ export class SystemActions implements ISystemActions{
     private CAN_REMOVE_WORD:boolean = true;
     private CAN_SEND_TRAINING:boolean = true;
     private CAN_UPDATE_SHARE:boolean = true;
+    private CAN_CLONE_COLLECTION:boolean = true;
 
     constructor() {
         this.UIStore = UIStore();
@@ -145,15 +146,26 @@ export class SystemActions implements ISystemActions{
     }
     cloneCollection = async (collectionId: number|string): Promise<TCollection> => {
         try {
+            if(!this.CAN_CLONE_COLLECTION){
+                await this.timeout(1000);
+            }
+            this.CAN_CLONE_COLLECTION = false;
             const fetchResult = await this.sendQuery('cloneCollection', {
                 collectionId: collectionId,
             });
+            this.delayCanCloneCollection();
             return await fetchResult.json();
         }
         catch (e){
             return {};
         }
     }
+    private delayCanCloneCollection = () => {
+        this.timeout(1000).then(() => {
+            this.CAN_CLONE_COLLECTION = true;
+        })
+    }
+
     getCollectionWords = async (collectionId: number): Promise<any> => {
         try {
             const fetchResult = await this.sendQuery('words', {

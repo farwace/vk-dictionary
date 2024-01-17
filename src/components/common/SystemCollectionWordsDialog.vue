@@ -10,7 +10,7 @@
           </div>
 
           <div class="dialog-container__subtitle">
-            <q-btn outline @click="doSave">
+            <q-btn :disable="isLoading" outline @click="doSave">
               <q-icon name="mdi-plus" class="q-mr-sm"/>
               {{t!('Collection.AddToMyCollections')}}
             </q-btn>
@@ -59,6 +59,7 @@
   const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
   const {
     user,
+    isLoading
   } = storeToRefs(UIStore());
   defineEmits([
     ...useDialogPluginComponent.emits
@@ -130,6 +131,14 @@
             }
           });
           TARGET_EVENTS?.sendEvent('AddedCollectionFromPreview')
+        }
+        else{
+          $q.notify({
+            type: 'negative',
+            message: t('Errors.CloneCollectionError'),
+            position: "bottom"
+          });
+          onDialogCancel();
         }
       }).catch((e) => {
         UI?.setLoading(false);

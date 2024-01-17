@@ -128,7 +128,8 @@
     "GetTrainingWordsError": "I couldn't get the words to practice. Try again",
     "TrainingTypeError": "The training session could not be uploaded. Try again",
     "WordCanNotBeEmpty": "Fill in the word",
-    "TranscriptionCanNotBeEmpty": "Fill out the transfer"
+    "TranscriptionCanNotBeEmpty": "Fill out the transfer",
+    "CloneCollectionError": "Couldn't add a set of words"
   },
   "faq": {
     "title": "Mini-tutorial",

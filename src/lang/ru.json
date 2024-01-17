@@ -128,7 +128,8 @@
     "GetTrainingWordsError": "Не удалось получить слова для тренировки. Попробуйте еще раз",
     "TrainingTypeError": "Не удалось загрузить тренировку. Попробуйте еще раз",
     "WordCanNotBeEmpty": "Заполните слово",
-    "TranscriptionCanNotBeEmpty": "Заполните перевод"
+    "TranscriptionCanNotBeEmpty": "Заполните перевод",
+    "CloneCollectionError": "Не удалось добавить набор слов"
   },
   "faq": {
     "title": "Мини-туториал",

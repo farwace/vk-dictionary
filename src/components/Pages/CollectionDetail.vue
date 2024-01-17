@@ -501,7 +501,7 @@
     if(neoWord.value.trim().length < 1){
       $q.notify({
         type: 'negative',
-        message: t('Errors.WordCanNotBeEmpty'),
+        message: t('Errors.TranscriptionCanNotBeEmpty'),
         position: "bottom"
       });
       neoWordHasError.value = true;
@@ -510,7 +510,7 @@
     if(neoForeignWord.value.trim().length < 1){
       $q.notify({
         type: 'negative',
-        message: t('Errors.TranscriptionCanNotBeEmpty'),
+        message: t('Errors.WordCanNotBeEmpty'),
         position: "bottom"
       });
       neoForeignWordHasError.value = true;
