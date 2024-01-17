@@ -1,7 +1,7 @@
 <template>
   <div class="no-collections-text" v-if="collections.length < 1">
     <div class="text-center">
-      <img src="/assets/img/homepage/no-collections.webp" alt="">
+      <img src="/assets/img/collection-detail/sad4.webp" alt="">
     </div>
     <div>
         <span>
