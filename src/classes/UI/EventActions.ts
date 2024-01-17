@@ -15,15 +15,16 @@ export class EventActions implements IEventActions{
     }
 
     sendEvent = (eventName: string) => {
-        const userId = this.UIStore.$state?.user?.id;
-        let props:{event_name: string, user_id?: number} = {
-            event_name: eventName,
-        };
-        if(userId){
-            props.user_id = userId;
-        }
+        // const userId = this.UIStore.$state?.user?.id;
+        // let props:{event_name: string, user_id?: number} = {
+        //     event_name: eventName,
+        // };
+        // if(userId){
+        //     props.user_id = userId;
+        // }
         try {
-
+            /* @ts-ignore */
+            ym(96160179,'reachGoal', eventName)
         }
         catch (e){
 
