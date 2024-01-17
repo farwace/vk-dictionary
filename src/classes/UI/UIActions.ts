@@ -110,23 +110,23 @@ export class UIActions implements IUIActions{
             });
 
             if(arAddedCollections.length < 1){
-                this.UIStore.$patch({
-                    isReady: true
-                });
+                this.setReady();
 
                 this.tryCloneCollection(tryingCloneId);
             }
             else{
-                this.UIStore.$patch({
-                    isReady: true,
-                });
+                this.setReady();
             }
         }
         else{
-            this.UIStore.$patch({
-                isReady: true,
-            })
+            this.setReady();
         }
+    }
+
+    private setReady = () => {
+        this.UIStore.$patch({
+            isReady: true,
+        })
     }
 
     clearSharedId(){
