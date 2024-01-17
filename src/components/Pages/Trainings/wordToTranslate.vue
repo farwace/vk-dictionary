@@ -74,8 +74,8 @@
     fillWordsForRepeat();
     doChooseValue();
   });
-
-  const delayTime = 550;
+  const delayTimeOrig = 550;
+  const delayTime = ref<number>(delayTimeOrig);
   const trainingCnt = 20;
   const addedExperience = 3;
 
@@ -108,26 +108,28 @@
     }
     canAnswer.value = false;
     if(answer){
-      setTimeout(() => {
-        isStepAnswer.value = true;
-      }, delayTime - 150);
 
       if(((answer.id == stepWord.value?.id) || ( answer.word.toLowerCase() == stepWord.value?.word.toLowerCase() ))){
         UI?.addWordExperience(stepWord!.value!.id!, addedExperience);
         SOUND?.playSuccess();
         countRightAnswers.value += 1;
         rightAnswerId.value = answer.id;
-
+        delayTime.value = delayTimeOrig;
         tmpCountRightInRowAnswers.value += 1;
       }
       else {
         SOUND?.plyFault();
+        delayTime.value = delayTimeOrig + 600;
         countFaultAnswers.value += 1;
         rightAnswerId.value = stepWord.value!.id!;
         failAnswerId.value = answer.id;
         tmpCountRightInRowAnswers.value = 0;
       }
     }
+
+    setTimeout(() => {
+      isStepAnswer.value = true;
+    }, delayTime.value - 150);
 
     const randomWord = getRandomWordForTraining();
     if(randomWord) {
@@ -151,7 +153,7 @@
         stepVariants.value = shuffleArray(chooseArray);
 
         canAnswer.value = true;
-      }, delayTime);
+      }, delayTime.value);
     }
     else{
 
@@ -161,23 +163,23 @@
         isStepAnswer.value = false;
         canAnswer.value = true;
         isAll.value = true;
-      }, delayTime)
+      }, delayTime.value)
 
       setTimeout(() => {
         showResultTable.value = true;
       }, 300)
       setTimeout(() => {
         showCountRightAnswers.value = true;
-      }, delayTime + 800);
+      }, delayTime.value + 800);
       setTimeout(() => {
         showCountRightInRowAnswers.value = true;
-      }, delayTime + 1100);
+      }, delayTime.value + 1100);
       setTimeout(() => {
         showCountFaultAnswers.value = true;
-      }, delayTime + 1500);
+      }, delayTime.value + 1500);
       setTimeout(() => {
         showRestartButton.value = true;
-      }, delayTime + 1500);
+      }, delayTime.value + 1500);
 
 
     }
