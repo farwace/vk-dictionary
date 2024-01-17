@@ -2,7 +2,6 @@ import {injectable} from "inversify";
 import {App} from "@vue/runtime-core";
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
-import bridge from "@vkontakte/vk-bridge";
 
 @injectable()
 export class EventActions implements IEventActions{
@@ -24,12 +23,6 @@ export class EventActions implements IEventActions{
             props.user_id = userId;
         }
         try {
-            /* @ts-ignore */
-            bridge.send('VKWebAppTrackEvent', props).then((sendRes) => {
-                //console.log('>>> SEND RES', sendRes)
-            }).catch((e) => {
-                //console.log('>>> send error', e)
-            });
 
         }
         catch (e){
