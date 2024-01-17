@@ -5,11 +5,13 @@
         <div class="position-relative">
           <q-icon class="close-icon" @click.prevent="onDialogCancel" name="mdi-window-close"/>
 
-          <div class="dialog-container__title">
-            {{ collection.name }}
+          <div class="dialog-container__title" :class="{'q-pa-md':!collection}">
+            <div v-if="collection">
+              {{ collection.name }}
+            </div>
           </div>
 
-          <div class="dialog-container__subtitle">
+          <div v-if="collection" class="dialog-container__subtitle">
             <q-btn :disable="isLoading" outline @click="doSave">
               <q-icon name="mdi-plus" class="q-mr-sm"/>
               {{t!('Collection.AddToMyCollections')}}
@@ -18,11 +20,12 @@
 
           <q-table
               class="words-table"
+              :class="{'without-pager':props.hidePagination}"
               flat bordered
               :rows="rows"
               :columns="columns"
               :pagination="{
-                rowsPerPage: 25
+                rowsPerPage: rowsPerPage
               }"
               :rows-per-page-options="[25, 50,75,100,150, 0]"
               :wrap-cells="true"
@@ -40,7 +43,7 @@
   import type {TranslateFunction} from "@/lang/TranslateFunction";
   import {useDialogPluginComponent, useQuasar} from "quasar";
   import type {QTableProps} from "quasar";
-  import {computed, inject} from "vue";
+  import {computed, inject, onMounted, ref} from "vue";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
   import {storeToRefs} from "pinia";
@@ -65,7 +68,13 @@
     ...useDialogPluginComponent.emits
   ]);
 
-  const props = defineProps<{ words: TWords, collection: TCollection }>();
+  const props = defineProps<{
+    words: TWords,
+    collection?: TCollection,
+    hidePagination?:boolean
+  }>();
+
+  const rowsPerPage = ref<number>(25);
 
   const onOKClick = () => {
 
@@ -113,6 +122,9 @@
 
 
   const doSave = () => {
+    if(!props.collection){
+      return;
+    }
     if(props.collection.id){
       UI?.setLoading(true);
 
@@ -150,6 +162,12 @@
     }
   }
 
+  onMounted(() => {
+    if(props.hidePagination){
+      rowsPerPage.value = 0;
+    }
+  })
+
 
 </script>
 <style lang="scss" scoped>
@@ -168,6 +186,11 @@
     :deep(.q-table){
       th{
         white-space: nowrap;
+      }
+    }
+    :deep(.without-pager){
+      .q-table__bottom{
+        display: none;
       }
     }
   }

@@ -37,6 +37,9 @@
           <div v-if="showRestartButton" class="animated fadeIn q-mt-sm">
             <q-icon name="mdi-replay" class="replay" @click="doReplay"></q-icon>
           </div>
+          <div v-if="errorWords.length > 0 && showErrorsButton" class="animated fadeIn q-mt-lg">
+            <q-btn @click="showErrors" rounded><q-icon name="mdi-eye-refresh-outline" class="q-mr-sm"/><span v-html="t('Training.MyErrors')"></span></q-btn>
+          </div>
         </div>
       </div>
     </template>
@@ -56,6 +59,7 @@
   import ResultStarsScreen from "@/components/Pages/Trainings/ResultStarsScreen.vue";
   import {useRouter} from "vue-router";
   import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
+  import SystemCollectionWordsDialog from "@/components/common/SystemCollectionWordsDialog.vue";
 
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
@@ -100,7 +104,9 @@
   const showCountRightInRowAnswers = ref<boolean>(false);
   const showCountFaultAnswers = ref<boolean>(false);
   const showRestartButton = ref<boolean>(false);
+  const showErrorsButton = ref<boolean>(false);
 
+  const errorWords = ref<TWord[]>([]);
 
   const doChooseValue = (answer?:TWord) => {
     if(!canAnswer.value){
@@ -121,6 +127,19 @@
         SOUND?.plyFault();
         delayTime.value = delayTimeOrig + 600;
         countFaultAnswers.value += 1;
+
+        const issetStepErrorWords = errorWords.value.filter((word) => {
+          return stepWord.value?.id == word.id;
+        });
+        if(issetStepErrorWords.length < 1){
+          errorWords.value.push(stepWord.value!);
+        }
+        const issetAnswerErrorWords = errorWords.value.filter((word) => {
+          return answer?.id == word.id;
+        });
+        if(issetAnswerErrorWords.length < 1) {
+          errorWords.value.push(answer!);
+        }
         rightAnswerId.value = stepWord.value!.id!;
         failAnswerId.value = answer.id;
         tmpCountRightInRowAnswers.value = 0;
@@ -180,6 +199,9 @@
       setTimeout(() => {
         showRestartButton.value = true;
       }, delayTime.value + 1500);
+      setTimeout(() => {
+        showErrorsButton.value = true;
+      }, delayTime.value + 1600);
 
 
     }
@@ -301,7 +323,11 @@
       showCountRightInRowAnswers.value = false;
       showCountFaultAnswers.value = false;
       showRestartButton.value = false;
+      showErrorsButton.value = false;
       showResultTable.value = false;
+
+      delayTime.value = delayTimeOrig;
+      errorWords.value = [];
 
       isStart.value = false;
       isAll.value = false;
@@ -317,7 +343,6 @@
   onBeforeUnmount(() => {
     UI?.showBetweenScreenAd();
   });
-
 
   const getMaxWithoutSpaceLength = (str:string) => {
     const words = str.split(' ');
@@ -340,7 +365,17 @@
     if(neoVal){
       TARGET_EVENTS?.sendEvent('StartTranslateToWordTraining');
     }
-  })
+  });
+
+  const showErrors = () => {
+    $q.dialog({
+      component: SystemCollectionWordsDialog,
+      componentProps: {
+        words: errorWords.value,
+        hidePagination: true
+      }
+    })
+  }
 
 
 </script>
@@ -371,11 +406,11 @@
   }
   .result-table{
     font-size: 1rem;
-    min-height: 200px;
+    min-height: 220px;
     text-align: center;
   }
   .replay{
-    font-size: 1.8rem;
+    font-size: 2rem;
     cursor: pointer;
     transition: transform .3s ease-out;
     will-change: transform;
