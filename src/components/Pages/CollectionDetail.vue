@@ -71,56 +71,7 @@
             </div>
           </template>
 
-          <template v-slot:top-row v-if="isEditMode && rows.length > 10">
-            <tr class="add-word">
-              <td>
-                <q-input
-                    @keydown.enter.stop="addNeoWord"
-                    v-model="neoForeignWord"
-                    :class="{'q-field--highlighted':neoForeignWordHasError}"
-                    ref="neoForeignWordInput"
-                    outlined dense
-                    :label="t('Collection.NeoWord')"
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                />
-              </td>
-
-              <td v-if="user.displayTranscription">
-                <q-input
-                    @keydown.enter.stop="addNeoWord"
-                    v-model="neoTranscription"
-                    :class="{'q-field--highlighted':neoTranscriptionHasError}"
-                    outlined dense
-                    :label="t('Collection.Transcription')"
-                    lazy-rules
-                    :rules="[val => val.length < 255 || t('Collection.LongWord')]"
-                />
-              </td>
-
-              <td>
-                <q-input
-                    ref="neoWordInput"
-                    @keydown.enter.stop="addNeoWord"
-                    v-model="neoWord"
-                    outlined dense
-                    :label="t('Collection.Translation')"
-                    lazy-rules
-                    :class="{'q-field--highlighted':neoWordHasError}"
-                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                />
-              </td>
-
-              <td style="width: 10px;">
-                <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading">
-                  <q-icon name="mdi-content-save" />
-                </q-btn>
-              </td>
-            </tr>
-          </template>
-
-          <template v-slot:bottom-row>
-
+          <template v-slot:top-row>
             <tr class="examples" v-if="rows.length < 1 && currentCollectionExample">
               <td class="text-left">
                 <div v-for="exWord in currentCollectionExample">
