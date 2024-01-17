@@ -290,7 +290,16 @@
     while (result.length < count) {
       result = result.concat(arr.slice(0, count - result.length));
     }
-    return result;
+
+    const changeLastNumberElements = 5;
+    if(result.length > count - changeLastNumberElements  && arr.length > count){
+      const additionalItems = arr.slice(count - 5).filter((_, index) => index >= count - changeLastNumberElements);
+      const randomItems = additionalItems.sort(() => Math.random() - 0.5).slice(0, changeLastNumberElements);
+
+      result = result.concat(randomItems);
+    }
+
+    return shuffleArray(result);
   }
 
   const shuffleArray = (array:any[]) => {
