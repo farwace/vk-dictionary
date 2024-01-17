@@ -293,7 +293,8 @@
 
     const changeLastNumberElements = 5;
     if(result.length > count - changeLastNumberElements  && arr.length > count){
-      const additionalItems = arr.slice(count - 5).filter((_, index) => index >= count - changeLastNumberElements);
+      result = result.slice(0, count-changeLastNumberElements);
+      const additionalItems = arr.slice(count - changeLastNumberElements).filter((_, index) => index >= count - changeLastNumberElements);
       const randomItems = additionalItems.sort(() => Math.random() - 0.5).slice(0, changeLastNumberElements);
 
       result = result.concat(randomItems);
