@@ -3,6 +3,9 @@
   <div class="loading-screen">
     <img src="/assets/img/waiting.webp">
     <div class="loading-text"><span v-html="t('Launch.Loading')"></span><span v-html="points"></span></div>
+    <div class="crutches">
+      <q-icon name="mdi-head-lightbulb"></q-icon>
+    </div>
   </div>
 </div>
 </template>
@@ -77,6 +80,14 @@
     position: absolute;
     z-index: 2;
     text-shadow: 0 0 10px rgba(0,0,0,.3);
+  }
+  .crutches{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
 }
 </style>
