@@ -67,7 +67,7 @@
       font-size: 1.2rem;
 
       display: grid;
-      grid-template-columns: 1fr 40px 1fr;
+      grid-template-columns: 1fr 60px 1fr;
       gap: 20px;
 
       .left-side{
@@ -87,7 +87,7 @@
 
       .user-info{
         cursor: pointer;
-
+        padding: 0 10px;
         .user-photo{
           position: relative;
           img.photo{

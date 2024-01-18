@@ -60,7 +60,7 @@
 </script>
 <style lang="scss" scoped>
   .page-container.home-page{
-    padding-bottom: 126px;
+    padding-bottom: 150px;
     position: relative;
   }
   .add-collections-btn{
