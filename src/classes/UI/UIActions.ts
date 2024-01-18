@@ -168,6 +168,8 @@ export class UIActions implements IUIActions{
             }
         }
         catch (e){
+            console.log('launch error >>>');
+            console.log(e);
             this.setInitializeError();
         }
     }
