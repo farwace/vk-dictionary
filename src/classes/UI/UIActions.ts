@@ -170,7 +170,7 @@ export class UIActions implements IUIActions{
         catch (e){
             const urlParams = new URLSearchParams(window.location.search);
             const client = urlParams.get('vk_client') || '';
-            if(client == 'browser_atom'){
+            if(client == 'browser_atom' || client == 'ok'){
                 const paramsObject:{[key:string]:string | number} = {};
 
                 for (const [key, value] of urlParams) {
