@@ -44,7 +44,7 @@
   import i18n from "@/classes/install/i18n";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {inject, ref} from "vue";
+  import {inject, onMounted, ref} from "vue";
   import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {Vue3Lottie} from "vue3-lottie";
 
@@ -89,6 +89,13 @@
     }
     return '';
   }
+
+  onMounted(() => {
+    /** @ts-ignore */
+    if(launchParams?.value?.vk_client == 'browser_atom'){
+      cantSubscribeDevice.value = true;
+    }
+  })
 
 </script>
 <style lang="scss" scoped>
