@@ -59,7 +59,8 @@
   const { dialogRef, onDialogOK, onDialogCancel } = useDialogPluginComponent();
 
   const {
-    isLoading
+    isLoading,
+    launchParams
   } = storeToRefs(UIStore());
 
   const UI = inject<IUIActions>('UI');
@@ -89,6 +90,10 @@
   const compShareUrl = computed(() => {
     if(!props.collection.shareId){
       return '';
+    }
+    /* @ts-ignore */
+    if(launchParams?.value?.vk_client == 'ok'){
+      return 'https://ok.ru/app/vk_app51805937#collection-' + props.collection.shareId;
     }
     return 'https://vk.com/app51805937#collection-' + props.collection.shareId;
   });
