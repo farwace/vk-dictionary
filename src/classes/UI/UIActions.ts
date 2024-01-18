@@ -168,9 +168,21 @@ export class UIActions implements IUIActions{
             }
         }
         catch (e){
-            console.log('launch error >>>');
-            console.log(e);
-            this.setInitializeError();
+            const urlParams = new URLSearchParams(window.location.search);
+            const client = urlParams.get('vk_client') || '';
+            if(client == 'browser_atom'){
+                const paramsObject:{[key:string]:string | number} = {};
+
+                for (const [key, value] of urlParams) {
+                    paramsObject[key] = value;
+                }
+                this.UIStore.$patch({
+                    launchParams: paramsObject as unknown as GetLaunchParamsResponse
+                });
+            }
+            else{
+                this.setInitializeError();
+            }
         }
     }
 
