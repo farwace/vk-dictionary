@@ -132,7 +132,7 @@
             </ul>
           </div>
         </div>
-        <div class="question">
+        <div class="question" v-if="!cantSubscribeDevice">
           <div class="question__title" @click="toggleQuestion" v-html="t('faq.howToRemoveAd.title')"></div>
           <div class="question__body">
             <ul>
@@ -154,12 +154,16 @@
   import {storeToRefs} from "pinia";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
+  import {onMounted, ref} from "vue";
 
   const {t} = useI18n() as {t:TranslateFunction};
 
   const {
-    contentHeight
+    contentHeight,
+    launchParams
   } = storeToRefs(UIStore());
+
+  const cantSubscribeDevice = ref<boolean>(false);
 
   const toggleQuestion = (event:any) => {
     const target = event.target as unknown as HTMLElement | null;
@@ -167,6 +171,13 @@
       target?.closest('.question')?.classList.toggle('active');
     }
   }
+
+  onMounted(() => {
+    /** @ts-ignore */
+    if(launchParams?.value?.vk_client == 'browser_atom' || launchParams?.value?.vk_client == 'ok' || launchParams?.value?.vk_client == 'mail'){
+      cantSubscribeDevice.value = true;
+    }
+  })
 
 
 </script>
