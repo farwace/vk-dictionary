@@ -33,7 +33,7 @@
                   {{ t!('ProfileSettingsDialog.ShowTutorial') }}
                 </a>
               </div>
-              <div class="q-mt-sm">
+              <div class="q-mt-sm" v-if="!cantSubscribeDevice">
                 <a href="#" class="link" @click.prevent="router.push({name: 'subscribe'})" >
                   <span v-if="!user.subscriptionExpired || new Date() > user.subscriptionExpired " v-html="t('ProfileSettingsDialog.HideAD')"></span>
                   <span v-else v-html="t('subscription.isActive')"></span>
@@ -59,7 +59,7 @@
   import {useDialogPluginComponent} from "quasar";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {computed, inject, ref, watch} from "vue";
+  import {computed, inject, onMounted, ref, watch} from "vue";
   import {storeToRefs} from "pinia";
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
   import {TGetLang} from "@/classes/Pinia/UIStore/TLang";
@@ -78,11 +78,13 @@
     availableLanguages,
     isLoading,
     isSoundEnabled,
+    launchParams
   } = storeToRefs(UIStore());
 
   const UI = inject<IUIActions>('UI');
 
   const transcription = ref<boolean>(user.value.displayTranscription || false);
+  const cantSubscribeDevice = ref<boolean>(false);
 
   const props = defineProps<{
     showSelectLanguageDialog: (data: TGetLang) => void
@@ -132,6 +134,13 @@
       UI?.setLoading(false);
     });
   }
+
+  onMounted(() => {
+    /** @ts-ignore */
+    if(launchParams?.value?.vk_client == 'browser_atom' || launchParams?.value?.vk_client == 'ok' || launchParams?.value?.vk_client == 'mail'){
+      cantSubscribeDevice.value = true;
+    }
+  })
 
 </script>
 
