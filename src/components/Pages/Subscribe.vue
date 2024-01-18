@@ -92,7 +92,7 @@
 
   onMounted(() => {
     /** @ts-ignore */
-    if(launchParams?.value?.vk_client == 'browser_atom' || launchParams?.value?.vk_client == 'ok'){
+    if(launchParams?.value?.vk_client == 'browser_atom' || launchParams?.value?.vk_client == 'ok' || launchParams?.value?.vk_client == 'mail'){
       cantSubscribeDevice.value = true;
     }
   })
