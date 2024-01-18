@@ -7,7 +7,7 @@
           <div v-if="launchParams?.vk_platform == 'mobile_iphone' || launchParams?.vk_platform == 'mobile_ipad' || launchParams?.vk_platform == 'mobile_iphone_messenger'" v-html="t('subscription.iosError')"></div>
           <div v-if="launchParams?.vk_platform !== 'mobile_iphone' && launchParams?.vk_platform !== 'mobile_ipad' && launchParams?.vk_platform !== 'mobile_iphone_messenger'">
             <div class="text-subtitle1" v-html="t('subscription.buySubtitle')"></div>
-            <div class="subscription__items">
+            <div class="subscription__items" v-if="!cantSubscribeDevice">
               <q-btn @click="doSubscribe(7)">
                 <q-icon color="pink-3" name="mdi-hand-heart-outline" class="q-mr-sm"/> {{t!('subscription.buy7')}}
               </q-btn>
@@ -19,6 +19,9 @@
               <q-btn @click="doSubscribe(90)">
                 <q-icon color="pink-3" name="mdi-hand-heart-outline" class="q-mr-sm"/>  {{t!('subscription.buy90')}}
               </q-btn>
+            </div>
+            <div class="subscription__items" v-else>
+              <div v-html="t('subscription.onThisDeviceUCant')"></div>
             </div>
           </div>
         </div>
@@ -41,7 +44,7 @@
   import i18n from "@/classes/install/i18n";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {inject} from "vue";
+  import {inject, ref} from "vue";
   import type {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {Vue3Lottie} from "vue3-lottie";
 
@@ -55,6 +58,7 @@
     launchParams
   } = storeToRefs(UIStore());
 
+  const cantSubscribeDevice = ref<boolean>(false);
 
   const doSubscribe = (days:number) => {
     UI?.setLoading(true);

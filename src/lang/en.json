@@ -181,7 +181,8 @@
     "buyTitle": "The subscription hides all ads in the app.",
     "buy7": "Subscribe for 7 days",
     "buy30": "Subscribe for 30 days",
-    "buy90": "Subscribe for 90 days"
+    "buy90": "Subscribe for 90 days",
+    "onThisDeviceUCant": "Unfortunately, it was not possible to get a list of available subscriptions. Contact the developer to solve the problem."
   },
   "share": {
     "title": "Share a set of words",
