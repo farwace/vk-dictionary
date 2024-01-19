@@ -89,7 +89,15 @@
         'ru',
         'en',
         'es',
-        'pt'
+        'pt',
+        'de',
+        'fr',
+        'zh',
+        'ko',
+        'ja',
+        'hi',
+        'ar',
+        'el',
     ]
     return props.availableLanguages.sort((a,b) => {
       const aIndex = primaryLanguages.indexOf(a.nameCode) > -1 ? primaryLanguages.indexOf(a.nameCode) : 1000;
@@ -133,9 +141,10 @@
         margin-bottom: 6px;
         .item-inner{
           display: flex;
-          border: 3px solid rgba(0,0,0,0);
+          border: 2px solid rgba(0,0,0,0);
           border-radius: 4px;
           cursor: pointer;
+          padding: 2px;
 
           img{
             object-fit: contain;
