@@ -1,6 +1,6 @@
 <template>
   <q-dialog ref="dialogRef">
-    <q-card class="q-dialog-plugin">
+    <q-card class="q-dialog-plugin no-scrollbar">
       <div class="dialog-container">
         <div class="position-relative">
           <q-icon class="close-icon" @click.prevent="onDialogCancel" name="mdi-window-close"/>
@@ -12,7 +12,7 @@
           </div>
 
           <div v-if="collection" class="dialog-container__subtitle">
-            <q-btn :disable="isLoading" outline @click="doSave">
+            <q-btn rounded class="w-100 add-to-my-collections" :disable="isLoading" outline @click="doSave">
               <q-icon name="mdi-plus" class="q-mr-sm"/>
               {{t!('Collection.AddToMyCollections')}}
             </q-btn>
@@ -84,7 +84,7 @@
     const translateCol = {
       name: 'translate',
       label: t('Collection.Word'),
-      align: 'left' as "left",
+      align: 'right' as "right",
       field: (row:TWord) => {return row.foreignWord},
       sortable: true
     };
@@ -98,7 +98,7 @@
       name: 'word',
       required: true,
       label: t('Collection.Translation'),
-      align: 'right' as 'right',
+      align: 'left' as 'left',
       field: (row:TWord) => {return row.word},
       sortable: true
     };
@@ -172,7 +172,6 @@
 </script>
 <style lang="scss" scoped>
   .dialog-container{
-    padding: 20px;
 
     &__title{
       margin-bottom: 5px;
@@ -192,6 +191,12 @@
       .q-table__bottom{
         display: none;
       }
+    }
+  }
+  :deep(.add-to-my-collections){
+    .q-btn__content{
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
   }
 </style>

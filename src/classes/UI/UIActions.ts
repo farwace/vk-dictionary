@@ -725,6 +725,7 @@ export class UIActions implements IUIActions{
         bridge.send('VKWebAppStorageGet', {
             keys: [
                 'isSoundEnabled',
+                'isVibrateEnabled'
             ]})
             .then((data) => {
                 if (data.keys) {
@@ -742,6 +743,16 @@ export class UIActions implements IUIActions{
                             isSoundEnabled: isSoundEnabled
                         });
                     }
+                    if(obData.isVibrateEnabled == '0' || obData.isVibrateEnabled == '1'){
+                        let isVibrateEnabled = true;
+                        if(obData.isVibrateEnabled == '0'){
+                            isVibrateEnabled = false;
+                        }
+                        this.UIStore.$patch({
+                            isVibrateEnabled: isVibrateEnabled
+                        });
+                    }
+
                 }
             })
             .catch((error) => {
@@ -764,6 +775,23 @@ export class UIActions implements IUIActions{
         }
         bridge.send('VKWebAppStorageSet', {
             key: 'isSoundEnabled',
+            value: strVal
+        })
+    }
+    toggleVibrateEnabled = (val?:boolean) => {
+        if(val == undefined){
+            val = !(this.UIStore.$state.isVibrateEnabled)
+        }
+
+        this.UIStore.$patch({
+            isVibrateEnabled: val
+        });
+        let strVal = '0';
+        if(val){
+            strVal = '1';
+        }
+        bridge.send('VKWebAppStorageSet', {
+            key: 'isVibrateEnabled',
             value: strVal
         })
     }

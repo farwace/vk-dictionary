@@ -171,6 +171,7 @@
       .q-btn{
         max-width: 100%;
         min-width: 0;
+        padding: 0;
       }
       @media(min-width: 569px){
         grid-template-columns: 1fr 1fr 1fr;

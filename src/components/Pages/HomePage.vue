@@ -5,7 +5,7 @@
       <NoHaveCollections @add-collection="addCollectionLink" v-if="collections.length < 1" />
       <CollectionsList v-else/>
 
-      <SystemCollectionsSlider v-if="systemCollections && systemCollections.length > 0"/>
+      <SystemCollectionsList v-if="systemCollections && systemCollections.length > 0"/>
 
       <div class="add-collections-btn text-center">
         <div>
@@ -32,8 +32,8 @@
   import {useQuasar} from "quasar";
   import CreateCollectionDialog from "@/components/common/CreateCollectionDialog.vue";
   import CollectionsList from "@/components/Pages/HomePage/CollectionsList.vue";
-  import SystemCollectionsSlider from "@/components/Pages/HomePage/SystemCollectionsSlider.vue";
   import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
+  import SystemCollectionsList from "@/components/Pages/HomePage/SystemCollectionsList.vue";
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
 

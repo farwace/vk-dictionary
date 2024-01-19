@@ -6,11 +6,8 @@
         <div class="q-mb-md collection-title-block">
           <div class="collection-title">{{currentCollection?.name}}</div>
           <div class="collection-actions">
-            <div class="text-right text-subtitle2">
-              <q-toggle v-if="rows.length > 0" size="sm" v-model="isEditMode" :label="t('Collection.EditMode')"/>
-            </div>
-            <q-btn class="q-ml-sm" @click="editCollection" v-if="rows.length < 1">
-              {{t!('Collection.Edit')}}
+            <q-btn size="sm" class="q-ml-sm" @click="editCollection">
+              <q-icon name="mdi-pencil"/>
             </q-btn>
           </div>
         </div>
@@ -40,12 +37,7 @@
             >
             </q-input>
             <div class="q-ml-auto">
-              <div v-if="isEditMode">
-                <q-btn @click="editCollection">
-                  {{t!('Collection.Edit')}}
-                </q-btn>
-              </div>
-              <div v-else class="action-buttons">
+              <div class="action-buttons">
                 <div class="interface-btn" v-if="rows.length > 0" @click="startTraining">
                   <q-icon name="mdi-play-circle-outline"></q-icon>
                 </div>
@@ -73,7 +65,7 @@
 
           <template v-slot:top-row>
             <tr class="examples" v-if="rows.length < 1 && currentCollectionExample">
-              <td class="text-left">
+              <td class="text-right">
                 <div v-for="exWord in currentCollectionExample">
                   {{exWord.foreignWord}}
                 </div>
@@ -83,13 +75,10 @@
                   {{exWord.transcription}}
                 </div>
               </td>
-              <td class="text-right">
+              <td class="text-left">
                 <div v-for="exWord in currentCollectionExample">
                   {{exWord.word}}
                 </div>
-              </td>
-              <td>
-
               </td>
             </tr>
 
@@ -321,7 +310,7 @@
     const translateCol = {
       name: 'translate',
       label: t('Collection.Word'),
-      align: 'left' as "left",
+      align: 'right' as "right",
       field: (row:TWord) => {return row.foreignWord},
       sortable: true
     };
@@ -335,25 +324,17 @@
       name: 'word',
       required: true,
       label: t('Collection.Translation'),
-      align: 'right' as 'right',
+      align: 'left' as 'left',
       field: (row:TWord) => {return row.word},
       sortable: true
     };
 
-    const settingsCol = {
-      name: 'settings',
-      label: '',
-      field: '',
-    }
     const cols:QTableProps['columns'] = [];
     cols.push(translateCol);
     if(user.value.displayTranscription){
       cols.push(transcriptionCol);
     }
     cols.push(nameCol);
-    if(isEditMode.value || rows.value.length < 1){
-      cols.push(settingsCol);
-    }
     return cols;
   });
 
@@ -559,6 +540,8 @@
 </script>
 <style lang="scss" scoped>
   .collection-title-block{
+    padding-left: 20px;
+    padding-right: 20px;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -607,6 +590,17 @@
     }
   }
 
+  :deep(.q-table) {
+
+    tr.add-word{
+      td{
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+    }
+  }
+
+
   .action-buttons{
     display: flex;
     flex-direction: row;
@@ -629,6 +623,10 @@
       justify-content: center;
       align-items: center;
       flex-basis: 50px;
+
+      .q-btn{
+        height: 30px;
+      }
     }
   }
 
@@ -638,4 +636,10 @@
       color: $primary;
     }
   }
+
+  .page-container{
+    padding-left: 0;
+    padding-right: 0;
+  }
+
 </style>

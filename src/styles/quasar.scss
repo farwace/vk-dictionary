@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400&family=Noto+Sans+Bengali:wght@300;400&family=Noto+Sans+JP:wght@300;400&family=Noto+Sans+KR:wght@300;400&family=Noto+Sans+TC:wght@300;400&family=Noto+Sans:wght@300;400;600&display=swap');
+body.body--dark, body.body--light{
+  font-family: 'Noto Sans Arabic', sans-serif;
+  font-family: 'Noto Sans Bengali', sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
+}
 @import './quasar.variables.scss';
 @import '~quasar-styl';
 // @import '~quasar-addon-styl';
@@ -23,7 +32,7 @@
       .swiper-slide{
         .item-inner{
           &.selected{
-            border-color: #efefef;
+            border-color: #027BE3;
           }
         }
       }
@@ -43,12 +52,11 @@
 
   .words-table{
     th{
-      background-color: #262626;
-      font-weight: bold;
+      background-color: #181818;
     }
     tbody{
       tr:nth-child(even){
-        background-color: #262626;
+        background-color: #181818;
       }
     }
   }
@@ -62,8 +70,20 @@
   .faq-page .question{
     background-color: rgb(26, 26, 26);
   }
-  .q-btn--actionable.q-btn--standard:before{
-    background-color: rgba(59, 59, 59, .3);
+  .q-btn--actionable.q-btn--standard{
+    &:before {
+      background-color: rgba(59, 59, 59, .3);
+    }
+    &:hover{
+      &:before{
+        background-color: rgba(61, 61, 61, 0.3);
+      }
+    }
+    &:active{
+      &:before{
+        background-color: rgba(101, 101, 101, 0.3);
+      }
+    }
   }
 
   --swiper-pagination-color: rgb(255,255,255);
@@ -72,6 +92,20 @@
 
   --swiper-pagination-bullet-width: 10px;
   --swiper-pagination-bullet-height: 10px;
+
+  .bottom-row-save{
+    .q-btn:before{
+      border: 1px solid rgba(255,255,255,.1);
+    }
+  }
+
+  .q-field--outlined .q-field__control:before{
+    border-color: rgba(255,255,255,.1);
+  }
+
+  .q-card--dark{
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+  }
 }
 
 
@@ -113,7 +147,6 @@
   .words-table{
     th{
       background-color: #e8e8e8;
-      font-weight: bold;
     }
     tbody{
       tr:nth-child(even){
@@ -140,6 +173,17 @@
   .faq-page .question{
     background-color: rgb(227, 227, 227);
   }
+
+  .bottom-row-save{
+    .q-btn:before{
+      border: 1px solid rgba(0,0,0,.1);
+    }
+  }
+
+  .q-field--outlined .q-field__control:before{
+    border-color: rgba(0,0,0,.1);
+  }
+
 }
 
 .close-icon{
@@ -198,4 +242,90 @@
   padding-right: 25px;
   padding-bottom: 10px;
   line-height: 120%;
+}
+
+.q-table{
+  table-layout: fixed;
+}
+.q-table tbody td{
+  width: 50%;
+  word-break: break-word;
+  padding: 5px;
+  border: 0;
+}
+
+.q-table tr td:first-child, .q-table tr th:first-child{
+  padding-left: 10px;
+  padding-right: 8px;
+}
+.q-table tr td:last-child, .q-table tr th:last-child{
+  padding-right: 10px;
+  padding-left: 8px;
+}
+.q-table__container{
+  border: 0;
+  background-color: rgba(0,0,0,0);
+}
+
+.q-card.q-dialog-plugin{
+  border-radius: 20px;
+}
+
+.dialog-container{
+  padding: 20px 15px;
+}
+
+.q-table__card{
+  border-radius: 12px;
+}
+
+.q-card.no-scrollbar, .q-table__middle.scroll {
+  scrollbar-width: thin; /* для Firefox */
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0);
+  }
+  &::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0);
+  }
+}
+
+.w-100{
+  width: 100%;
+}
+
+.q-field--outlined .q-field__control{
+  border-radius: 12px;
+}
+
+.q-scrollarea__bar--v, .q-scrollarea__thumb--v{
+  width: 5px;
+}
+
+.q-btn--rectangle{
+  border-radius: 12px;
+  &.q-btn--rounded{
+    border-radius: 28px;
+  }
+}
+
+.words-table{
+  font-weight: 300;
+  line-height: 125%;
+  th{
+    font-weight: bold;
+    border: 0;
+  }
+  tbody{
+    td{
+      font-size: 1.2rem;
+    }
+  }
+}
+.q-dialog__inner > div{
+  border-radius: 12px;
 }

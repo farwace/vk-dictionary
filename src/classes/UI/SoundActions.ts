@@ -2,6 +2,7 @@ import {injectable} from "inversify";
 import {ISoundActions} from "@/classes/UI/Interfaces/ISoundActions";
 import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
 import {App} from "@vue/runtime-core";
+import bridge from "@vkontakte/vk-bridge";
 
 @injectable()
 export class SoundActions implements ISoundActions{
@@ -35,12 +36,22 @@ export class SoundActions implements ISoundActions{
         this.faultSound.load();
     }
     playSuccess() {
+        if(this.UIStore.isVibrateEnabled){
+            bridge.send('VKWebAppTapticNotificationOccurred', {
+                type: 'success'
+            })
+        }
         if(this.UIStore.isSoundEnabled){
             this.stopAll();
             this.successSound?.play();
         }
     }
     plyFault() {
+        if(this.UIStore.isVibrateEnabled){
+            bridge.send('VKWebAppTapticNotificationOccurred', {
+                type: 'error'
+            })
+        }
         if(this.UIStore.isSoundEnabled) {
             this.stopAll();
             this.faultSound?.play();

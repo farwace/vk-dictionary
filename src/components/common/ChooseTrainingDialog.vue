@@ -216,7 +216,6 @@
 
 <style scoped lang="scss">
   .dialog-container{
-    padding: 20px;
 
     &__title{
       margin-bottom: 20px;

@@ -22,5 +22,6 @@ export type TUIStore = {
     trainingWords?:TWord[],
     trainingCollections: number[],
     isSoundEnabled: boolean,
+    isVibrateEnabled: boolean,
     collectionExamples: {[key:string]:TWord[]}
 }

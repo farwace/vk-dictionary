@@ -16,6 +16,9 @@
               </div>
               <div class="settings-icons">
                 <div class="interface-btn">
+                  <q-icon :name="vibrateIcon" @click="toggleVibrateEnabled" />
+                </div>
+                <div class="interface-btn">
                   <q-icon :name="soundIcon" @click="toggleSoundEnabled" />
                 </div>
               </div>
@@ -78,6 +81,7 @@
     availableLanguages,
     isLoading,
     isSoundEnabled,
+    isVibrateEnabled,
     launchParams
   } = storeToRefs(UIStore());
 
@@ -111,6 +115,13 @@
     return userLang[0] || {}
   });
 
+  const vibrateIcon = computed(() => {
+    if(isVibrateEnabled.value){
+      return 'mdi-vibrate'
+    }
+    return 'mdi-vibrate-off';
+  });
+
   const soundIcon = computed(() => {
     if(isSoundEnabled.value){
       return 'mdi-volume-high'
@@ -121,6 +132,10 @@
   const toggleSoundEnabled = () => {
     UI?.toggleSoundEnabled(!isSoundEnabled.value);
   }
+  const toggleVibrateEnabled = () => {
+    UI?.toggleVibrateEnabled(!isVibrateEnabled.value);
+  }
+
 
   const updateTranscription = (neoVal: boolean) => {
     UI?.setLoading(true);

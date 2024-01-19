@@ -41,4 +41,5 @@ export interface IUIActions {
     tryCloneCollection(collectionOrShareId: number | string):Promise<void>;
     setLoading(show:boolean):void;
     toggleSoundEnabled(val?:boolean):void;
+    toggleVibrateEnabled(val?:boolean):void;
 }
