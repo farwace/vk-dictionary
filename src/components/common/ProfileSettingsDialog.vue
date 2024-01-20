@@ -15,7 +15,7 @@
                 <img v-if="userLearnLang.nameCode" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
               </div>
               <div class="settings-icons">
-                <div class="interface-btn">
+                <div class="interface-btn" v-if="launchParams?.vk_platform == 'mobile_android' || launchParams?.vk_platform == 'mobile_android_messenger' || launchParams?.vk_platform == 'mobile_iphone' || launchParams?.vk_platform == 'mobile_iphone_messenger'">
                   <q-icon :name="vibrateIcon" @click="toggleVibrateEnabled" />
                 </div>
                 <div class="interface-btn">
