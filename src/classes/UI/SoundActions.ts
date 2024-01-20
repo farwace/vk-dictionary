@@ -38,7 +38,7 @@ export class SoundActions implements ISoundActions{
     playSuccess() {
         if(this.UIStore.isVibrateEnabled){
             bridge.send('VKWebAppTapticImpactOccurred', {
-                style: 'light',
+                style: 'heavy',
                 /* @ts-ignore */
                 disable_vibration_fallback: true,
             })
