@@ -39,8 +39,6 @@ export class SoundActions implements ISoundActions{
         if(this.UIStore.isVibrateEnabled){
             bridge.send('VKWebAppTapticImpactOccurred', {
                 style: 'heavy',
-                /* @ts-ignore */
-                disable_vibration_fallback: true,
             })
         }
         if(this.UIStore.isSoundEnabled){
@@ -52,8 +50,6 @@ export class SoundActions implements ISoundActions{
         if(this.UIStore.isVibrateEnabled){
             bridge.send('VKWebAppTapticImpactOccurred', {
                 style: 'heavy',
-                /* @ts-ignore */
-                disable_vibration_fallback: true,
             })
         }
         if(this.UIStore.isSoundEnabled) {
