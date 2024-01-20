@@ -99,7 +99,6 @@
       cursor: pointer;
       font-size: 14px;
       line-height: 120%;
-      background-color: #181823;
       word-break: break-word;
       position: relative;
 
@@ -116,7 +115,10 @@
         justify-content: center;
         min-height: 50px;
         box-shadow: 0 0 10px rgba(0,0,0,.1);
-        background-color: rgba(0,0,0,.85);
+
+        @media(min-width: 400px){
+          font-size: 1rem;
+        }
       }
 
       &__body{
@@ -124,6 +126,10 @@
         flex-direction: column;
         justify-content: flex-end;
         min-height: 100px;
+
+        @media(min-width: 640px){
+          min-height: 160px;
+        }
       }
 
       &__pic{
@@ -148,9 +154,9 @@
         flex-direction: column;
         justify-content: flex-end;
         .text{
-          background-color: rgba(0,0,0,.6);
           padding: 6px;
           border-radius: 37px;
+          display: inline-block;
         }
       }
     }
