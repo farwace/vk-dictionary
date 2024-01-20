@@ -1,19 +1,29 @@
 <template>
-  <div class="page" :style="contentHeight" :class="{'edit-mode':isEditMode}">
+  <div class="page" :style="contentHeight">
     <q-scroll-area style="height: 100%">
       <div class="page-container">
 
         <div class="q-mb-md collection-title-block">
           <div class="collection-title">{{currentCollection?.name}}</div>
           <div class="collection-actions">
-            <q-btn size="sm" class="q-ml-sm" @click="editCollection">
+            <transition appear
+                        enter-active-class="animated fadeInRight"
+                        leave-active-class="animated fadeOutRight"
+            >
+              <q-btn v-if="isEditMode || rows.length < 1" size="sm" class="q-ml-sm" @click="editCollection">
+                <q-icon name="mdi-text-box-edit-outline"/>
+              </q-btn>
+            </transition>
+            <q-btn v-if="rows.length > 0" size="sm" class="q-ml-sm" @click="isEditMode = !isEditMode">
               <q-icon name="mdi-pencil"/>
             </q-btn>
+
           </div>
         </div>
 
         <q-table
             class="words-table"
+            :class="{'edit-mode':isEditMode}"
             :loading="isLoading"
             flat bordered
             :rows="rows"
@@ -25,6 +35,18 @@
             :rows-per-page-options="[25, 50,75,100,150, 0]"
             :wrap-cells="true"
         >
+
+          <template v-slot:body-cell="cellProps">
+            <q-td @contextmenu.prevent.stop="handleRowHold($event, cellProps.row)" @touchhold.prevent.stop="handleRowHold($event, cellProps.row)" @click="toggleSelectedRow(cellProps.row.id)" :class="{selected: arSelectedProps.indexOf(cellProps.row.id) >= 0}" :props="cellProps">
+              <div class="select-checkbox" v-if="isEditMode && cellProps.col.name == 'translate'">
+                <q-checkbox v-model="arSelectedProps" :val="cellProps.row.id" />
+              </div>
+              <span>
+                {{cellProps.value}}
+              </span>
+            </q-td>
+          </template>
+
           <template v-slot:top v-if="rows.length > 0">
             <q-input
                 :disable="isLoading"
@@ -82,54 +104,7 @@
               </td>
             </tr>
 
-            <tr class="add-word" v-if="isEditMode">
-
-              <td>
-                <q-input
-                    @keydown.enter.stop="addNeoWord"
-                    v-model="neoForeignWord"
-                    :class="{'q-field--highlighted':neoForeignWordHasError}"
-                    ref="neoForeignWordInput"
-                    outlined dense
-                    :label="t('Collection.NeoWord')"
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                />
-              </td>
-
-              <td v-if="user.displayTranscription">
-                <q-input
-                    outlined
-                    dense
-                    @keydown.enter.stop="addNeoWord"
-                    v-model="neoTranscription"
-                    :class="{'q-field--highlighted':neoTranscriptionHasError}"
-                    :label="t('Collection.Transcription')"
-                    lazy-rules
-                    :rules="[val => val.length < 255 || t('Collection.LongWord')]"
-                />
-              </td>
-              <td>
-                <q-input
-                    ref="neoWordInput"
-                    outlined
-                    dense
-                    @keydown.enter.stop="addNeoWord"
-                    :class="{'q-field--highlighted':neoWordHasError}"
-                    v-model="neoWord"
-                    :label="t('Collection.Translation')"
-                    lazy-rules
-                    :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                />
-              </td>
-
-              <td style="width: 10px;" v-if="rows.length < 1 || isEditMode">
-                <q-btn size="sm" @click.prevent="addNeoWord" :disabled="(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading">
-                  <q-icon name="mdi-content-save" />
-                </q-btn>
-              </td>
-            </tr>
-            <tr v-else class="add-word">
+            <tr class="add-word">
               <td :colspan="columns?.length">
                 <div class="bottom-row-items">
                   <q-input
@@ -179,30 +154,38 @@
               </td>
             </tr>
           </template>
-
-          <template v-slot:body-cell-settings="{row}">
-            <td>
-              <div class="edit-row" v-if="isEditMode">
-
-                <q-btn class="q-mr-md" :disable="isLoading" size="sm" @click="editWord(row)">
-                  <q-icon name="mdi-pencil"/>
-                </q-btn>
-
-                <q-btn :disable="isLoading" size="sm" @click="removeWord(row.id)" class="remove-word-btn">
-                  <q-icon name="mdi-delete-forever-outline"/>
-                </q-btn>
-              </div>
-            </td>
-          </template>
-
         </q-table>
+
+        <transition appear
+                    enter-active-class="animated fadeInRight"
+                    leave-active-class="animated fadeOutRight"
+        >
+          <div v-if="isEditMode" class="context-many-items">
+            <div class="text-right q-mb-sm">
+              <span v-html="t('Collection.Selected')"></span> {{ arSelectedProps.length }} <span v-html="getNoun(arSelectedProps.length, t('Collection.WordsOne'), t('Collection.WordsTwo'), t('Collection.WordsFive'))"></span>
+            </div>
+            <div class="text-right">
+              <q-btn :disable="arSelectedProps.length < 1" color="negative" size="sm" class="q-mb-sm" @click="tryRemoveSelectedWords()">
+                <q-icon name="mdi-delete-forever-outline" class="q-mr-sm"/>
+                <span v-html="t('Collection.Remove')"></span>
+              </q-btn>
+              <q-btn :disable="arSelectedProps.length < 1" size="sm" class="q-ml-sm q-mb-sm" @click="editWord()">
+                <q-icon name="mdi-file-document-edit-outline" class="q-mr-sm"/>
+                <span v-html="t('Collection.Edit')"></span>
+              </q-btn>
+
+              <q-btn size="sm" class="q-mb-sm q-ml-sm" @click="isEditMode = false;"><span v-html="t('Collection.Cancel')"></span></q-btn>
+            </div>
+
+          </div>
+        </transition>
 
       </div>
     </q-scroll-area>
   </div>
 </template>
 <script lang="ts" setup>
-  import {computed, inject, onMounted, onUnmounted, ref} from "vue";
+import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
   import {useRoute, useRouter} from "vue-router"
   import {storeToRefs} from "pinia";
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
@@ -230,6 +213,8 @@
   const router = useRouter();
 
   const isEditMode = ref<boolean>(false);
+
+  const arSelectedProps = ref<number[]>([]);
 
   const {t} = useI18n() as {t:TranslateFunction};
   const {
@@ -338,26 +323,64 @@
     return cols;
   });
 
-  const removeWord = (id:number) => {
+  const tryRemoveSelectedWords = () => {
+    $q.dialog({
+      title: t('Collection.ConfirmRemoveWord'),
+      message: t('Collection.ConfirmRemoveWordText'),
+      cancel: true,
+    }).onOk(() => {
+      removeWord();
+    })
+  }
+
+  const removeWord = (id?:number) => {
+    let ids:number|number[]|undefined = id;
+    if(!ids){
+      if(arSelectedProps.value.length < 1){
+        return;
+      }
+      ids = arSelectedProps.value;
+    }
+
     UI?.setLoading(true);
-    UI?.removeWord(id).then(() => {
+    UI?.removeWord(ids).then(() => {
       $q.notify({
         type: 'positive',
         message: t('Messages.WordHasBeenRemoved'),
         position: "bottom"
       });
+
+      if(Array.isArray(ids)){
+        arSelectedProps.value = [];
+      }
+
       UI?.setLoading(false);
     }).catch((e) => {
       UI?.setLoading(false);
     });
   }
 
-  const editWord = (word:TWord) => {
+  const editWord = (word?:TWord) => {
+    let arWords: TWord[] = [];
+    if(word){
+      arWords = [word];
+    }
+    else{
+      if(arSelectedProps.value.length < 1){
+        return;
+      }
+      arWords = rows.value.filter((w) => {
+        return arSelectedProps.value.indexOf(w.id!) > -1;
+      });
+    }
+
     $q.dialog({
       component: EditWordDialog,
       componentProps: {
-        word: word
+        words: arWords
       },
+    }).onOk(() => {
+      isEditMode.value = false;
     })
   }
 
@@ -532,6 +555,46 @@
     });
   }
 
+  const toggleSelectedRow = (wordId:number) => {
+    if(!isEditMode.value){
+      return;
+    }
+    if(arSelectedProps.value.indexOf(wordId) == -1){
+      arSelectedProps.value.push(wordId);
+    }
+    else{
+      arSelectedProps.value = arSelectedProps.value.filter((val) => {
+        return val != wordId;
+      })
+    }
+  }
+
+  watch(isEditMode, (neoVal) => {
+    if(!neoVal){
+      arSelectedProps.value = [];
+    }
+  })
+
+  const getNoun = (number:number, one:string, two:string, five:string) => {
+    let n = Math.abs(number);
+    n %= 100;
+    if (n >= 5 && n <= 20) {
+      return five;
+    }
+    n %= 10;
+    if (n === 1) {
+      return one;
+    }
+    if (n >= 2 && n <= 4) {
+      return two;
+    }
+    return five;
+  }
+
+  const handleRowHold = (event:any, word: TWord) => {
+    console.log('>>> HOLDED', event, word.id);
+  }
+
   onUnmounted(() => {
 
   });
@@ -640,6 +703,42 @@
   .page-container{
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .select-checkbox{
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .context-many-items{
+    position: fixed;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    border-radius: 12px;
+    padding: 6px 16px;
+    font-size: .875rem;
+    right: 10px;
+    bottom: 40px;
+    max-width: calc(100% - 20px);
+  }
+  .edit-mode{
+    margin-bottom: 100px;
+
+    :deep(.q-table){
+      tbody{
+        tr{
+          td{
+            cursor: pointer;
+          }
+        }
+        tr.add-word{
+          td{
+            cursor: auto;
+          }
+        }
+      }
+    }
   }
 
 </style>

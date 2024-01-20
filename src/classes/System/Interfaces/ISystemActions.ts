@@ -19,11 +19,12 @@ export interface ISystemActions{
     getCollectionWords(collectionId: number):Promise<any>;
     addNeoWord(neoWord: TWord):Promise<any>;
     updateWord(neoWord: TWord):Promise<string>;
+    updateWords(neoWords: TWord[]):Promise<string>;
     updateWordExperience(wordsExperience: { wordId: number; experience: number }[]):Promise<any>;
     getLanguages():Promise<TGetLang>;
     setLanguage(langId: number, learnLangId: number):Promise<{result: 'ok' | 'error'}>;
     toggleTranscription(isEnabled: boolean):Promise<any>;
-    removeWord(wordId:number):Promise<string>;
+    removeWord(wordId:number|number[]):Promise<string>;
     updateCollection(collection:TCollection):Promise<string>;
     removeCollection(collectionId: number):Promise<string>;
     updateShareLink(collectionId:number, clear:boolean):Promise<string>;

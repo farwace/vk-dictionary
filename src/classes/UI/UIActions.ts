@@ -539,14 +539,19 @@ export class UIActions implements IUIActions{
         return neoWordRes;
     }
 
-    removeWord = async (wordId: number) => {
+    removeWord = async (wordId: number|number[]) => {
         const removeWordResult = await this.API.removeWord(wordId);
         const isOk = removeWordResult == 'OK';
         if(isOk){
             this.UIStore.$patch((state) => {
                 if(state.currentCollectionWords){
                     state.currentCollectionWords = state.currentCollectionWords.filter((word) => {
-                        return word.id != wordId;
+                        if(Array.isArray(wordId)){
+                            return wordId.indexOf(word.id!) < 0;
+                        }
+                        else{
+                            return word.id != wordId;
+                        }
                     })
                 }
             })
@@ -588,6 +593,32 @@ export class UIActions implements IUIActions{
                             stateWord.word = word.word;
                             stateWord.transcription = word.transcription;
                             stateWord.foreignWord = word.foreignWord;
+                        }
+                        return stateWord;
+                    })
+                }
+            })
+
+        }
+        return isOk;
+    }
+    updateWords = async(words: TWord[]) => {
+        const updateRes = await this.API.updateWords(words);
+        const isOk = updateRes === 'OK';
+        if(isOk){
+            this.UIStore.$patch((state) => {
+                if(state.currentCollectionWords){
+                    state.currentCollectionWords = state.currentCollectionWords.map((stateWord) => {
+                        const arCurrentWord = words.filter((w) => {
+                            return w.id && w.id == stateWord.id;
+                        });
+                        if(arCurrentWord[0]){
+                            const word = arCurrentWord[0];
+                            if(word.id && word.id == stateWord.id){
+                                stateWord.word = word.word;
+                                stateWord.transcription = word.transcription;
+                                stateWord.foreignWord = word.foreignWord;
+                            }
                         }
                         return stateWord;
                     })

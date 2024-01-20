@@ -216,6 +216,17 @@ export class SystemActions implements ISystemActions{
             return '';
         }
     }
+    updateWords = async (words: TWord[]) => {
+        try {
+            const fetchResult = await this.sendQuery('updateWords', {
+                neoWords: words
+            });
+            return await fetchResult.text();
+        }
+        catch (e){
+            return '';
+        }
+    }
 
     updateWordExperience = async (wordsExperience: { wordId: number; experience: number }[]): Promise<any> => {
         try {
@@ -279,7 +290,7 @@ export class SystemActions implements ISystemActions{
         })
     }
 
-    removeWord = async (wordId: number):Promise<string> => {
+    removeWord = async (wordId: number|number[]):Promise<string> => {
         try {
             if(!this.CAN_REMOVE_WORD){
                 await this.timeout(1000);

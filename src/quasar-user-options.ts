@@ -8,6 +8,8 @@ import iconSet from "quasar/icon-set/mdi-v7";
 import "@quasar/extras/mdi-v7/mdi-v7.css";
 import "@quasar/extras/animate/fadeInLeft.css"
 import "@quasar/extras/animate/fadeOutLeft.css"
+import "@quasar/extras/animate/fadeInRight.css"
+import "@quasar/extras/animate/fadeOutRight.css"
 import "@quasar/extras/animate/fadeIn.css"
 import "@quasar/extras/animate/fadeOut.css"
 

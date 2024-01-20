@@ -26,8 +26,9 @@ export interface IUIActions {
     getSystemCollectionWords(collectionId:number):Promise<TWords>;
     cloneCollection(collectionOrShareId: number | string):Promise<TCollection>;
     addWordToCollection(neoWord: string, neoTranscription: string, neoForeignWord: string, collectionId: number):Promise<TWord>;
-    removeWord(wordId:number):Promise<boolean>;
+    removeWord(wordId:number|number[]):Promise<boolean>;
     updateWord(word: TWord):Promise<boolean>;
+    updateWords(words: TWord[]):Promise<boolean>;
     updateCollection(collection:TCollection):Promise<boolean>;
     removeCollection(collectionId:number):Promise<boolean>;
     share(hash?: string, text?:string):Promise<boolean>;
