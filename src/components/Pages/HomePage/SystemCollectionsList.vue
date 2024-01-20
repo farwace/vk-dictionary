@@ -96,6 +96,25 @@
       word-break: break-word;
       position: relative;
 
+      &:after{
+        position: absolute;
+        content: '';
+        display: block;
+        z-index: 3;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity .2s ease-out;
+      }
+
+      &:hover{
+        &:after{
+          opacity: 1;
+        }
+      }
+
       &__header{
         position: relative;
         z-index: 2;
