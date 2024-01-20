@@ -602,6 +602,15 @@ export class UIActions implements IUIActions{
         }
         return isOk;
     }
+
+    vibro = () => {
+        if(this.UIStore.isVibrateEnabled){
+            bridge.send('VKWebAppTapticImpactOccurred', {
+                style: 'heavy',
+            })
+        }
+    }
+
     updateWords = async(words: TWord[]) => {
         const updateRes = await this.API.updateWords(words);
         const isOk = updateRes === 'OK';

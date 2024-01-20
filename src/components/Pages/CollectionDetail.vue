@@ -23,7 +23,7 @@
 
         <q-table
             class="words-table"
-            :class="{'edit-mode':isEditMode}"
+            :class="{'edit-mode':isEditMode, 'read-mode':!isEditMode}"
             :loading="isLoading"
             flat bordered
             :rows="rows"
@@ -37,7 +37,15 @@
         >
 
           <template v-slot:body-cell="cellProps">
-            <q-td @contextmenu.prevent.stop="handleRowHold($event, cellProps.row)" @touchhold.prevent.stop="handleRowHold($event, cellProps.row)" @click="toggleSelectedRow(cellProps.row.id)" :class="{selected: arSelectedProps.indexOf(cellProps.row.id) >= 0}" :props="cellProps">
+            <q-td
+                @touchstart.stop="tryHandleRowHold($event, cellProps.row)"
+                @touchend="stopTryingHandleRowHold"
+                @touchmove="stopTryingHandleRowHold"
+                @contextmenu.prevent.stop="handleRowHold($event, cellProps.row)"
+                @click="toggleSelectedRow(cellProps.row.id)"
+                :class="{selected: arSelectedProps.indexOf(cellProps.row.id) >= 0}"
+                :props="cellProps"
+            >
               <div class="select-checkbox" v-if="isEditMode && cellProps.col.name == 'translate'">
                 <q-checkbox v-model="arSelectedProps" :val="cellProps.row.id" />
               </div>
@@ -592,7 +600,23 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
   }
 
   const handleRowHold = (event:any, word: TWord) => {
-    console.log('>>> HOLDED', event, word.id);
+    UI?.vibro();
+  }
+
+  let mobileTouchTimer:number = 0;
+
+  const tryHandleRowHold = (event:any, word: TWord) => {
+    if(isEditMode.value){
+      return;
+    }
+
+    mobileTouchTimer = setTimeout(() => {
+      handleRowHold(event, word);
+    }, 500)
+  }
+
+  const stopTryingHandleRowHold = () => {
+    clearTimeout(mobileTouchTimer);
   }
 
   onUnmounted(() => {
@@ -739,6 +763,20 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
         }
       }
     }
+  }
+
+  :deep(.read-mode){
+    tbody{
+      td{
+        @media (pointer: coarse) {
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+      }
+    }
+
   }
 
 </style>

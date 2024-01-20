@@ -43,4 +43,5 @@ export interface IUIActions {
     setLoading(show:boolean):void;
     toggleSoundEnabled(val?:boolean):void;
     toggleVibrateEnabled(val?:boolean):void;
+    vibro():void;
 }
