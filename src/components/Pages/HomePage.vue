@@ -67,7 +67,7 @@
     position: fixed;
     z-index: 10;
     bottom: 70px;
-    left: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
   }
 </style>

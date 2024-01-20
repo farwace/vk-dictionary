@@ -37,8 +37,10 @@ export class SoundActions implements ISoundActions{
     }
     playSuccess() {
         if(this.UIStore.isVibrateEnabled){
-            bridge.send('VKWebAppTapticNotificationOccurred', {
-                type: 'success'
+            bridge.send('VKWebAppTapticImpactOccurred', {
+                style: 'light',
+                /* @ts-ignore */
+                disable_vibration_fallback: true,
             })
         }
         if(this.UIStore.isSoundEnabled){
@@ -48,8 +50,10 @@ export class SoundActions implements ISoundActions{
     }
     plyFault() {
         if(this.UIStore.isVibrateEnabled){
-            bridge.send('VKWebAppTapticNotificationOccurred', {
-                type: 'error'
+            bridge.send('VKWebAppTapticImpactOccurred', {
+                style: 'heavy',
+                /* @ts-ignore */
+                disable_vibration_fallback: true,
             })
         }
         if(this.UIStore.isSoundEnabled) {
