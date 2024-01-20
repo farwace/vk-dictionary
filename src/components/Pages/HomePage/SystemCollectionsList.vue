@@ -167,7 +167,7 @@
         flex-direction: column;
         justify-content: flex-end;
         .text{
-          padding: 6px;
+          padding: 6px 16px;
           border-radius: 37px;
           display: inline-block;
         }

@@ -14,7 +14,7 @@
           </q-btn>
         </div>
         <div>
-          <q-btn outline rounded color="primary" @click.prevent="addCollectionLink" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive}">
+          <q-btn class="add-collection-link" outline rounded color="primary" @click.prevent="addCollectionLink" :class="{'bg-dark': $q.dark.isActive, 'bg-white': !$q.dark.isActive}">
              <q-icon name="mdi-plus" class="q-mr-sm"/> {{t!('HomePage.AddCollection')}}
           </q-btn>
         </div>
@@ -69,5 +69,11 @@
     bottom: 70px;
     left: 50%;
     transform: translateX(-50%);
+  }
+  :deep(.add-collection-link){
+    .q-btn__content{
+      flex-wrap:nowrap;
+      white-space: nowrap;
+    }
   }
 </style>
