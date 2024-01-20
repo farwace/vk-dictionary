@@ -9,7 +9,7 @@
           </div>
           <div class="item__body">
             <div class="item__pic">
-              <img :src="getRandPicture()" alt="">
+              <img :src="getPhoto(collection.picture)" alt="">
             </div>
             <div class="item__desc">
               <div>
@@ -64,17 +64,11 @@
     })
   }
 
-
-  const getRandPicture = () => {
-    const arPictures = [
-        'calendar.jpeg',
-        'cup.jpeg',
-        'food.jpeg',
-        'colores.jpeg',
-        'cat.jpeg'
-    ];
-
-    return '/assets/img/photos/' + arPictures[Math.floor(Math.random()*arPictures.length)];
+  const getPhoto = (src?:string) =>{
+    if(src){
+      return '/assets/img/photos/' + src;
+    }
+    return '/assets/img/unknown.webp';
   }
 
 </script>

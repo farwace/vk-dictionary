@@ -10,6 +10,7 @@ export type TCollection = {
     system?:boolean,
     userId?:number,
     shareId?:string|null,
+    picture?:string,
 };
 
 export type TCollections = TCollection[];
