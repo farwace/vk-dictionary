@@ -23,7 +23,11 @@
     </div>
 
     <div class="collections__items">
-      <q-btn @click="openCollection(collection.id!)" class="collection-item-btn" v-for="(collection, index) in sortedCollections">
+      <q-btn @touchstart.stop="tryHandleRowHold(collection)"
+             @touchend="stopTryingHandleRowHold"
+             @touchmove="stopTryingHandleRowHold"
+             @contextmenu.prevent.stop="handleRowHold(collection)"
+             @click="openCollection(collection.id!)" class="collection-item-btn" v-for="(collection, index) in sortedCollections">
         <template v-slot:default>
           <div class="item">
             <div class="item__title">
@@ -52,6 +56,7 @@
   import {useRouter} from "vue-router";
   import {useQuasar} from "quasar";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  import EditCollectionDialog from "@/components/common/EditCollectionDialog.vue";
   const vClickOutside = ClickOutside;
 
   const {t} = useI18n() as {t:TranslateFunction};
@@ -134,6 +139,27 @@
     return collections.value.sort(sortFunction);
   });
 
+  const handleRowHold = (collection:TCollection) => {
+    $q.dialog({
+      component: EditCollectionDialog,
+      componentProps: {
+        collection: collection
+      },
+    })
+  }
+
+  let mobileTouchTimer:number = 0;
+  const tryHandleRowHold = (collection:TCollection) => {
+    mobileTouchTimer = setTimeout(() => {
+      handleRowHold(collection);
+      mobileTouchTimer = 0;
+    }, 500)
+  }
+  const stopTryingHandleRowHold = () => {
+    if(mobileTouchTimer > 0){
+      clearTimeout(mobileTouchTimer);
+    }
+  }
 
 </script>
 <style lang="scss" scoped>
@@ -179,6 +205,11 @@
       gap: 20px;
 
       .item{
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
         width: 100%;
         align-self: normal;
         line-height: 120%;
