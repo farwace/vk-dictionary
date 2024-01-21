@@ -631,8 +631,12 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
 
   watch(isEditMode, (neoVal) => {
     if(!neoVal){
+      blockedHandleRowHold = false;
       arSelectedProps.value = [];
       wordContextMenu.value = undefined;
+    }
+    else{
+      blockedHandleRowHold = true;
     }
   })
 
