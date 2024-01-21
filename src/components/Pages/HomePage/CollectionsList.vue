@@ -139,7 +139,15 @@
     return collections.value.sort(sortFunction);
   });
 
+  let blockedHandleRowHold = false;
   const handleRowHold = (collection:TCollection) => {
+    if(blockedHandleRowHold){
+      return;
+    }
+    blockedHandleRowHold = true;
+    setTimeout(() => {
+      blockedHandleRowHold = false;
+    }, 100)
     $q.dialog({
       component: EditCollectionDialog,
       componentProps: {
