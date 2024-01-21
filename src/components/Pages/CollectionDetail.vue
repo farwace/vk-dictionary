@@ -191,31 +191,36 @@
       </div>
     </q-scroll-area>
 
-    <div
-        v-click-outside="clickWordContextOutside"
-        class="word-context-menu"
-        v-if="isWordContextShown && wordContextMenu"
-        :style="'left: ' + (wordContextMenu?.left || 0) + 'px; top: ' + (wordContextMenu?.top || 0) + 'px'"
+    <transition appear
+                enter-active-class="animated fadeIn"
+                leave-active-class="animated fadeOut"
     >
-      <div>
-        <div class="word-context-menu__item" @click="startSelectionWord(wordContextMenu.word.id!)">
-          <q-icon name="mdi-check-circle-outline" class="q-mr-md"/>
-          <span v-html="t('Collection.Select')"></span>
+      <div
+          v-click-outside="clickWordContextOutside"
+          class="word-context-menu"
+          v-if="isWordContextShown && wordContextMenu"
+          :style="'left: ' + (wordContextMenu?.left || 0) + 'px; top: ' + (wordContextMenu?.top || 0) + 'px'"
+      >
+        <div>
+          <div class="word-context-menu__item" @click="startSelectionWord(wordContextMenu.word.id!)">
+            <q-icon name="mdi-check-circle-outline" class="q-mr-md"/>
+            <span v-html="t('Collection.Select')"></span>
+          </div>
+        </div>
+        <div>
+          <div class="word-context-menu__item" @click="editWord(wordContextMenu.word)">
+            <q-icon name="mdi-pencil" class="q-mr-md"/>
+            <span v-html="t('Collection.Edit')"></span>
+          </div>
+        </div>
+        <div>
+          <div class="word-context-menu__item text-negative" @click="tryRemoveSelectedWords(wordContextMenu.word.id!)">
+            <q-icon name="mdi-delete-forever-outline" class="q-mr-md"/>
+            <span v-html="t('Collection.Remove')"></span>
+          </div>
         </div>
       </div>
-      <div>
-        <div class="word-context-menu__item" @click="editWord(wordContextMenu.word)">
-          <q-icon name="mdi-pencil" class="q-mr-md"/>
-          <span v-html="t('Collection.Edit')"></span>
-        </div>
-      </div>
-      <div>
-        <div class="word-context-menu__item text-negative" @click="tryRemoveSelectedWords(wordContextMenu.word.id!)">
-          <q-icon name="mdi-delete-forever-outline" class="q-mr-md"/>
-          <span v-html="t('Collection.Remove')"></span>
-        </div>
-      </div>
-    </div>
+    </transition>
 
   </div>
 </template>
