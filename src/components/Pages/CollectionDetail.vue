@@ -582,6 +582,7 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
             position: "bottom"
           });
           TARGET_EVENTS?.sendEvent('AddedNeoWord');
+          UI?.vibro();
         }).catch(() => {
           UI?.setLoading(false);
         });
