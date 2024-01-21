@@ -722,7 +722,7 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   }
 
   const startSelectionWord = (wordId:number) => {
-    arSelectedProps.value.push(wordId);
+    toggleSelectedRow(wordId);
     isEditMode.value = true;
     isWordContextShown.value = false;
   }
