@@ -600,7 +600,27 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
   }
 
   const handleRowHold = (event:any, word: TWord) => {
+    console.log(event);
+
     UI?.vibro();
+    let pos:{x:number, y:number} = {x:0, y:0};
+    if(event.clientX && event.clientY){
+      pos.x = event.clientX;
+      pos.y = event.clientY;
+    }
+    if(event.pageX && event.pageY){
+      pos.x = event.pageX;
+      pos.y = event.pageY;
+    }
+
+    if(pos.x && pos.y){
+      showWordContextMenu(pos, word);
+    }
+
+  }
+
+  const showWordContextMenu = (pos: {x: number, y:number}, word:TWord) => {
+
   }
 
   let mobileTouchTimer:number = 0;
