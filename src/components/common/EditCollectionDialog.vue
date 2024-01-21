@@ -122,6 +122,7 @@
       title: t('Collection.ConfirmRemove'),
       message: t('Collection.ConfirmRemoveText'),
       cancel: true,
+      ok: t('Collection.Remove')
     }).onOk(() => {
       if(props.collection.id){
         isLoading.value = true;

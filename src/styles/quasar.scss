@@ -62,7 +62,7 @@ body.body--dark, body.body--light{
         background-color: rgba(255, 255, 255, 0.07);
       }
       td.selected{
-        background-color: rgba(255, 255, 255, 0.07);
+        background-color: rgba(66, 71, 117, 0.3);
       }
       tr.add-word:hover{
         background-color: rgba(0, 0, 0, 0);
@@ -138,6 +138,15 @@ body.body--dark, body.body--light{
   }
   .context-many-items{
     background-color: rgba(30, 30, 30, 0.99);
+  }
+
+  .word-context-menu{
+    background-color: rgba(30, 30, 30, 0.99);
+    &__item{
+      &:hover{
+        background-color: rgba(255,255,255,.1);
+      }
+    }
   }
 
   .dialog-container .edit-item{
@@ -259,7 +268,9 @@ body.body--dark, body.body--light{
   .context-many-items{
     background-color: rgba(255, 255, 255, .96);
   }
-
+  .word-context-menu{
+    background-color: rgba(255, 255, 255, .96);
+  }
 }
 
 .close-icon{

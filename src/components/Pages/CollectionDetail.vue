@@ -15,7 +15,7 @@
               </q-btn>
             </transition>
             <q-btn v-if="rows.length > 0" size="sm" class="q-ml-sm" @click="isEditMode = !isEditMode">
-              <q-icon name="mdi-pencil"/>
+              <q-icon :name="editCollectionIcon"/>
             </q-btn>
 
           </div>
@@ -43,7 +43,7 @@
                 @touchmove="stopTryingHandleRowHold"
                 @contextmenu.prevent.stop="handleRowHold($event, cellProps.row)"
                 @click="toggleSelectedRow(cellProps.row.id)"
-                :class="{selected: arSelectedProps.indexOf(cellProps.row.id) >= 0}"
+                :class="{selected: arSelectedProps.indexOf(cellProps.row.id) >= 0 || wordContextMenu?.word.id == cellProps.row.id}"
                 :props="cellProps"
             >
               <div class="select-checkbox" v-if="isEditMode && cellProps.col.name == 'translate'">
@@ -190,10 +190,37 @@
 
       </div>
     </q-scroll-area>
+
+    <div
+        v-click-outside="clickWordContextOutside"
+        class="word-context-menu"
+        v-if="isWordContextShown && wordContextMenu"
+        :style="'left: ' + (wordContextMenu?.left || 0) + 'px; top: ' + (wordContextMenu?.top || 0) + 'px'"
+    >
+      <div>
+        <div class="word-context-menu__item" @click="startSelectionWord(wordContextMenu.word.id!)">
+          <q-icon name="mdi-check-circle-outline" class="q-mr-md"/>
+          <span v-html="t('Collection.Select')"></span>
+        </div>
+      </div>
+      <div>
+        <div class="word-context-menu__item" @click="editWord(wordContextMenu.word)">
+          <q-icon name="mdi-pencil" class="q-mr-md"/>
+          <span v-html="t('Collection.Edit')"></span>
+        </div>
+      </div>
+      <div>
+        <div class="word-context-menu__item text-negative" @click="tryRemoveSelectedWords(wordContextMenu.word.id!)">
+          <q-icon name="mdi-delete-forever-outline" class="q-mr-md"/>
+          <span v-html="t('Collection.Remove')"></span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 <script lang="ts" setup>
-import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
+import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vue";
   import {useRoute, useRouter} from "vue-router"
   import {storeToRefs} from "pinia";
   import {UIStore} from "@/classes/Pinia/UIStore/UIStore";
@@ -209,11 +236,16 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
   import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
   import ShareCollectionDialog from "@/components/common/ShareCollectionDialog.vue";
   import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
+  import {ClickOutside} from "@/classes/UI/CompositionUtils/ClickOutside";
 
   const $q = useQuasar();
 
   const UI = inject<IUIActions>('UI');
   const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
+
+
+  const vClickOutside = ClickOutside;
+
   const filter = ref<string>('');
 
   const route = useRoute();
@@ -268,6 +300,10 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
 
   const neoWordInput = ref<QInput>();
   const neoForeignWordInput = ref<QInput>();
+
+  const wordContextMenu = ref<{left:number, top: number, word: TWord}>();
+  const isWordContextShown = ref<boolean>(false);
+  const canCloseWordContextShown = ref<boolean>(false);
 
   const rows = computed(() => {
     if(!currentCollectionWords?.value){
@@ -331,13 +367,22 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
     return cols;
   });
 
-  const tryRemoveSelectedWords = () => {
+  const editCollectionIcon = computed(() => {
+    if(isEditMode.value == false){
+      return 'mdi-pencil-remove';
+    }
+    return 'mdi-pencil';
+  })
+
+  const tryRemoveSelectedWords = (wordId?:number) => {
+    isWordContextShown.value = false;
     $q.dialog({
       title: t('Collection.ConfirmRemoveWord'),
       message: t('Collection.ConfirmRemoveWordText'),
       cancel: true,
+      ok: t('Collection.Remove')
     }).onOk(() => {
-      removeWord();
+      removeWord(wordId);
     })
   }
 
@@ -370,6 +415,7 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
 
   const editWord = (word?:TWord) => {
     let arWords: TWord[] = [];
+    isWordContextShown.value = false;
     if(word){
       arWords = [word];
     }
@@ -580,6 +626,7 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
   watch(isEditMode, (neoVal) => {
     if(!neoVal){
       arSelectedProps.value = [];
+      wordContextMenu.value = undefined;
     }
   })
 
@@ -600,8 +647,11 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
   }
 
   const handleRowHold = (event:any, word: TWord) => {
-    console.log(event);
-
+    //console.log(event);
+    canCloseWordContextShown.value = false; //todo: повторное открытие меню не закрывать!
+    setTimeout(() => {
+      canCloseWordContextShown.value = true;
+    }, 200)
     UI?.vibro();
     let pos:{x:number, y:number} = {x:0, y:0};
     if(event.clientX && event.clientY){
@@ -613,18 +663,31 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
       pos.y = event.pageY;
     }
 
+    if(event?.pointerType != 'mouse'){
+      pos.x -= 50;
+      pos.y -= 160;
+    }
+
+
     if(pos.x && pos.y){
-      showWordContextMenu(pos, word);
+      wordContextMenu.value = {
+        left: pos.x,
+        top: pos.y,
+        word: word
+      }
+      isWordContextShown.value = true;
     }
 
   }
 
-  const showWordContextMenu = (pos: {x: number, y:number}, word:TWord) => {
-
+  const clickWordContextOutside = () => {
+    if(canCloseWordContextShown.value){
+      isWordContextShown.value = false;
+    }
   }
 
-  let mobileTouchTimer:number = 0;
 
+  let mobileTouchTimer:number = 0;
   const tryHandleRowHold = (event:any, word: TWord) => {
     if(isEditMode.value){
       return;
@@ -637,6 +700,16 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
 
   const stopTryingHandleRowHold = () => {
     clearTimeout(mobileTouchTimer);
+    setTimeout(() => {
+      canCloseWordContextShown.value = true;
+    }, 200)
+
+  }
+
+  const startSelectionWord = (wordId:number) => {
+    arSelectedProps.value.push(wordId);
+    isEditMode.value = true;
+    isWordContextShown.value = false;
   }
 
   onUnmounted(() => {
@@ -797,6 +870,34 @@ import {computed, inject, onMounted, onUnmounted, ref, watch} from "vue";
       }
     }
 
+  }
+
+  .word-context-menu{
+    position: fixed;
+    z-index: 21;
+    border-radius: 12px;
+    padding: 6px;
+    width: 150px;
+    height: 120px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+
+    &__item{
+      cursor:pointer;
+      margin-bottom: 3px;
+      font-size: 1rem;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      i{
+        flex-shrink: 0;
+      }
+      span{
+        flex-shrink: 0;
+        flex-grow: 1;
+      }
+    }
   }
 
 </style>
