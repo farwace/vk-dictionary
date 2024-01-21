@@ -139,6 +139,11 @@
     &__items{
       margin-bottom: 40px;
 
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
       .swiper-slide{
         width: 60px;
         margin-bottom: 6px;
