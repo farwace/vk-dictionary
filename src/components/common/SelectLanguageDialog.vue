@@ -70,6 +70,7 @@
   const onOKClick = () => {
     // on OK, it is REQUIRED to
     // call onDialogOK (with optional payload)
+    UI?.vibro();
     onDialogOK({selectedLang: selectedLang.value, selectedLearnLang: selectedLearnLang.value})
     // or with payload: onDialogOK({ ... })
     // ...and it will also hide the dialog automatically

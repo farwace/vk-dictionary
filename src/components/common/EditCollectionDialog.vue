@@ -124,6 +124,7 @@
       cancel: true,
       ok: t('Collection.Remove')
     }).onOk(() => {
+      UI?.vibro();
       if(props.collection.id){
         isLoading.value = true;
         UI?.setLoading(true);

@@ -130,9 +130,11 @@
   });
 
   const toggleSoundEnabled = () => {
+    UI?.vibro();
     UI?.toggleSoundEnabled(!isSoundEnabled.value);
   }
   const toggleVibrateEnabled = () => {
+    UI?.vibro();
     UI?.toggleVibrateEnabled(!isVibrateEnabled.value);
   }
 
@@ -143,6 +145,7 @@
       if(!res){
         transcription.value = !neoVal;
       }
+      UI?.vibro();
       UI?.setLoading(false);
     }).catch(() => {
       transcription.value = !neoVal;

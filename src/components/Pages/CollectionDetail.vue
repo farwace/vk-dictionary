@@ -651,12 +651,17 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
     return five;
   }
 
+  let blockedHandleRowHold = false;
   const handleRowHold = (event:any, word: TWord) => {
+    if(blockedHandleRowHold){
+      return;
+    }
+    blockedHandleRowHold = true;
+    setTimeout(() => {
+      blockedHandleRowHold = false;
+    }, 100)
     //console.log(event);
     canCloseWordContextShown.value = false; //todo: повторное открытие меню не закрывать!
-    setTimeout(() => {
-      canCloseWordContextShown.value = true;
-    }, 200)
     UI?.vibro();
     let pos:{x:number, y:number} = {x:0, y:0};
     if(event.clientX && event.clientY){
@@ -670,7 +675,7 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
 
     if(event?.pointerType != 'mouse'){
       pos.x -= 50;
-      pos.y -= 160;
+      pos.y -= 170;
     }
 
 
@@ -700,14 +705,18 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
 
     mobileTouchTimer = setTimeout(() => {
       handleRowHold(event, word);
+      mobileTouchTimer = 0;
     }, 500)
   }
 
   const stopTryingHandleRowHold = () => {
-    clearTimeout(mobileTouchTimer);
-    setTimeout(() => {
-      canCloseWordContextShown.value = true;
-    }, 200)
+    if(mobileTouchTimer > 0){
+      clearTimeout(mobileTouchTimer);
+      setTimeout(() => {
+        canCloseWordContextShown.value = true;
+        isWordContextShown.value = false;
+      }, 100)
+    }
 
   }
 
@@ -879,18 +888,18 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
 
   .word-context-menu{
     position: fixed;
-    z-index: 21;
+    z-index: 50;
     border-radius: 12px;
     padding: 6px;
     width: 150px;
-    height: 120px;
+    height: 136px;
     box-shadow: 0 0 10px rgba(0,0,0,.1);
 
     &__item{
       cursor:pointer;
       margin-bottom: 3px;
-      font-size: 1rem;
-      padding: 4px;
+      font-size: 1.1rem;
+      padding: 6px 4px;
       border-radius: 4px;
       display: flex;
       flex-wrap: nowrap;

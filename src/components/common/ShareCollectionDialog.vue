@@ -71,6 +71,7 @@
       if(props.collection.id){
         UI?.setLoading(true);
         UI?.updateShareLink(props.collection.id, doClear).then(() => {
+          UI?.vibro();
           UI?.setLoading(false);
           resolve(true);
         }).catch((e) => {
@@ -112,6 +113,7 @@
     }
     updateShareLink(false).then((res) => {
       if(res){
+        UI?.vibro();
         $q.notify({
           type: 'positive',
           message: t('share.linkGeneratedSuccess'),
@@ -138,6 +140,7 @@
   const copyLink = () => {
     UI?.copyToClipboard(compShareUrl.value).then((res) => {
       if(res){
+        UI?.vibro();
         $q.notify({
           type: 'positive',
           message: t('share.linkCopiedSuccess'),
@@ -155,6 +158,7 @@
   }
 
   const shareLink = () => {
+    UI?.vibro();
     UI?.share('collection-' + props.collection.shareId, props.collection.name);
   }
 
@@ -162,6 +166,7 @@
 
     updateShareLink(true).then((res) => {
       if(res){
+        UI?.vibro();
         $q.notify({
           type: 'positive',
           message: t('share.linkDeletedSuccess'),

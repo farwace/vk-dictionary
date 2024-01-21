@@ -134,7 +134,7 @@
       }
       return false;
     });
-
+    UI?.vibro();
     if(wordsChanged.length < 1){
       onDialogOK();
       return;

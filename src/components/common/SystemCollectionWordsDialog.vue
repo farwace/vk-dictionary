@@ -134,6 +134,7 @@
       }
 
       UI?.cloneCollection(collectionOrShareId).then((neoCollection) => {
+        UI?.vibro();
         UI?.setLoading(false);
         if(neoCollection.id){
           router.push({
