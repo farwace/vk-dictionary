@@ -137,6 +137,7 @@
               message: t('Messages.CollectionHasBennRemoved'),
               position: "bottom"
             });
+            onDialogOK();
             router.push({name: 'home'});
           }
           else{
