@@ -31,11 +31,7 @@
                   :label="t('ProfileSettingsDialog.UseTranscription')"
                   :disable="isLoading"
               />
-              <div class="q-mt-md">
-                <a href="#" class="link" @click.prevent="router.push({name: 'faq'})" >
-                  {{ t!('ProfileSettingsDialog.ShowTutorial') }}
-                </a>
-              </div>
+
               <div class="q-mt-sm" v-if="!cantSubscribeDevice">
                 <a href="#" class="link" @click.prevent="router.push({name: 'subscribe'})" >
                   <span v-if="!user.subscriptionExpired || new Date() > user.subscriptionExpired " v-html="t('ProfileSettingsDialog.HideAD')"></span>
