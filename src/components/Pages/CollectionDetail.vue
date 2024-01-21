@@ -695,8 +695,8 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
 
   }
 
-  const clickWordContextOutside = () => {
-    if(canCloseWordContextShown.value){
+  const clickWordContextOutside = (ev: any, el:any) => {
+    if(canCloseWordContextShown.value || (ev && ev.pointerType && ev.pointerType == 'mouse')){
       isWordContextShown.value = false;
     }
   }
