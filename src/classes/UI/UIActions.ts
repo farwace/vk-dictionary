@@ -603,8 +603,8 @@ export class UIActions implements IUIActions{
         return isOk;
     }
 
-    vibro = () => {
-        if(this.UIStore.isVibrateEnabled){
+    vibro = (force?:boolean) => {
+        if(this.UIStore.isVibrateEnabled || force === true){
             bridge.send('VKWebAppTapticImpactOccurred', {
                 style: 'medium',
             })

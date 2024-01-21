@@ -134,7 +134,9 @@
     UI?.toggleSoundEnabled(!isSoundEnabled.value);
   }
   const toggleVibrateEnabled = () => {
-    UI?.vibro();
+    if(!isVibrateEnabled.value){
+      UI?.vibro(true);
+    }
     UI?.toggleVibrateEnabled(!isVibrateEnabled.value);
   }
 
