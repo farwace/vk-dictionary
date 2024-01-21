@@ -53,11 +53,13 @@
   import {useDialogPluginComponent} from "quasar";
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
-  import {computed, onMounted, ref} from "vue";
+  import {computed, inject, onMounted, ref} from "vue";
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import 'swiper/css';
   import 'swiper/css/scrollbar';
   import {Scrollbar} from "swiper/modules";
+  import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  const UI = inject<IUIActions>('UI');
 
   const swiperModules = [Scrollbar];
 

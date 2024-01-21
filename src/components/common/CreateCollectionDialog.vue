@@ -99,6 +99,7 @@
         })
       }
       TARGET_EVENTS?.sendEvent('CreateCollection');
+      UI?.vibro();
     }).catch((e) => {
       errorText.value = t('Common.Errors.UnknownError');
       UI?.setLoading(false);
