@@ -487,6 +487,7 @@ export class UIActions implements IUIActions{
     }
 
     getSystemCollectionWords = async(collectionId: number):Promise<TWords> => {
+        this.showBannerAds();
         return await this.API.getCollectionWords(collectionId) || [];
     }
 
