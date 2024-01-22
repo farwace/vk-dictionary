@@ -21,7 +21,7 @@ import {bufferTime, Subject, throttleTime} from "rxjs";
 export class UIActions implements IUIActions{
     private UIStore;
     private language:EGetLaunchParamsResponseLanguages = EGetLaunchParamsResponseLanguages.RU;
-
+    private CAN_TRANSLATE:boolean = true;
     private updateWordExperience$:Subject<{ id:number, count: number }>;
 
     constructor(
@@ -860,9 +860,13 @@ export class UIActions implements IUIActions{
     }
 
     tryTranslate = async (str:string) => {
-        if(!str || str.length < 2){
+        if(!str || str.length < 1){
             return undefined;
         }
+        if(!this.CAN_TRANSLATE){
+            await this.timeout(1000);
+        }
+        this.CAN_TRANSLATE = false;
         const translateLanguages = ['en', 'es', 'pt', 'ru'];
 
         const availableLanguages = this.UIStore.$state.availableLanguages;
@@ -884,22 +888,37 @@ export class UIActions implements IUIActions{
                     });
 
                     if(translateResult.result.texts[0] && translateResult.result.texts[0] != str){
+                        this.delayCanTranslate();
                         return translateResult.result.texts[0];
                     }
                     else{
+                        this.delayCanTranslate();
                         return undefined;
                     }
                 }
                 catch (e){
+                    this.delayCanTranslate();
                     return undefined;
                 }
             }
             else{
+                this.delayCanTranslate();
                 return undefined;
             }
         }
         else{
+            this.delayCanTranslate();
             return undefined;
         }
+    }
+
+    private delayCanTranslate = () => {
+        this.timeout(1000).then(() => {
+            this.CAN_TRANSLATE = true;
+        })
+    }
+
+    timeout = async (ms:number) => {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

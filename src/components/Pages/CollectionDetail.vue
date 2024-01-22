@@ -578,6 +578,8 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
       return;
     }
 
+    clearTranslateHelp();
+
     UI?.setLoading(true);
     UI?.addWordToCollection(neoWord.value, neoTranscription.value, neoForeignWord.value, currentCollectionId.value)
         .then(() => {
