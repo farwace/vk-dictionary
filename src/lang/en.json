@@ -5,20 +5,20 @@
     "errorGetUser": "User information could not be retrieved. Restart the app or try again later",
     "welcomeSlides": {
       "1": {
+        "title": "Welcome to \"My Dictionary\"",
+        "subtitle": "An application for learning foreign words"
+      },
+      "2": {
         "title": "Add collections of words",
         "subtitle": "Add words for learning and further training"
       },
-      "2": {
+      "3": {
         "title": "Fill in your words",
         "subtitle": "Group the words into sets for ease of use"
       },
-      "3": {
-        "title": "Use transcription",
-        "subtitle": "Transcription is disabled by default, but you can enable it in the settings"
-      },
       "4": {
         "title": "Practice",
-        "subtitle": "Choose sets of words to practice and repeat while playing!"
+        "subtitle": "A mini-game for easy memorization"
       },
       "5": {
         "title": "Share sets with your friends",
