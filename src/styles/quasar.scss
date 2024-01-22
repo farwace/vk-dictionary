@@ -140,8 +140,20 @@ body.body--dark, body.body--light{
     background-color: rgba(30, 30, 30, 0.99);
   }
 
-  .word-context-menu, .suggestion{
+  .word-context-menu{
     background-color: rgba(30, 30, 30, 0.99);
+    &__item{
+      &:hover{
+        background-color: rgba(255,255,255,.1);
+      }
+    }
+  }
+
+  .suggestion{
+    background-color: rgba(80, 80, 80, 0.99);
+    &:before{
+      border-bottom: 12px solid rgba(80, 80, 80, 0.99);
+    }
     &__item{
       &:hover{
         background-color: rgba(255,255,255,.1);
@@ -269,11 +281,22 @@ body.body--dark, body.body--light{
   .context-many-items{
     background-color: rgba(255, 255, 255, .96);
   }
-  .word-context-menu, .suggestion{
+  .word-context-menu{
     background-color: rgba(255, 255, 255, .96);
     &__item{
       &:hover{
         background-color: rgba(150,150,150,.1);
+      }
+    }
+  }
+  .suggestion{
+    background-color: rgba(255, 255, 255, .96);
+    &:before{
+      border-bottom: 12px solid rgba(255, 255, 255, .96);
+    }
+    &__item{
+      &:hover{
+        background-color: rgba(200,200,200,.1);
       }
     }
   }

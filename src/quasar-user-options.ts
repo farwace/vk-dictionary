@@ -10,6 +10,7 @@ import "@quasar/extras/animate/fadeInLeft.css"
 import "@quasar/extras/animate/fadeOutLeft.css"
 import "@quasar/extras/animate/fadeInRight.css"
 import "@quasar/extras/animate/fadeOutRight.css"
+import "@quasar/extras/animate/fadeInDown.css"
 import "@quasar/extras/animate/fadeIn.css"
 import "@quasar/extras/animate/fadeOut.css"
 

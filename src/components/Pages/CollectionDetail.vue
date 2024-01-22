@@ -152,14 +152,22 @@
                         lazy-rules
                         :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                     />
-                    <div class="suggestion" v-if="(mayBeTranslate || isTranslateLoading) && neoWord.length < 1">
-                      <div class="suggestion__item" @click="neoWord = mayBeTranslate" v-if="mayBeTranslate && !isTranslateLoading">
-                        {{ mayBeTranslate }}
+
+                    <transition
+                        appear
+                        enter-active-class="animated fadeInDown"
+                        leave-active-class="animated fadeOut"
+                    >
+                      <div class="suggestion" v-if="(mayBeTranslate || isTranslateLoading) && neoWord.length < 1">
+                        <div class="suggestion__item" @click="neoWord = mayBeTranslate" v-if="mayBeTranslate && !isTranslateLoading">
+                          <span>{{ mayBeTranslate }}</span>
+                          <q-icon class="remove-translate" name="mdi-close" @click.prevent.stop="mayBeTranslate = undefined"/>
+                        </div>
+                        <div class="suggestion__loading" v-if="isTranslateLoading && !mayBeTranslate">
+                          <q-icon name="mdi-loading mdi-spin"/>
+                        </div>
                       </div>
-                      <div v-if="isTranslateLoading && !mayBeTranslate">
-                        <q-icon name="mdi-loading mdi-spin"/>
-                      </div>
-                    </div>
+                    </transition>
                   </div>
                   <div class="bottom-row-save">
                     <q-btn size="sm" @click.prevent="addNeoWord" :class="{disabled:(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading}">
@@ -959,18 +967,45 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
     width: 100%;
     top: 100%;
     border-radius: 12px;
-    padding: 8px 6px;
+    padding: 5px 6px;
     font-size: .875rem;
     word-break: break-all;
     line-height: 120%;
-    margin-top: 2px;
+    margin-top: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,.1);
 
+    &:before{
+      content: '';
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: -10px;
+      left: 20px;
+      border-left: 12px solid rgba(0,0,0,0)!important;
+      border-right: 12px solid rgba(0,0,0,0)!important;
+    }
+
     &__item{
-      padding: 4px 10px;
+      padding: 8px 30px 8px 10px;
       cursor: pointer;
       border-radius: 4px;
+      position: relative;
+    }
 
+    &__loading{
+      min-height: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .remove-translate{
+      position: absolute;
+      right: 0;
+      padding: 8px;
+      top: 0;
+      font-size: 1rem;
     }
   }
 
