@@ -118,6 +118,7 @@
                   <q-input
                       class="item"
                       @keydown.enter.stop="addNeoWord"
+                      @change="tryTranslate"
                       v-model="neoForeignWord"
                       :class="{'q-field--highlighted':neoForeignWordHasError}"
                       ref="neoForeignWordInput"
@@ -734,6 +735,12 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   onUnmounted(() => {
 
   });
+
+  const tryTranslate = () => {
+    UI?.tryTranslate(neoForeignWord.value).then((res) => {
+      console.log(res);
+    })
+  }
 
 
 </script>

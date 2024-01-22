@@ -858,4 +858,45 @@ export class UIActions implements IUIActions{
             isLoading: show
         });
     }
+
+    tryTranslate = async (str:string) => {
+        if(!str || str.length < 2){
+            return undefined;
+        }
+        const translateLanguages = ['en', 'es', 'pt', 'ru'];
+
+        const availableLanguages = this.UIStore.$state.availableLanguages;
+        if(availableLanguages && availableLanguages.length > 0){
+            let obLangs:{[key:number]:string} = {};
+            availableLanguages.forEach((lang) => {
+                obLangs[lang.id] = lang.nameCode;
+            });
+
+            const user = this.UIStore.$state.user;
+            const strLang = obLangs[user.userLearnLangId!] || '';
+            const toTranslateLang = obLangs[user.userLangId!] || '';
+
+            if(translateLanguages.indexOf(strLang) > -1 && translateLanguages.indexOf(toTranslateLang) > -1){
+                try {
+                    const translateResult = await bridge.send('VKWebAppTranslate', {
+                        texts: [str],
+                        translation_language: strLang + '-' + toTranslateLang
+                    });
+
+                    console.log(translateResult);
+                    return undefined;
+
+                }
+                catch (e){
+                    return undefined;
+                }
+            }
+            else{
+                return undefined;
+            }
+        }
+        else{
+            return undefined;
+        }
+    }
 }
