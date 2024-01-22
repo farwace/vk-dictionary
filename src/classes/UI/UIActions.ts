@@ -871,8 +871,6 @@ export class UIActions implements IUIActions{
         await this.timeout(100);
         const availableLanguages = this.UIStore.$state.availableLanguages;
 
-        return 'test тестовый перевод'
-
         if(availableLanguages && availableLanguages.length > 0){
             let obLangs:{[key:number]:string} = {};
             availableLanguages.forEach((lang) => {
