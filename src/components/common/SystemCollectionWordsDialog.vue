@@ -186,6 +186,7 @@
     :deep(.q-table){
       th{
         white-space: nowrap;
+        overflow: hidden;
       }
     }
     :deep(.without-pager){
