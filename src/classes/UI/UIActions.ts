@@ -883,9 +883,12 @@ export class UIActions implements IUIActions{
                         translation_language: strLang + '-' + toTranslateLang
                     });
 
-                    console.log(translateResult);
-                    return undefined;
-
+                    if(translateResult.result.texts[0] && translateResult.result.texts[0] != str){
+                        return translateResult.result.texts[0];
+                    }
+                    else{
+                        return undefined;
+                    }
                 }
                 catch (e){
                     return undefined;

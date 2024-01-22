@@ -127,7 +127,6 @@
                       lazy-rules
                       :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
                   />
-
                   <q-input
                       class="item"
                       v-if="user.displayTranscription"
@@ -140,20 +139,28 @@
                       lazy-rules
                       :rules="[val => val.length < 255 || t('Collection.LongWord')]"
                   />
-
-                  <q-input
-                      class="item"
-                      ref="neoWordInput"
-                      outlined
-                      dense
-                      @keydown.enter.stop="addNeoWord"
-                      v-model="neoWord"
-                      :class="{'q-field--highlighted':neoWordHasError}"
-                      :label="t('Collection.Translation')"
-                      lazy-rules
-                      :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                  />
-
+                  <div class="position-relative item">
+                    <q-input
+                        class="item"
+                        ref="neoWordInput"
+                        outlined
+                        dense
+                        @keydown.enter.stop="addNeoWord"
+                        v-model="neoWord"
+                        :class="{'q-field--highlighted':neoWordHasError}"
+                        :label="t('Collection.Translation')"
+                        lazy-rules
+                        :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
+                    />
+                    <div class="suggestion" v-if="(mayBeTranslate || isTranslateLoading) && neoWord.length < 1">
+                      <div class="suggestion__item" @click="neoWord = mayBeTranslate" v-if="mayBeTranslate && !isTranslateLoading">
+                        {{ mayBeTranslate }}
+                      </div>
+                      <div v-if="isTranslateLoading && !mayBeTranslate">
+                        <q-icon name="mdi-loading mdi-spin"/>
+                      </div>
+                    </div>
+                  </div>
                   <div class="bottom-row-save">
                     <q-btn size="sm" @click.prevent="addNeoWord" :class="{disabled:(neoWord.trim().length < 1 || neoWord.length > 254 || neoForeignWord.trim().length < 1 || neoForeignWord.length > 254 || neoTranscription.length > 254) || isLoading}">
                       <q-icon name="mdi-content-save" />
@@ -279,6 +286,8 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   const neoWord = ref<string>('');
   const neoTranscription = ref<string>('');
   const neoForeignWord = ref<string>('');
+  const mayBeTranslate = ref<string>();
+  const isTranslateLoading = ref<boolean>(false);
 
   const neoWordHasError = ref<boolean>(false);
   const neoTranscriptionHasError = ref<boolean>(false);
@@ -737,9 +746,24 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   });
 
   const tryTranslate = () => {
+    clearTranslateHelp();
+    isTranslateLoading.value = true;
     UI?.tryTranslate(neoForeignWord.value).then((res) => {
-      console.log(res);
+      isTranslateLoading.value = false;
+      if(res){
+        mayBeTranslate.value = res;
+      }
+      else{
+        clearTranslateHelp();
+      }
+    }).catch((e) => {
+      isTranslateLoading.value = false;
+      clearTranslateHelp();
     })
+  }
+
+  const clearTranslateHelp = () => {
+    mayBeTranslate.value = undefined;
   }
 
 
@@ -923,6 +947,28 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
         flex-shrink: 0;
         flex-grow: 1;
       }
+    }
+  }
+
+  .suggestion{
+    position: absolute;
+    left: 0;
+    z-index: 5;
+    width: 100%;
+    top: 100%;
+    border-radius: 12px;
+    padding: 8px 6px;
+    font-size: .875rem;
+    word-break: break-all;
+    line-height: 120%;
+    margin-top: 2px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+
+    &__item{
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+
     }
   }
 
