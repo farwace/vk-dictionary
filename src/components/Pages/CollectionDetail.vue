@@ -831,7 +831,9 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   }
 
   :deep(.q-table) {
-
+    .q-table__middle.scroll{
+      overflow: visible;
+    }
     tr.add-word{
       td{
         padding-left: 5px;
