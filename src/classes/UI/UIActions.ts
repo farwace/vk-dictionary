@@ -868,10 +868,11 @@ export class UIActions implements IUIActions{
         }
         this.CAN_TRANSLATE = false;
         const translateLanguages = ['en', 'es', 'pt', 'ru'];
-        await this.timeout(100);
+
         const availableLanguages = this.UIStore.$state.availableLanguages;
 
         if(availableLanguages && availableLanguages.length > 0){
+            await this.timeout(100);
             let obLangs:{[key:number]:string} = {};
             availableLanguages.forEach((lang) => {
                 obLangs[lang.id] = lang.nameCode;
