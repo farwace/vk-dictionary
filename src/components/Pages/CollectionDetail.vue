@@ -94,7 +94,7 @@
           </template>
 
           <template v-slot:top-row>
-            <tr class="examples" v-if="rows.length < 1 && currentCollectionExample">
+            <tr @mouseenter="showExampleTooltip" @mouseleave="hideExampleTooltip" @focus="showExampleTooltip" @blur="hideExampleTooltip" id="examples" class="examples" v-if="rows.length < 1 && currentCollectionExample">
               <td class="text-right">
                 <div v-for="exWord in currentCollectionExample">
                   {{exWord.foreignWord}}
@@ -109,6 +109,14 @@
                 <div v-for="exWord in currentCollectionExample">
                   {{exWord.word}}
                 </div>
+                <q-tooltip
+                    no-parent-event
+                    target="#examples"
+                    ref="examplesTooltip"
+                    anchor="top middle"
+                    self="center middle"
+                    :class="tooltipClass"
+                >{{t!('Collection.examplesTooltip')}}</q-tooltip>
               </td>
             </tr>
 
@@ -262,7 +270,7 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
   import type {TWord} from "@/classes/Pinia/UIStore/TWord";
-  import {useQuasar, QInput} from "quasar";
+import {useQuasar, QInput, QTooltip} from "quasar";
   import type {QTableProps} from "quasar";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
   import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
@@ -290,6 +298,8 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
   const isEditMode = ref<boolean>(false);
 
   const arSelectedProps = ref<number[]>([]);
+
+  const examplesTooltip = ref<QTooltip>();
 
   const {t} = useI18n() as {t:TranslateFunction};
   const {
@@ -404,6 +414,12 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
     return cols;
   });
 
+  const tooltipClass = computed(() => {
+    if($q.dark.isActive){
+      return 'bg-black';
+    }
+    return 'bg-white text-black'
+  })
 
   const userLang = computed(() => {
     const userLang = availableLanguages.value.filter((lang) => {
@@ -810,6 +826,14 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
       neoWord.value = mayBeTranslate.value;
     }
     neoWordInput.value?.$el.querySelector('input').focus();
+  }
+
+  const showExampleTooltip = () => {
+    examplesTooltip.value?.show();
+  }
+
+  const hideExampleTooltip = (e:any) => {
+    examplesTooltip.value?.hide();
   }
 
 

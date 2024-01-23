@@ -71,6 +71,7 @@
     "NoOneWord": "There is nothing yet.",
     "AddWords": "Add new words to the dictionary",
     "NotFoundWords": "Nothing was found",
+    "examplesTooltip": "These are examples of how to fill out a dictionary",
     "NeoWord": "A new word",
     "EditMode": "Ed.",
     "Select": "Select",
