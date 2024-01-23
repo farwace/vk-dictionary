@@ -123,10 +123,17 @@
                       :class="{'q-field--highlighted':neoForeignWordHasError}"
                       ref="neoForeignWordInput"
                       outlined dense
-                      :label="t('Collection.NeoWord')"
+                      label-slot
                       lazy-rules
                       :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                  />
+                  >
+                    <template v-slot:label>
+                      <div>
+                        <img v-if="userLearnLang.nameCode" :src="`/assets/img/languages/${userLearnLang.nameCode}.webp`">
+                        <span v-html="t('Collection.NeoWord')"></span>
+                      </div>
+                    </template>
+                  </q-input>
                   <q-input
                       class="item"
                       v-if="user.displayTranscription"
@@ -148,10 +155,17 @@
                         @keydown.enter.stop="addNeoWord"
                         v-model="neoWord"
                         :class="{'q-field--highlighted':neoWordHasError}"
-                        :label="t('Collection.Translation')"
+                        label-slot
                         lazy-rules
                         :rules="[val => (val && val.length > 0 || !val) || t('Collection.EmptyWord'), val => val.length < 255 || t('Collection.LongWord')]"
-                    />
+                    >
+                      <template v-slot:label>
+                        <div>
+                          <img v-if="userLang.nameCode" :src="`/assets/img/languages/${userLang.nameCode}.webp`">
+                          <span v-html="t('Collection.Translation')"></span>
+                        </div>
+                      </template>
+                    </q-input>
 
                     <transition
                         appear
@@ -388,6 +402,21 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
     }
     cols.push(nameCol);
     return cols;
+  });
+
+
+  const userLang = computed(() => {
+    const userLang = availableLanguages.value.filter((lang) => {
+      return lang.id === user.value.userLangId
+    })
+    return userLang[0] || {}
+  });
+
+  const userLearnLang = computed(() => {
+    const userLang = availableLanguages.value.filter((lang) => {
+      return lang.id === user.value.userLearnLangId
+    })
+    return userLang[0] || {}
   });
 
   const editCollectionIcon = computed(() => {
@@ -1017,6 +1046,12 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
       top: 0;
       font-size: 1rem;
     }
+  }
+
+  .q-field__label img{
+    width: 15px;
+    margin-right: 5px;
+    vertical-align: middle;
   }
 
 </style>
