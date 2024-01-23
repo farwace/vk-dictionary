@@ -24,18 +24,6 @@
                   :rules="[val => val && val.length > 0 || t('AddCollection.EmptyName'), val => val.length < 255 || t('AddCollection.LongName')]"
               />
 
-              <q-input
-                  dense
-                  type="textarea"
-                  filled
-                  rows="2"
-                  v-model="neoDesc"
-                  :label="t('AddCollection.LabelDesc')"
-
-                  lazy-rules
-                  :rules="[val => val.length < 255 || t('AddCollection.LongDesc')]"
-              />
-
               <div class="error q-my-sm" v-if="errorText" v-html="errorText"></div>
 
               <q-card-actions align="right">
