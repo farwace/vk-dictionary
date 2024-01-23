@@ -31,11 +31,9 @@
   import {useRouter} from "vue-router";
   import {useQuasar} from "quasar";
   import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
-  import { Pagination } from 'swiper/modules'
-  import 'swiper/css';
-  import 'swiper/css/pagination';
   import SystemCollectionWordsDialog from "@/components/common/SystemCollectionWordsDialog.vue";
   import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
+  import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
@@ -44,12 +42,13 @@
 
   const {systemCollections} = storeToRefs(UIStore());
 
-  const swiperModules = [Pagination];
+  const TARGET_EVENTS = inject<IEventActions>('TARGET_EVENTS');
 
   const openCollection = (id:number, collection:TCollection) => {
     UI?.setLoading(true);
     UI?.getSystemCollectionWords(id).then((res) => {
       UI?.setLoading(false);
+      TARGET_EVENTS?.sendEvent('showedSystemCollection')
 
       $q.dialog({
         component: SystemCollectionWordsDialog,
