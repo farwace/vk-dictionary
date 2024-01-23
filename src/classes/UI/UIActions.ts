@@ -891,7 +891,7 @@ export class UIActions implements IUIActions{
 
                     if(translateResult.result.texts[0] && translateResult.result.texts[0] != str){
                         this.delayCanTranslate();
-                        return translateResult.result.texts[0];
+                        return this.filterBadText(translateResult.result.texts[0]);
                     }
                     else{
                         this.delayCanTranslate();
@@ -912,6 +912,17 @@ export class UIActions implements IUIActions{
             this.delayCanTranslate();
             return undefined;
         }
+    }
+
+    private filterBadText = (word:string):string|undefined => {
+        const profanityList = ['ПИЗД', 'ЕБА', 'БЛЯ', 'ХУЙ'];
+
+        for (const profanity of profanityList) {
+            if (word.toUpperCase().indexOf(profanity) !== -1) {
+                return undefined;
+            }
+        }
+        return word;
     }
 
     private delayCanTranslate = () => {
