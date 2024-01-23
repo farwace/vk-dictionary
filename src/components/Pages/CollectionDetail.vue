@@ -159,7 +159,7 @@
                         leave-active-class="animated fadeOut"
                     >
                       <div class="suggestion" v-if="(mayBeTranslate || isTranslateLoading) && neoWord.length < 1">
-                        <div class="suggestion__item" @click="neoWord = mayBeTranslate" v-if="mayBeTranslate && !isTranslateLoading">
+                        <div class="suggestion__item" @click="setNeoWordFromTranslate" v-if="mayBeTranslate && !isTranslateLoading">
                           <span>{{ mayBeTranslate }}</span>
                           <q-icon class="remove-translate" name="mdi-close" @click.prevent.stop="mayBeTranslate = undefined"/>
                         </div>
@@ -774,6 +774,13 @@ import {computed, inject, nextTick, onMounted, onUnmounted, ref, watch} from "vu
 
   const clearTranslateHelp = () => {
     mayBeTranslate.value = undefined;
+  }
+
+  const setNeoWordFromTranslate = () => {
+    if(mayBeTranslate.value){
+      neoWord.value = mayBeTranslate.value;
+    }
+    neoWordInput.value?.$el.querySelector('input').focus();
   }
 
 
