@@ -347,7 +347,7 @@
     }).catch(() => {
       UI?.setLoading(false);
     })
-
+    UI?.tryRecommend();
   }
 
   onBeforeUnmount(() => {

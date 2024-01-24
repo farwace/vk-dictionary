@@ -776,7 +776,9 @@ export class UIActions implements IUIActions{
         bridge.send('VKWebAppStorageGet', {
             keys: [
                 'isSoundEnabled',
-                'isVibrateEnabled'
+                'isVibrateEnabled',
+                'notificationsAsked',
+                'recommendAsked',
             ]})
             .then((data) => {
                 if (data.keys) {
@@ -801,6 +803,16 @@ export class UIActions implements IUIActions{
                         }
                         this.UIStore.$patch({
                             isVibrateEnabled: isVibrateEnabled
+                        });
+                    }
+                    if(obData.notificationsAsked == '1'){
+                        this.UIStore.$patch({
+                            notificationsAsked: true
+                        });
+                    }
+                    if(obData.recommendAsked == '1'){
+                        this.UIStore.$patch({
+                            recommendAsked: true
                         });
                     }
 
@@ -923,6 +935,52 @@ export class UIActions implements IUIActions{
             return undefined;
         }
     }
+
+    tryAllowNotifications = () => {
+        if(this.UIStore.$state.notificationsAsked || this.UIStore.$state.launchParams?.vk_are_notifications_enabled == 1){
+            return;
+        }
+        bridge.send('VKWebAppAllowNotifications')
+            .then((data) => {
+
+                bridge.send('VKWebAppStorageSet', {
+                    key: 'notificationsAsked',
+                    value: '1'
+                });
+
+                if (data.result) {
+
+                } else {
+
+                }
+            })
+            .catch((error) => {
+                //console.log(error);
+            });
+    }
+
+    tryRecommend = () => {
+        if(this.UIStore.$state.recommendAsked){
+            return;
+        }
+        bridge.send('VKWebAppRecommend')
+            .then((data) => {
+                if (data.result) {
+                    // Мини-приложение порекомендовано
+                }
+            })
+            .catch((error) => {
+                // Ошибка
+                console.log(error);
+            });
+
+        bridge.send('VKWebAppStorageSet', {
+            key: 'recommendAsked',
+            value: '1'
+        });
+    }
+
+
 
     private filterBadText = (word:string):string|undefined => {
         const profanityList = ['ПИЗД', 'ЕБА', 'БЛЯ', 'ХУЙ'];

@@ -46,4 +46,6 @@ export interface IUIActions {
     vibro(force?:boolean):void;
     tryTranslate(str:string):Promise<string|undefined>;
     easyStart():Promise<number[] | undefined>;
+    tryAllowNotifications():void;
+    tryRecommend():void;
 }

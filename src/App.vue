@@ -89,6 +89,7 @@
       }
       else{
         TARGET_EVENTS?.sendEvent('login');
+        UI?.tryAllowNotifications();
       }
       let neoLang: "ru" | "en" = 'ru';
       if(launchParams?.value?.vk_language){

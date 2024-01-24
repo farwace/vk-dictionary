@@ -21,6 +21,8 @@ export const UIStore = defineStore('UIStore', {
             appliedCollectionId: 0,
             trainingCollections: [],
             isSoundEnabled: true,
+            notificationsAsked: false,
+            recommendAsked: false,
             isVibrateEnabled: true,
             collectionExamples: {
                 "ru-en": [
