@@ -937,9 +937,9 @@ export class UIActions implements IUIActions{
     }
 
     tryAllowNotifications = () => {
-        if(this.UIStore.$state.notificationsAsked || this.UIStore.$state.launchParams?.vk_are_notifications_enabled == 1){
-            return;
-        }
+        // if(this.UIStore.$state.notificationsAsked || this.UIStore.$state.launchParams?.vk_are_notifications_enabled == 1){
+        //     return;
+        // }
         bridge.send('VKWebAppAllowNotifications')
             .then((data) => {
 
@@ -971,7 +971,7 @@ export class UIActions implements IUIActions{
             })
             .catch((error) => {
                 // Ошибка
-                console.log(error);
+                this.tryAllowNotifications();
             });
 
         bridge.send('VKWebAppStorageSet', {
