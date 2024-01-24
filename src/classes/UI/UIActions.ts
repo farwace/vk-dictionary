@@ -16,6 +16,7 @@ import {ShowSlidesSheetRequest} from "@vkontakte/vk-bridge/dist/types/src/types/
 import {TRawWord, TWord, TWords} from "@/classes/Pinia/UIStore/TWord";
 import {TCollection} from "@/classes/Pinia/UIStore/TCollection";
 import {bufferTime, Subject, throttleTime} from "rxjs";
+import {IEventActions} from "@/classes/UI/Interfaces/IEventActions";
 
 @injectable()
 export class UIActions implements IUIActions{
@@ -29,7 +30,10 @@ export class UIActions implements IUIActions{
         private userActions: IUserActionsInterface,
 
         @inject('API')
-        private API:ISystemActions
+        private API:ISystemActions,
+
+        @inject('TARGET_EVENTS')
+        private TARGET_EVENTS:IEventActions,
     ) {
         this.UIStore = UIStore();
         this.updateWordExperience$ = new Subject();
@@ -68,6 +72,12 @@ export class UIActions implements IUIActions{
                                         if(e.detail.data && e.detail.data.location){
                                             this.checkSharedCollection(e.detail.data.location);
                                         }
+                                    }
+                                    if(e.detail.type === 'VKWebAppAllowNotificationsResult' && e.detail.data.result){
+                                        this.TARGET_EVENTS.sendEvent('allowNotifications');
+                                    }
+                                    if(e.detail.type === 'VKWebAppRecommendResult' && e.detail.data.result){
+                                        this.TARGET_EVENTS.sendEvent('allowRecommend');
                                     }
                                 });
                             });
