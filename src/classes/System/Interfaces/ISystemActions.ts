@@ -29,4 +29,5 @@ export interface ISystemActions{
     removeCollection(collectionId: number):Promise<string>;
     updateShareLink(collectionId:number, clear:boolean):Promise<string>;
     getCloneCollectionInfo(collectionOrShareId: number | string):Promise<{collection?: TCollection, words?: TWord[]}>
+    easyStart():Promise<number[] | undefined>;
 }

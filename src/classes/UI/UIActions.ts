@@ -491,6 +491,16 @@ export class UIActions implements IUIActions{
         return await this.API.getCollectionWords(collectionId) || [];
     }
 
+    easyStart = async () => {
+        this.showBannerAds();
+
+        const easyResult = await this.API.easyStart();
+        if(easyResult && easyResult[0]){
+            this.updateUserCollections();
+        }
+        return easyResult;
+    }
+
     cloneCollection = async (collectionId: number | string):Promise<TCollection> => {
         const cloneCollectionResult =  await this.API.cloneCollection(collectionId);
 

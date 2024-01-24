@@ -2,7 +2,7 @@
   <div class="page" :style="contentHeight">
     <q-scroll-area style="height: 100%;">
     <div class="page-container home-page">
-      <NoHaveCollections @add-collection="addCollectionLink" v-if="collections.length < 1" />
+      <NoHaveCollections @add-collection="addCollectionLink" v-if="collections.length < 1" @easy-start="easyStart"/>
       <CollectionsList v-else/>
 
       <SystemCollectionsList v-if="systemCollections && systemCollections.length > 0"/>
@@ -34,6 +34,9 @@
   import CollectionsList from "@/components/Pages/HomePage/CollectionsList.vue";
   import ChooseTrainingDialog from "@/components/common/ChooseTrainingDialog.vue";
   import SystemCollectionsList from "@/components/Pages/HomePage/SystemCollectionsList.vue";
+  import {inject} from "vue";
+  import {IUIActions} from "@/classes/UI/Interfaces/IUIActions";
+  import {useRouter} from "vue-router";
   const {t} = useI18n() as {t:TranslateFunction};
   const $q = useQuasar();
 
@@ -45,6 +48,9 @@
     contentHeight
   } = storeToRefs(UIStore());
 
+  const UI = inject<IUIActions>('UI');
+  const router = useRouter();
+
   const addCollectionLink = () => {
     $q.dialog({
       component: CreateCollectionDialog
@@ -55,6 +61,24 @@
     $q.dialog({
       component: ChooseTrainingDialog,
     });
+  }
+
+  const easyStart = () => {
+    UI?.setLoading(true);
+    UI?.easyStart().then((res) => {
+      UI?.setLoading(false);
+      if(res){
+        router.push({
+          name: "training",
+          query: {
+            collectionIds: res,
+            name: 'wordToTranslate'
+          }
+        });
+      }
+    }).catch((e) => {
+      UI?.setLoading(false);
+    })
   }
 
 </script>

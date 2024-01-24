@@ -4,18 +4,27 @@
       <img src="/assets/img/collection-detail/sad4.webp" alt="">
     </div>
     <div>
+      <div>
         <span>
           {{ t!('HomePage.NoHaveCollections') }}
         </span>
-      <br/>
-      <span>
+      </div>
+      <div v-if="systemCollections.length < 1">
+        <span>
           <a href="#" @click.prevent="$emit('add-collection')">
             {{ t!('HomePage.UCanAddNewCollection') }}
           </a>
-        </span><br/>
-        <span v-if="systemCollections.length > 0">
-          {{ t!('HomePage.UCanAddFromSystemCollections') }}
         </span>
+      </div>
+      <div v-else>
+        <div>
+          <span v-html="t('HomePage.DoCreateOrAdd')"></span>
+          <a href="#" @click.prevent="$emit('easy-start')">
+             {{ t!('HomePage.EasyStart') }}
+          </a>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -34,7 +43,7 @@
     user,
   } = storeToRefs(UIStore());
 
-  defineEmits(['add-collection'])
+  defineEmits(['add-collection', 'easy-start'])
 
 </script>
 

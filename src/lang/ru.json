@@ -43,7 +43,9 @@
     "UCanAddNewCollection": "Вы можете создать свой набор слов",
     "UCanAddFromSystemCollections": "или добавьте один из предложенных наборов:",
     "AddCollection":"Добавить словарь",
-    "MyCollections": "Мои наборы слов"
+    "MyCollections": "Мои наборы слов",
+    "DoCreateOrAdd": "Создайте свой набор / добавьте готовый <br/> или ",
+    "EasyStart": "сразу начните игру"
   },
   "AddCollection": {
     "Title": "Новый набор",

@@ -45,4 +45,5 @@ export interface IUIActions {
     toggleVibrateEnabled(val?:boolean):void;
     vibro(force?:boolean):void;
     tryTranslate(str:string):Promise<string|undefined>;
+    easyStart():Promise<number[] | undefined>;
 }

@@ -43,7 +43,9 @@
     "UCanAddNewCollection": "You can create your own set of words",
     "UCanAddFromSystemCollections": "or add one of the suggested collections:",
     "AddCollection":"Add a dictionary",
-    "MyCollections": "My Word collections"
+    "MyCollections": "My Word collections",
+    "DoCreateOrAdd": "Create your own set / add ready-made <br/> or ",
+    "EasyStart": "start the game right away"
   },
   "AddCollection": {
     "Title": "A new collection",

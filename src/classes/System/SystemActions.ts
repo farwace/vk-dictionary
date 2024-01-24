@@ -379,6 +379,20 @@ export class SystemActions implements ISystemActions{
         }
     }
 
+    easyStart = async () => {
+        try {
+            const fetchResult = await this.sendQuery('easyStart', {});
+            const res = await fetchResult.json();
+            if(Array.isArray(res) && res[0]){
+                return res;
+            }
+            return undefined;
+        }
+        catch (e){
+            return undefined;
+        }
+    }
+
     sendQuery = async (path: string, body: any, method:string|undefined = 'POST') => {
         let response;
         try {
