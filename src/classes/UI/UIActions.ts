@@ -961,6 +961,7 @@ export class UIActions implements IUIActions{
 
     tryRecommend = () => {
         if(this.UIStore.$state.recommendAsked){
+            this.tryAllowNotifications();
             return;
         }
         bridge.send('VKWebAppRecommend')
