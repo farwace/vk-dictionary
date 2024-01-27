@@ -690,7 +690,9 @@ export class UIActions implements IUIActions{
             .then((data) => {
 
             })
-            .catch((error) => { console.log(error); /* Ошибка */ });
+            .catch((error) => {
+                //console.log(error); /* Ошибка */
+            });
         return;
     }
     showBannerAds = () => {
@@ -708,7 +710,7 @@ export class UIActions implements IUIActions{
             })
             .catch((error) => {
                 // Ошибка
-                console.log(error);
+                //console.log(error);
             });
     }
 
@@ -902,7 +904,7 @@ export class UIActions implements IUIActions{
         const translateLanguages = ['en', 'es', 'pt', 'ru'];
 
         const availableLanguages = this.UIStore.$state.availableLanguages;
-        console.log('>>> translate');
+
         if(availableLanguages && availableLanguages.length > 0){
             await this.timeout(100);
             let obLangs:{[key:number]:string} = {};
@@ -915,13 +917,13 @@ export class UIActions implements IUIActions{
             const toTranslateLang = obLangs[user.userLangId!] || '';
 
             if(translateLanguages.indexOf(strLang) > -1 && translateLanguages.indexOf(toTranslateLang) > -1){
-                console.log('>>> translate before');
+
                 try {
                     const translateResult = await bridge.send('VKWebAppTranslate', {
                         texts: [str],
                         translation_language: strLang + '-' + toTranslateLang
                     });
-                    console.log('>>> translate res', translateResult);
+
                     if(
                         (
                             translateResult.result &&
@@ -951,7 +953,7 @@ export class UIActions implements IUIActions{
                     }
                 }
                 catch (e){
-                    console.log('>>> translate err', e);
+
                     this.delayCanTranslate();
                     return undefined;
                 }
