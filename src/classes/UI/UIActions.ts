@@ -906,7 +906,6 @@ export class UIActions implements IUIActions{
         const availableLanguages = this.UIStore.$state.availableLanguages;
 
         if(availableLanguages && availableLanguages.length > 0){
-            await this.timeout(100);
             let obLangs:{[key:number]:string} = {};
             availableLanguages.forEach((lang) => {
                 obLangs[lang.id] = lang.nameCode;
@@ -916,8 +915,8 @@ export class UIActions implements IUIActions{
             const strLang = obLangs[user.userLearnLangId!] || '';
             const toTranslateLang = obLangs[user.userLangId!] || '';
 
-            if(translateLanguages.indexOf(strLang) > -1 && translateLanguages.indexOf(toTranslateLang) > -1){
-
+            if(translateLanguages.indexOf(strLang) > -1 && translateLanguages.indexOf(toTranslateLang) > -1 && strLang != toTranslateLang){
+                await this.timeout(100);
                 try {
                     const translateResult = await bridge.send('VKWebAppTranslate', {
                         texts: [str],
