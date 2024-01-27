@@ -732,7 +732,7 @@ import {useQuasar, QInput, QTooltip} from "quasar";
       blockedHandleRowHold = false;
     }, 100)
     //console.log(event);
-    canCloseWordContextShown.value = false; //todo: повторное открытие меню не закрывать!
+    canCloseWordContextShown.value = false;
     UI?.vibro();
     let pos:{x:number, y:number} = {x:0, y:0};
     if(event.clientX && event.clientY){
@@ -742,6 +742,13 @@ import {useQuasar, QInput, QTooltip} from "quasar";
     if(event.pageX && event.pageY){
       pos.x = event.pageX;
       pos.y = event.pageY;
+    }
+
+    if(pos.y === pos.x && pos.y === 0){
+      if(event.touches && event.touches[0] && event.touches[0]['clientX']){
+        pos.x = event.touches[0]['clientX'];
+        pos.y = event.touches[0]['clientY'];
+      }
     }
 
     if(event?.pointerType != 'mouse'){
