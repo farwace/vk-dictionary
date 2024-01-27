@@ -632,6 +632,7 @@ import {useQuasar, QInput, QTooltip} from "quasar";
     }
 
     clearTranslateHelp();
+    isTranslateLoading.value = false;
 
     UI?.setLoading(true);
     UI?.addWordToCollection(neoWord.value, neoTranscription.value, neoForeignWord.value, currentCollectionId.value)
