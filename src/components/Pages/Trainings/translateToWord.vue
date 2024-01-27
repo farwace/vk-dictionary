@@ -366,9 +366,9 @@
   }
 
   const isLongBottomWord = (str:string = '') => {
-    const oneLetterWirth = 22;
+    const oneLetterWirth = 18.5;
     const maxLength = getMaxWithoutSpaceLength(str);
-    return oneLetterWirth * maxLength > window.innerWidth;
+    return oneLetterWirth * maxLength > (window.innerWidth - 60);
   }
 
   watch(isStart, (neoVal) => {
