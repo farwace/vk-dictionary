@@ -922,9 +922,28 @@ export class UIActions implements IUIActions{
                         translation_language: strLang + '-' + toTranslateLang
                     });
                     console.log('>>> translate res', translateResult);
-                    if(translateResult.result.texts[0] && translateResult.result.texts[0] != str){
+                    if(
+                        (
+                            translateResult.result &&
+                            translateResult.result.texts &&
+                            translateResult.result.texts[0] &&
+                            translateResult.result.texts[0] != str
+                        )
+                        ||
+                        (
+                            translateResult &&
+                            /* @ts-ignore */
+                            translateResult.texts &&
+                            /* @ts-ignore */
+                            translateResult.texts[0] &&
+                            /* @ts-ignore */
+                            translateResult.texts[0] != str
+                        )
+                    ){
                         this.delayCanTranslate();
-                        return this.filterBadText(translateResult.result.texts[0]);
+                        /* @ts-ignore */
+                        let neoTranslate = translateResult?.result?.texts[0] || translateResult?.texts[0];
+                        return this.filterBadText(neoTranslate);
                     }
                     else{
                         this.delayCanTranslate();
