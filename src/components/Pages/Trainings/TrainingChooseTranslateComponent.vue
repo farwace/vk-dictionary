@@ -1,5 +1,6 @@
 <template>
   <div class="training">
+    <road-percent :percent="roadPercent"></road-percent>
     <div class="training__title">
       <transition
           appear
@@ -50,6 +51,7 @@
   import {useI18n} from "vue-i18n";
   import type {TranslateFunction} from "@/lang/TranslateFunction";
   import {ref} from "vue";
+  import RoadPercent from "@/components/Pages/Trainings/RoadPercent.vue";
 
   const {t} = useI18n() as {t:TranslateFunction};
 
@@ -58,7 +60,8 @@
   const props = defineProps<{
     trainingName: string,
     isAll: boolean,
-    isStart: boolean
+    isStart: boolean,
+    roadPercent?:number,
   }>();
 
 

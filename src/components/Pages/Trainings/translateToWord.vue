@@ -3,6 +3,7 @@
       :training-name="t('Training.TranslateToWord')"
       :is-all="isAll"
       :is-start="isStart"
+      :road-percent="isStart?stepPercent:undefined"
       @started="isStart = true"
   >
     <template v-slot:top>
@@ -81,6 +82,7 @@
   const delayTimeOrig = 550;
   const delayTime = ref<number>(delayTimeOrig);
   const trainingCnt = 20;
+  const stepPercent = ref<number>();
   const addedExperience = 2;
 
   const stepWord = ref<TWord>();
@@ -145,6 +147,9 @@
         tmpCountRightInRowAnswers.value = 0;
       }
     }
+    else{
+      stepPercent.value = 0;
+    }
 
     setTimeout(() => {
       isStepAnswer.value = true;
@@ -152,6 +157,9 @@
 
     const randomWord = getRandomWordForTraining();
     if(randomWord) {
+
+      stepPercent.value = (trainingCnt - ((wordsForRepeat.value?.length || 0) + 1) ) * 100 / trainingCnt;
+
       const otherWords = trainingWords!.value!.filter((word) => {
         return word.id != randomWord.id;
       });
@@ -175,6 +183,7 @@
       }, delayTime.value);
     }
     else{
+      stepPercent.value = undefined;
 
       setTimeout(() => {
         failAnswerId.value = undefined;

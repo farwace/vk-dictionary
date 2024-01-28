@@ -1,0 +1,63 @@
+<template>
+  <svg v-if="percent != undefined" width="1000" height="55" viewBox="0 0 1000 55" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M963.462 16.2584H953.96V23.3848H963.462V16.2584Z" fill="#E7ECED"/>
+    <path d="M963.462 1.41141H953.96V9.13179H963.462V1.41141Z" fill="#E7ECED"/>
+    <path d="M953.96 9.1318H944.458V16.2583H953.96V9.1318Z" fill="#E7ECED"/>
+    <path d="M953.96 23.3848H944.458V31.1052H953.96V23.3848Z" fill="#E7ECED"/>
+    <path d="M934.956 23.3848H925.454V31.1052H934.956V23.3848Z" fill="#E7ECED"/>
+    <path d="M944.458 16.2584H934.956V23.3848H944.458V16.2584Z" fill="#E7ECED"/>
+    <path d="M944.458 1.41141H934.956V9.13179H944.458V1.41141Z" fill="#E7ECED"/>
+    <path d="M934.956 9.1318H925.454V16.2583H934.956V9.1318Z" fill="#E7ECED"/>
+    <path d="M963.462 23.3848H953.96V31.1052H963.462V23.3848Z" fill="#546A79"/>
+    <path d="M944.458 23.3848H934.956V31.1052H944.458V23.3848Z" fill="#546A79"/>
+    <path d="M953.96 16.2584H944.458V23.3848H953.96V16.2584Z" fill="#546A79"/>
+    <path d="M934.956 16.2584H925.454V23.3848H934.956V16.2584Z" fill="#546A79"/>
+    <path d="M963.462 9.1318H953.96V16.2583H963.462V9.1318Z" fill="#546A79"/>
+    <path d="M953.96 1.41141H944.458V9.13179H953.96V1.41141Z" fill="#546A79"/>
+    <path d="M944.458 9.1318H934.956V16.2583H944.458V9.1318Z" fill="#546A79"/>
+    <path d="M934.956 1.41141H925.454V9.13179H934.956V1.41141Z" fill="#546A79"/>
+    <path d="M925.454 31.1052V50.1092H921.891V1.41141H925.454V9.13179V16.2584V23.3848V31.1052Z" fill="#BBC0C2"/>
+    <path d="M964.353 0.520622H921V51H926.345V31.996H964.353V0.520622ZM962.571 8.24101H954.851V2.30229H962.571V8.24101ZM945.349 8.24101V2.30229H953.069V8.24101H945.349ZM953.069 10.0226V15.3675H945.349V10.0226H953.069ZM943.567 8.24101H935.847V2.30229H943.567V8.24101ZM943.567 10.0226V15.3675H935.847V10.0226H943.567ZM934.065 15.3675H926.345V10.0226H934.065V15.3675ZM926.345 17.1491H934.065V22.494H926.345V17.1491ZM935.847 17.1491H943.567V22.494H935.847V17.1491ZM943.567 24.2756V30.2143H935.847V24.2756H943.567ZM945.349 24.2756H953.069V30.2143H945.349V24.2756ZM945.349 22.494V17.1491H953.069V22.494H945.349ZM954.851 17.1491H962.571V22.494H954.851V17.1491ZM954.851 15.3675V10.0226H962.571V15.3675H954.851ZM934.065 2.30229V8.24101H926.345V2.30229H934.065ZM924.563 49.2183H922.782V2.30229H924.563V31.1052V31.996L924.563 49.2183ZM926.345 24.2756H934.065V30.2143H926.345V24.2756ZM954.851 30.2143V24.2756H962.571V30.2143H954.851Z" fill="black"/>
+    <line x1="3.99557" y1="50.9956" x2="995.995" y2="49.8982" :stroke="roadColor" stroke-width="8" stroke-linecap="round"/>
+    <line x1="3.99557" y1="50.9956" :x2="roadProgress" y2="50.7832" :stroke="progressColor" stroke-width="8" stroke-linecap="round"/>
+  </svg>
+
+
+</template>
+<script lang="ts" setup>
+  import {computed} from "vue";
+  import {useQuasar} from "quasar";
+
+  const props = defineProps<{
+    percent?: number
+  }>();
+
+  const $q = useQuasar();
+
+  const roadProgress = computed(() => {
+    if(!props.percent){
+      return '3.99557';
+    }
+    const start = 3.99557;
+    const end = 995.995;
+    const width = end - start;
+    return ((props.percent * width / 100 ) + start).toString();
+    //195.995
+  });
+
+  const roadColor = computed(() => {
+    return $q.dark.isActive ? '#3b3b3b':'#EDEDED';
+  });
+  const progressColor = computed(() => {
+    return $q.dark.isActive ? '#218329':'#60C764';
+  });
+
+
+</script>
+
+<style lang="scss" scoped>
+  svg{
+    width: 100%;
+  }
+
+</style>
