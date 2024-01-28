@@ -969,9 +969,12 @@ export class UIActions implements IUIActions{
     }
 
     tryAllowNotifications = () => {
-        // if(this.UIStore.$state.notificationsAsked || this.UIStore.$state.launchParams?.vk_are_notifications_enabled == 1){
-        //     return;
-        // }
+        if(this.UIStore.$state.notificationsAsked || this.UIStore.$state.launchParams?.vk_are_notifications_enabled == 1){
+            return;
+        }
+        this.UIStore.$patch({
+            notificationsAsked: true
+        });
         bridge.send('VKWebAppAllowNotifications')
             .then((data) => {
 
