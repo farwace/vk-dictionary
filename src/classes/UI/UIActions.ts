@@ -275,7 +275,7 @@ export class UIActions implements IUIActions{
         //if(!message){
             try {
                 const shareRes:any = await bridge.send('VKWebAppShare', {
-                    link: 'https://vk.com/app51805937' + hash,
+                    link: 'https://vk.ru/app51805937' + hash,
                 });
 
                 return !!shareRes.result; //может быть массив вида `type:"message"`, а что с ним делать - пока ничего)
@@ -289,7 +289,7 @@ export class UIActions implements IUIActions{
         //     try {
         //         const shareRes:any = await bridge.send('VKWebAppShowWallPostBox', {
         //             message: message,
-        //             attachments: 'https://vk.com/app51805937' + hash
+        //             attachments: 'https://vk.ru/app51805937' + hash
         //         });
         //
         //         return !!shareRes.result; //может быть массив вида `type:"message"`, а что с ним делать - пока ничего)

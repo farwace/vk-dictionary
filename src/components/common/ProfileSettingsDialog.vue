@@ -41,7 +41,7 @@
             </div>
             <div class="write-to-developer">
               <div>
-                <a class="link" target="_blank" href="https://vk.com/write-79625925">
+                <a class="link" target="_blank" href="https://vk.ru/write-79625925">
                   {{ t!('ProfileSettingsDialog.WriteDeveloper') }}
                 </a>
               </div>

@@ -96,7 +96,7 @@
     if(launchParams?.value?.vk_client == 'ok'){
       return 'https://ok.ru/app/vk_app51805937#collection-' + props.collection.shareId;
     }
-    return 'https://vk.com/app51805937#collection-' + props.collection.shareId;
+    return 'https://vk.ru/app51805937#collection-' + props.collection.shareId;
   });
 
   watch(compShareUrl, (neoVal) => {
