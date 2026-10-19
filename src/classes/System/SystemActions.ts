@@ -12,7 +12,9 @@ import {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
 export class SystemActions implements ISystemActions{
     // Адрес бэкенда берётся из VUE_APP_API_URL на момент сборки (см. .env.production / .env.example).
     // Значение подставляется webpack'ом при сборке, поэтому менять его можно только пересборкой dist.
-    private API_URL:string = process.env.VUE_APP_API_URL || 'https://api.dictionary.total-black.ru/api/';
+    // Литерал ниже — запасной: он реально используется только в `npm run serve`, потому что
+    // production-сборка падает на guard'е в vue.config.js, если VUE_APP_API_URL не задан.
+    private API_URL:string = process.env.VUE_APP_API_URL || 'https://api.dictionary.lapa-play.ru/api/';
 
     private UIStore;
 
