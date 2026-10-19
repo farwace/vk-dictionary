@@ -10,9 +10,9 @@ import {TCollection, TCollections} from "@/classes/Pinia/UIStore/TCollection";
 
 @injectable()
 export class SystemActions implements ISystemActions{
-    private API_URL:string = 'https://api.dictionary.total-black.ru/api/';
-    //private API_URL:string = 'http://127.0.0.1:4001/api/';
-    //private API_URL:string = 'http://192.168.0.155:4001/api/';//todo: dev вернуть
+    // Адрес бэкенда берётся из VUE_APP_API_URL на момент сборки (см. .env.production / .env.example).
+    // Значение подставляется webpack'ом при сборке, поэтому менять его можно только пересборкой dist.
+    private API_URL:string = process.env.VUE_APP_API_URL || 'https://api.dictionary.total-black.ru/api/';
 
     private UIStore;
 
